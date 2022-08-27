@@ -1,4 +1,4 @@
-# CSC510 Homework 1 (Group 33): Write a "good" Github Repo
+# CSC510 HW 1 (Group 33): Write a "good" Github Repo
 
 To write a good repo, we're following the structure below:
 
