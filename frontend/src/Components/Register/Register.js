@@ -1,44 +1,8 @@
 import React from 'react';
-
 import { Component } from 'react';
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-
 import './Register.css'
-const options_zip = [
-    {
-        label: "3",
-        value: "3",
-    },
-    {
-        label: "4",
-        value: "4",
-    },
-    {
-        label: "5",
-        value: "5",
-    },
-    {
-        label: "6",
-        value: "6",
-    },
-    {
-        label: "7",
-        value: "7",
-    },
-    {
-        label: "8",
-        value: "8",
-    },
-    {
-        label: "9",
-        value: "9",
-    },
-    {
-        label: "10",
-        value: "10",
-    },
 
-];
 const options_zip2 = [
     {
         label: "Individual",
@@ -50,40 +14,75 @@ const options_zip2 = [
     }
 ];
 
-class first extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
-            class: 3,
-            role: "none",
-            name:"",
+            username: "",
             email:"",
-            pass:""
-
+            pass:"",
+            fullname: "",
+            phone: "",
+            bio: "",
+            error: false
         };
-        this.handleChange_class = this.handleChange_class.bind(this);
         this.handleChange_role = this.handleChange_role.bind(this);
-        this.handleChange_name = this.handleChange_name.bind(this);
+        this.handleChange_username = this.handleChange_username.bind(this);
         this.handleChange_email = this.handleChange_email.bind(this);
         this.handleChange_pass = this.handleChange_pass.bind(this);
+        
+        this.setError =  this.setError.bind(this);
+        this.clearError =  this.clearError.bind(this);
+    }
 
+    // set the error flag if any field entry is invalid
+    setError = () => {
+        this.setState({error: true});
+        this.state.error = true;
     }
-    handleChange_class(e) {
-        this.setState({ class: e.target.value });
+
+    // clear the error flag if all field entries are valid
+    clearError = () => {
+        this.setState({error: false});
+        this.state.error = false;
     }
+
+    // update user's role
     handleChange_role(e) {
         this.setState({ role: e.target.value });
         this.props.setRole(e.target.value);
     }
-    handleChange_name(e) {
-        this.setState({ name: e.target.value });
+    // update user's username/handle
+    handleChange_username(e) {
+        this.setState({ username: e.target.value });
     }
+    // update user's email
     handleChange_email(e) {
         this.setState({ email: e.target.value });
     }
+    // update user's password
     handleChange_pass(e) {
         this.setState({ pass: e.target.value });
+    }
+
+   
+    // update user's full name
+    handleChange_fullname(e) {
+        this.clearError();
+        console.log(e.target.value);
+        this.setState({ fullname: e.target.value });
+    }
+    // update user's contact info
+    handleChange_phone(e) {
+        this.clearError();
+        console.log(e.target.value);
+        this.setState({ phone: e.target.value });
+    }
+    // update user's short bio
+    handleChange_bio(e) {
+        this.clearError();
+        console.log(e.target.value);
+        this.setState({ bio: e.target.value });
     }
 
     // INCOMPLETE
@@ -91,22 +90,22 @@ class first extends Component {
         console.log ("POST req to server")
         this.props.onRouteChange("signedin");
 
-        // fetch('http://localhost:5000/signUp', {
+        // fetch('http://localhost:5000/user', {
         //     method: 'POST',
         //     headers: {
         //       'Accept': 'application/json',
         //       'Content-Type': 'application/json'
         //     },
         //     body: JSON.stringify({
-        //         //   id: this.state.id,
-        //         //   item: this.state.item,
-        //         //   itemType: this.state.itemType
-        //         username:this.state.name,
-        //         email:this.state.email,
-        //         pass:this.state.pass,
-        //         roletype:this.state.role,
-        //         class:this.state.class       
-        //     })
+                // "username": this.state.username,
+                // "password": this.state.pass,
+                // "about": {
+                //     "name": this.state.fullname,
+                //     "email": this.state.email,
+                //     "phone": this.state.phone,
+                //     "bio": this.state.bio
+                // }
+                // })
         //   })    
         //   .then((response) => response.json())
         //   .then((data) => {
@@ -124,7 +123,6 @@ class first extends Component {
         //   });
     }
 
-
     render() {
 
         return (
@@ -134,7 +132,7 @@ class first extends Component {
                     <div className="card-body">
                         <h3 className="card-title">Register</h3>
                         
-                        <input id="Name" name="Name" type="text" placeholder="Full name" className="email" onChange={this.handleChange_name} />
+                        <input id="Name" name="Name" type="text" placeholder="User name" className="email" onChange={this.handleChange_username} />
                         <input id="Email" name="Email" type="text" placeholder="Email address" className="email"  onChange={this.handleChange_email} />
                         <input id="password" name="password" type="password" placeholder="Password" className="password"  onChange={this.handleChange_pass} />
 
@@ -146,33 +144,17 @@ class first extends Component {
                                 ))}
                             </select>
                         </p>
-                        {this.state.role === "student" &&
-                            (
-                                <p style={{ marginTop: 15, textAlign: 'left', marginLeft: 16 }}>Your class
-                                    <select value={this.state.class} onChange={this.handleChange_class} style={{ marginLeft: 20, borderRadius: 5,width:100 }}>
-                                        {options_zip.map((option) => (
-                                            <option value={option.value}>{option.label}</option>
-                                        ))}
-                                    </select>
-                                </p>
+                        
 
-                            )
-                        }
-
-
-                        <Link to="/authHome" className="btn btn-primary " onClick={this.handleLangChange}>Submit</Link>
+                        <Link to="/dashboard" className="btn btn-primary " onClick={this.handleLangChange}>Submit</Link>
                         <br></br>
 
                         {/* <input type="submit" id="submit" className="submit" onClick={this.handleLangChange}/>  */}
                         <br></br>
                     </div>
                 </div>
-
-
-
-
             </div>
         )
     }
 }
-export default first;
+export default Register;

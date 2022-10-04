@@ -8,13 +8,11 @@ class first extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            role: "",
             email:"",
             pass:"",
             error: false
           };
       
-        // this.handleChange_role = this.handleChange_role.bind(this);
         this.handleChange_email = this.handleChange_email.bind(this);
         this.handleChange_pass = this.handleChange_pass.bind(this);
 
@@ -31,20 +29,15 @@ class first extends Component {
         this.setState({error: false});
         this.state.error = false;
     }
-
-
     
     handleSubmit = () => {
-
-        // this.handleChange_role();
-
         // must delete this line later
         // auto sign up
         console.log ("GET req to server")
         this.props.onRouteChange("signedin");
 
 
-        // fetch('http://localhost:5000/login', {
+        // fetch('http://localhost:5000/user', {
         //     method: 'POST',
         //     headers: {
         //       'Accept': 'application/json',
@@ -103,25 +96,12 @@ class first extends Component {
                         <input id="Email" name="Email" type="text" placeholder="Email address" className="email" onChange={this.handleChange_email}/> 
                         <input id="password" name="password" type="password" placeholder="Password" className="password" onChange={this.handleChange_pass}/> 
                         <br></br>
-                        
-                        {/* <p style={{marginTop:15}}>Login as 
-                            <input type="checkbox" id="box1" name="box1" value="individual" className="checkb"
-                                defaultChecked={this.state.student}
-                                onChange={this.handleChangeStudent}
-                            />
-                            Individual 
-                            <input type="checkbox" id="box2" name="box2" value="team" className="checkb"
-                                defaultChecked={this.state.instructor}
-                                onChange={this.handleChangeInstructor}
-                            />
-                            Team
-                        </p>  */}
 
                         {
                             this.state.error &&
                             <h7 style={{color: 'red', marginTop: 2}}> Incorrect fields. try Again. </h7>
                         }
-                        <Link to="/authHome" className="btn btn-primary " onClick={this.handleSubmit}>Submit</Link>
+                        <Link to="/dashboard" className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
                         <br></br> 
                         <p style={{marginTop:10}}>Don't have an account??   <Link to="/register">Register</Link></p>
                         

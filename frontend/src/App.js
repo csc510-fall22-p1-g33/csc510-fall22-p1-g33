@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
-import Navigation from "./Components/Navigation/NavigationBar";
+import Navigation from "./Components/Navigation/NavigationBar2";
 
 import Signin from "./Components/Signin/Signin";
 import Register from "./Components/Register/Register";
@@ -14,18 +14,20 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          input: '',
-          imageUrl: '',
           route: '',
           isSignedIn: false,
+
           user_id: '',
+          username: '',
+          password: '',
           teamFormed: false,
           teamName: '',
-          user: {
-            id: '',
+
+          about: {
             name: '',
             email: '',
-            joined: ''
+            phone: '',
+            bio: ''
           }
         }
       }
@@ -72,10 +74,10 @@ class App extends Component {
 
                 {this.state.isSignedIn ?
                   // if the user is logged in, show the homepage containing available team/user information list
-                  <Route path="/authHome" element ={<div><h1 style={{textAlign: 'center'}}>Here should be the homepage for logged in user</h1></div>}/>
+                  <Route path="/dashboard" element ={<div><h1 style={{textAlign: 'center'}}>Here should be the homepage for logged in user</h1></div>}/>
                 :
                   // if the user cannot login, redirect them to try again
-                  <Route path="/authHome" element ={<div>Unable to login. Try again!</div>}/>
+                  <Route path="/" element ={<div>Unable to login. Try again!</div>}/>
                 }
               
               </Routes>
