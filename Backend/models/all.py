@@ -2,8 +2,6 @@ from ..extensions import db
 
 from sqlalchemy.dialects.mysql import ENUM
 
-
-
 user_project = db.Table('user_project',
             db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
             db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True))
@@ -64,11 +62,10 @@ class Team(db.Model):
     user = db.relationship('User', secondary=user_team, backref=db.backref('user_team', lazy='dynamic'), lazy='dynamic')
    
     join_id = db.Column(db.Integer, db.ForeignKey('joinrequest.id', ondelete='CASCADE'), nullable=False)
-    join_requests = db.relationship('Joinrequest', backref=db.backref('team_join', lazy='dynamic'), lazy='dynamic')
+    join_requests = db.relationship('Joinrequest', secondary=team_join, backref=db.backref('team_join', lazy='dynamic'), lazy='dynamic')
     
 class Teamabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
     description = db.Column(db.String(50))
 
     team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
@@ -81,14 +78,13 @@ class Project(db.Model):
     url = db.Column(db.String(200))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    user = db.relationship('User', secondary=user_about, backref=db.backref('user_project', lazy='dynamic'), lazy='dynamic')
+    user = db.relationship('User', secondary=user_project, backref=db.backref('user_project', lazy='dynamic'), lazy='dynamic')
     
     team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
-    team = db.relationship('Team', backref=db.backref('team_project', lazy='dynamic'), lazy='dynamic')
+    team = db.relationship('Team', secondary=team_project, backref=db.backref('team_project', lazy='dynamic'), lazy='dynamic')
 
 class Projectabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    project_name = db.Column(db.String(50))
     description = db.Column(db.String(50))
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id', ondelete='CASCADE'), nullable=False)
@@ -99,6 +95,7 @@ class Joinrequest(db.Model):
     # TODO Need to make it an enum 
     # status = db.Column(ENUM('pending', 'denied', 'accepted', 'withdrawn'))
     status = db.Column(db.String(50),nullable=False)
+
     team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
     team = db.relationship('Team',  secondary=join_team, backref=db.backref('join_team', lazy='dynamic'), lazy='dynamic')
 

@@ -5,7 +5,7 @@
 3. `venv\Scripts\activate`
 4. `pip install -r Backend/requirements.txt`
 5. `export FLASK_APP=Backend`
-6. `export FLASK_DEBUG=development`
+6. `export FLASK_DEBUG=1`
 7. `rm Backend/db.sqlite3`
 7. `flask db init`
 8. `flask db migrate`
