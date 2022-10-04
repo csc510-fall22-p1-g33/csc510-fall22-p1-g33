@@ -2,7 +2,7 @@
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7033329.svg)](https://doi.org/10.5281/zenodo.7033329)
-[![Unit test](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/actions/workflows/unit-test.yml)
+[![Backend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml)
 [![GitHub issues](https://img.shields.io/github/issues/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/issues)
 [![GitHub forks](https://img.shields.io/github/forks/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/network/members)
 [![GitHub stars](https://img.shields.io/github/stars/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/stargazers)
