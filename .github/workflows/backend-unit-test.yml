@@ -34,6 +34,7 @@ jobs:
         pip install -r Backend/requirements.txt
     - name: Create database
       run: |
+        flask db stamp head
         flask db migrate
         flask db upgrade
         flask run
