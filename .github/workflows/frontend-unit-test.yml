@@ -2,9 +2,9 @@ name: Frontend unit test
 
 on:
   push:
-    branches: [ main, development, actions-testing ]
+    branches: [ main, development ]
   pull_request:
-    branches: [ main, development, actions-testing ]
+    branches: [ main, development ]
 
 defaults:
   run:
