@@ -1,0 +1,57 @@
+#first{
+  text-align: left;
+  /* position: relative; */
+  position: initial;
+  z-index: 1;
+  padding-top: 10%;
+  min-height: 125vh;
+  margin-left: 35%;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  min-width: initial;
+  overflow-x: hidden;
+}
+.signin_card{
+  text-align: center;
+  width: 25rem;
+  border-radius: 10px;
+  border-style: outset;
+  height: 20rem;
+}
+.email,.password{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 70%;
+  background-color: #e0dede;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  color: white;
+  /* background-color:#49675B; */
+  border-radius: 5px;
+  
+  margin-top: 20%;
+  margin-bottom: 2%;
+  background-color:#0F3856 !important;
+
+  padding: 1.2% 1.2%;
+  font-size: 15px;
+  border-radius: 5px;
+  width:50%; 
+}
+
+/* .submit{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: #49675B;
+  color: white;
+  border-radius: 5px;
+  
+} */
+/* .checkb{
+  /* margin-left: 5px; */
+  /* margin-right: 4px; */
+/* } */ 
+
+
+/* https://www.color-hex.com/color/103239 */
