@@ -41,7 +41,8 @@
 
 
 
-
+## New 
+1. pip install Flask-Restless-NG 
 ----
 <!-- DEV scratch space -->
 <!-- 

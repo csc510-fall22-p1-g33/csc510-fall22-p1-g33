@@ -13,5 +13,4 @@ def create_user(name):
     user = User(username=name, password="12345",email=name+"jnj@gmaj.vom")
     db.session.add(user)
     db.session.commit()
-
     return 'Created User!'
