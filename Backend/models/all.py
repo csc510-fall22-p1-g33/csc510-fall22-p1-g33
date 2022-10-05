@@ -15,6 +15,10 @@ associate_users_teams = db.Table('associate_users_teams',
             db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
             db.Column('team_id', db.Integer, db.ForeignKey('team.id')))
 
+associate_teams_projects = db.Table('associate_teams_projects',
+            db.Column('team_id', db.Integer, db.ForeignKey('team.id')),
+            db.Column('project_id', db.Integer, db.ForeignKey('project.id')))
+
 # user_project = db.Table('user_project',
 #             db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
 #             db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True))
@@ -66,6 +70,7 @@ associate_users_teams = db.Table('associate_users_teams',
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     users = db.relationship('User', secondary=associate_users_teams, back_populates='teams')
+    projects = db.relationship('Project', secondary=associate_teams_projects, back_populates='teams')
 
     # teamname = db.Column(db.String(200), nullable=False)
     # filled = db.Column(db.Boolean, unique=False, default=True)
@@ -90,6 +95,7 @@ class Teamabout(db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     users = db.relationship('User', secondary=associate_users_projects, back_populates='projects')
+    teams = db.relationship('Team', secondary=associate_teams_projects, back_populates='projects')
 
     # projectname = db.Column(db.String(50))
     # url = db.Column(db.String(200))
@@ -102,10 +108,11 @@ class Project(db.Model):
 
 class Projectabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # description = db.Column(db.String(50))
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id', ondelete='CASCADE'))
+    project = db.relationship('Project', backref=db.backref('about', uselist=False))
 
-    # project_id = db.Column(db.Integer, db.ForeignKey('project.id', ondelete='CASCADE'), nullable=False)
-    # project = db.relationship('Project', secondary=project_about, backref=db.backref('project_about', lazy='dynamic'), lazy='dynamic')
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text(), nullable=False)
 
 class Joinrequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -132,9 +139,10 @@ class User(db.Model):
 
 class Userabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    user = db.relationship('User', backref=db.backref('about', uselist=False))
+
     name = db.Column(db.String(50))
     email = db.Column(db.String(50))
     phone = db.Column(db.String(50))
-    bio =  db.Column(db.Text(), nullable=False)
+    bio =  db.Column(db.Text())
