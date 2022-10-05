@@ -10,17 +10,21 @@ user_team = db.Table('user_team',
             db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
             db.Column('team_id', db.Integer, db.ForeignKey('team.id'), primary_key=True))
 
-userabout_projects = db.Table('userabout_projects',
-            db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True),
-            db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True))
+# userabout_projects = db.Table('userabout_projects',
+#             db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True),
+#             db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True))
 
-userabout_team = db.Table('userabout_team',
-            db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True),
-            db.Column('teadm_id', db.Integer, db.ForeignKey('team.id'), primary_key=True))
+# userabout_team = db.Table('userabout_team',
+#             db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True),
+#             db.Column('teadm_id', db.Integer, db.ForeignKey('team.id'), primary_key=True))
 
-user_about = db.Table('user_about',
-            db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-            db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True))
+# user_about = db.Table('user_about',
+#             db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+#             db.Column('about_id', db.Integer, db.ForeignKey('userabout.id'), primary_key=True))
+
+associate_users_projects = db.Table('user_projects',
+            db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+            db.Column('project_id', db.Integer, db.ForeignKey('project.id')))
 
 project_about = db.Table('project_about',
             db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True),
@@ -74,14 +78,16 @@ class Teamabout(db.Model):
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    projectname = db.Column(db.String(50))
-    url = db.Column(db.String(200))
+    users = db.relationship('User', secondary=associate_users_projects, back_populates='projects')
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    user = db.relationship('User', secondary=user_project, backref=db.backref('user_project', lazy='dynamic'), lazy='dynamic')
+    # projectname = db.Column(db.String(50))
+    # url = db.Column(db.String(200))
+
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    # user = db.relationship('User', secondary=user_project, backref=db.backref('user_project', lazy='dynamic'), lazy='dynamic')
     
-    team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
-    team = db.relationship('Team', secondary=team_project, backref=db.backref('team_project', lazy='dynamic'), lazy='dynamic')
+    # team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
+    # team = db.relationship('Team', secondary=team_project, backref=db.backref('team_project', lazy='dynamic'), lazy='dynamic')
 
 class Projectabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -106,21 +112,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    projects = db.relationship('Project', secondary=associate_users_projects, back_populates='users')
 
 class Userabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(50))
     phone = db.Column(db.String(50))
     bio =  db.Column(db.Text(), nullable=False)
-    # joined_date = db.Column(db.DateTime(), nullable=False)
-    last_accessed = db.Column(db.DateTime())
-    
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    user = db.relationship('User', secondary=user_about, backref=db.backref('user_about', lazy='dynamic'), lazy='dynamic')
-    
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id', ondelete='CASCADE'), nullable=True)
-    project = db.relationship('Project',secondary=userabout_projects, backref=db.backref('userabout_projects', lazy='dynamic'), lazy='dynamic')
-    
-    team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=True)
-    team = db.relationship('Team', secondary=userabout_team, backref=db.backref('userabout_team', lazy='dynamic'), lazy='dynamic')
-
