@@ -23,7 +23,7 @@
 |Test cases are routinely executed|0-3|[github workflows](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/tree/main/.github/workflows)
 |The files CONTRIBUTING.md lists coding standards and lots of tips on how to extend the system without screwing things up|0-3|[CONTRIBUTING.md](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/CONTRIBUTING.md)
 |Issues are discussed before they are closed|0-3|[closed issues](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/issues?q=is%3Aissue+is%3Aclosed)
-|Chat channel: exists|0-3|(TODO)
+|Chat channel: exists|0-3|[screenshot 1](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/docs/Screen%20Shot%202022-10-05%20at%205.57.19%20PM.png) [screenshot 2](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/docs/Screen%20Shot%202022-10-05%20at%205.57.46%20PM.png)
 |Test cases: a large proportion of the issues related to handling failing cases.|0-3|[issues](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/issues)
 |Evidence that the whole team is using the same tools: everyone can get to all tools and files|0-3|(TODO)
 |Evidence that the whole team is using the same tools (e.g. config files in the repo, updated by lots of different people)|0-3|(TODO)
