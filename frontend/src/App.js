@@ -1,13 +1,13 @@
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import "./App.css";
 import Navigation from "./Components/Navigation/NavigationBar2";
-
 import Signin from "./Components/Signin/Signin";
 import Register from "./Components/Register/Register";
 import Home from "./Components/Home/Home";
-
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Project from "./Components/Dashboard/project";
 
 
 class App extends Component {
@@ -33,7 +33,7 @@ class App extends Component {
       }
 
 
-      onRouteChange = (route) => {
+      onRouteChange = (route, args) => {
         if (route === 'signout') {
           this.setState({isSignedIn: false})
           this.state.isSignedIn = false;
@@ -42,6 +42,7 @@ class App extends Component {
           this.state.isSignedIn = true;
           console.log ("signing in")
         }
+        console.log (route, args)
         this.setState({route: route});
       }
 
@@ -74,14 +75,15 @@ class App extends Component {
 
                 {this.state.isSignedIn ?
                   // if the user is logged in, show the homepage containing available team/user information list
-                  <Route path="/dashboard" element ={<div><h1 style={{textAlign: 'center'}}>Here should be the homepage for logged in user</h1></div>}/>
+                  <>
+                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange}/> } /><Route exact path="/project" element={<Project />} /></>
+                  
                 :
                   // if the user cannot login, redirect them to try again
                   <Route path="/" element ={<div>Unable to login. Try again!</div>}/>
                 }
               
               </Routes>
-
             </BrowserRouter>
         );
       }
