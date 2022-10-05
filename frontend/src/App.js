@@ -8,6 +8,7 @@ import Register from "./Components/Register/Register";
 import Home from "./Components/Home/Home";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Project from "./Components/Dashboard/project";
+import Requests from "./Components/JoinRequests/Requests";
 
 
 class App extends Component {
@@ -76,7 +77,10 @@ class App extends Component {
                 {this.state.isSignedIn ?
                   // if the user is logged in, show the homepage containing available team/user information list
                   <>
-                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange}/> } /><Route exact path="/project" element={<Project />} /></>
+                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange}/> } />
+                    <Route exact path="/project" element={<Project />} />
+                    <Route exact path="/requests" element={<Requests />} />
+                  </>
                   
                 :
                   // if the user cannot login, redirect them to try again
