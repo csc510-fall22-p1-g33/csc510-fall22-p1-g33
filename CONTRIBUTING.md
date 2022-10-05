@@ -2,7 +2,7 @@
 
 When contributing to this repository, please respect the owners and other contributors of this repository. There shall be no malice or foul contributions made that would provide anything other than improvements to the existing system.
 
-Please note we have a [code of conduct](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/blob/main/CODE-OF-CONDUCT.md), please follow it in all your interactions with the project.
+Please note we have a [code of conduct](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/CODE-OF-CONDUCT.md), please follow it in all your interactions with the project.
 
 ## Pull Request Process
 
