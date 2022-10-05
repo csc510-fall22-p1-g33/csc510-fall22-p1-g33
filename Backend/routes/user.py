@@ -40,6 +40,8 @@ def get_user_id(id):
             "username": str(u.username),
             "password": str(u.password),
             "projects": list(map(lambda p: str(p.id), u.projects)),
+            "join_requests": list(map(lambda p: str(p.id), u.join_requests)),
+            "teams": list(map(lambda p: str(p.id), u.teams)),
             "about": {
                 "name": str(ua.name),
                 "email": str(ua.email),
