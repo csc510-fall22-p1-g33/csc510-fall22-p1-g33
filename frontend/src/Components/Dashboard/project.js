@@ -51,7 +51,7 @@ class Project extends Component {
                                         <tr key={index+1}>
                                             <td>{index+1}</td>
                                             <td>{data.members[key]}</td>
-                                            <td><Link className="btn btn-primary"> View Profile </Link></td>
+                                            <td><Link className="btn btn-primary" style={{height: '50%', width: '20%', marginTop: '-.2%'}}> View Profile </Link></td>
                                             
                                         </tr>
                                     )
@@ -61,7 +61,7 @@ class Project extends Component {
                         </table>
 
                         {/* click this to go back to the dashboard page */}
-                        <Link className="btn btn-primary" to="/dashboard"  style={{marginLeft: '25%'}}> Back to Dashboard </Link>
+                        <Link className="btn btn-primary" to="/dashboard"  style={{width: '15%', float: 'right', marginRight: '5%'}}> Back to Dashboard </Link>
                     </div>
                 )})
             }

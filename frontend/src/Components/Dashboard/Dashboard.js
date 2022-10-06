@@ -65,7 +65,7 @@ class Dashboard extends Component {
     render() {
         return (
         // this is a table showing all available users, their project name, already teamed up member count
-        <table className="table">
+        <table className="table" style={{marginTop: '5%'}}>
             <thead>
                 <tr>
                     <th>Full Name</th>
@@ -83,9 +83,13 @@ class Dashboard extends Component {
                             {/* <td>{index+1}</td> */}
                             <td>{data.fullName}</td>
                             <td>{data.emailAddress}</td>
-                            <td>{data.projectName} <Link  className="btn btn-primary" style={{height: '50%', width: '25%', marginTop: '-.5%'}} to="/project" onClick={() => this.handleViewProject(data.project.id)}> View Details </Link> </td>
+                            <td>{data.projectName} 
+                            <br></br>
+                            <Link  className="btn btn-primary" style={{height: '50%', width: '40%', marginTop: '2%'}} to="/project" onClick={() => this.handleViewProject(data.project.id)}> View Details </Link> </td>
                             <td>{data.memberNeeded}</td>
-                            <td><button>Send Request</button></td>
+                            <td>
+                            {/* <br></br> */}
+                            <Link  className="btn btn-primary" style={{width: '60%'}}> Send Request </Link> </td>
                         </tr>
                     )
                 })

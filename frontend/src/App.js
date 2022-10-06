@@ -9,7 +9,7 @@ import Home from "./Components/Home/Home";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Project from "./Components/Dashboard/project";
 import Requests from "./Components/JoinRequests/Requests";
-
+import UpdateProfile from "./Components/UpdateProfile/UpdateProfile"
 
 class App extends Component {
     constructor(props) {
@@ -80,6 +80,7 @@ class App extends Component {
                     <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange}/> } />
                     <Route exact path="/project" element={<Project />} />
                     <Route exact path="/requests" element={<Requests />} />
+                    <Route exact path="/updateProfile" element={<UpdateProfile />} />
                   </>
                   
                 :

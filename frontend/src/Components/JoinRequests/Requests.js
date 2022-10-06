@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import PopUp from '../Utils/PopUp'
 import { TextField } from '@mui/material';
 
-
-
 const options = [
     {
         label: "Accept",
@@ -76,10 +74,6 @@ class Requests extends Component {
     }
 
     togglePopup = (val) => {
-        console.log ('hi')
-        console.log (this.state.isOpen)
-    
-
         this.setState({isOpen: val});
         this.state.isOpen = val;
     }
@@ -113,10 +107,12 @@ class Requests extends Component {
                             <tr key={index}>    
                             <td>{data.fullName}</td>
                             <td>{data.projectName}</td>
+                            
                             <td><input
                                 type="button"
                                 value="Accept/Reject"
                                 onClick = {() => this.togglePopup (!this.state.isOpen)}
+                                style={{backgroundColor: '#0F3856', color: 'white'}}
                                 /></td>
                             </tr>  
                             )
@@ -159,7 +155,7 @@ class Requests extends Component {
                         </select>
                         </p>
                         
-                        <button style={{float: 'right'}}>Confirm</button>
+                        <button onClick={() =>this.togglePopup (false)} style={{float: 'right'}}>Confirm</button>
                     </>}
                     handleClose={this.togglePopup}
                 />}
