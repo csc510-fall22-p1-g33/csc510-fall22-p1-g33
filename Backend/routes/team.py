@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 from ..extensions import db
-from ..models.all import Team, Teamabout, Project, User
+from ..models.all import Team, Teamabout, Project, User, Joinrequest
 from flask import jsonify
 
 team = Blueprint('team', __name__)
@@ -29,7 +29,9 @@ def post_team():
 
     t = Team.query.filter_by(id=t.id).first()
     t.users.append(u)
+    j = Joinrequest(team_id=t.id, user_id=u.id, status='accepted')
     db.session.add(t)
+    db.session.add(j)
     db.session.commit()
 
     return jsonify({ "id": t.id }), 201
@@ -44,6 +46,7 @@ def get_team_id(id):
         "team": {
             "id": str(t.id),
             "users": list(map(lambda u: str(u.id), t.users)),
+            "join_requests": list(map(lambda j: str(j.id), t.join_requests)),
             "project": str(t.project.id),
             "about": {
                 "name": str(ta.name),
@@ -92,7 +95,10 @@ def patch_team_id_users_remove(id):
     if u is None or u not in t.users:
         return f'Not Found', 404
     t.users.remove(u)
+    j = Joinrequest.query.filter_by(team_id=t.id, user_id=u.id).first()
+    j.status = 'withdrawn'
     db.session.add(t)
+    db.session.add(j)
     db.session.commit()
     # TODO: redo deletion thing, looks sketchy
     t = Team.query.filter_by(id=id).first()
