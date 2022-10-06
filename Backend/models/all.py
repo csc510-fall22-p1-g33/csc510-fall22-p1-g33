@@ -15,9 +15,9 @@ associate_users_teams = db.Table('associate_users_teams',
             db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
             db.Column('team_id', db.Integer, db.ForeignKey('team.id')))
 
-associate_teams_projects = db.Table('associate_teams_projects',
-            db.Column('team_id', db.Integer, db.ForeignKey('team.id')),
-            db.Column('project_id', db.Integer, db.ForeignKey('project.id')))
+# associate_teams_projects = db.Table('associate_teams_projects',
+            # db.Column('team_id', db.Integer, db.ForeignKey('team.id')),
+            # db.Column('project_id', db.Integer, db.ForeignKey('project.id')))
 
 # user_project = db.Table('user_project',
 #             db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -69,9 +69,14 @@ associate_teams_projects = db.Table('associate_teams_projects',
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    users = db.relationship('User', secondary=associate_users_teams, back_populates='teams')
-    projects = db.relationship('Project', secondary=associate_teams_projects, back_populates='teams')
+    
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id', ondelete='CASCADE'))
+    project = db.relationship('Project', back_populates='teams')
 
+    users = db.relationship('User', secondary=associate_users_teams, back_populates='teams')
+    join_requests = db.relationship('Joinrequest', back_populates='team', cascade='all, delete')
+
+    filled = db.Column(db.Boolean, nullable=False)
     # teamname = db.Column(db.String(200), nullable=False)
     # filled = db.Column(db.Boolean, unique=False, default=True)
     
@@ -86,6 +91,12 @@ class Team(db.Model):
     
 class Teamabout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'))
+    team = db.relationship('Team', backref=db.backref('about', uselist=False))
+
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text(), nullable=False)
     # description = db.Column(db.String(50))
 
     # team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
@@ -95,8 +106,8 @@ class Teamabout(db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     users = db.relationship('User', secondary=associate_users_projects, back_populates='projects')
-    teams = db.relationship('Team', secondary=associate_teams_projects, back_populates='projects')
-
+    teams = db.relationship('Team', back_populates='project', cascade='all, delete')
+    
     # projectname = db.Column(db.String(50))
     # url = db.Column(db.String(200))
 
@@ -116,8 +127,13 @@ class Projectabout(db.Model):
 
 class Joinrequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    users = db.relationship('User', secondary=associate_users_joinrequests, back_populates='join_requests')
-
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    user = db.relationship('User', back_populates='join_requests')
+    
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'))
+    team = db.relationship('Team', back_populates='join_requests')
+    
     # TODO Need to make it an enum 
     # status = db.Column(ENUM('pending', 'denied', 'accepted', 'withdrawn'))
     # status = db.Column(db.String(50),nullable=False)
@@ -133,7 +149,7 @@ class User(db.Model):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     projects = db.relationship('Project', secondary=associate_users_projects, back_populates='users')
-    join_requests = db.relationship('Joinrequest', secondary=associate_users_joinrequests, back_populates='users')
+    join_requests = db.relationship('Joinrequest', back_populates='user', cascade='all, delete')
     teams = db.relationship('Team', secondary=associate_users_teams, back_populates='users')
 
 
