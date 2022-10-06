@@ -73,7 +73,6 @@ class Profile extends Component {
         this.state.saved = e
     }
 
-
     render() {
         return (
         <div style={{marginLeft: '10%', marginTop: '5%', marginRight: '10%'}}>
