@@ -1,14 +1,14 @@
 # CSC510 Project 1 (Group 33)
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7033329.svg)](https://doi.org/10.5281/zenodo.7033329)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7150459.svg)](https://doi.org/10.5281/zenodo.7150459)
 [![Backend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml)
 [![Frontend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml)
 [![GitHub issues](https://img.shields.io/github/issues/sreedhara-aneesh/csc510-fall22-p1-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/issues)
-[![GitHub forks](https://img.shields.io/github/forks/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/network/members)
-[![GitHub stars](https://img.shields.io/github/stars/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/stargazers)
-[![GitHub license](https://img.shields.io/github/license/sreedhara-aneesh/csc510-fall22-hw-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-hw-g33/blob/main/LICENSE.md)
-[![Docs](https://img.shields.io/badge/Read_Documentation-blue.svg)](https://sreedhara-aneesh.github.io/csc510-fall22-hw-g33/docs/src.html)
+[![GitHub forks](https://img.shields.io/github/forks/sreedhara-aneesh/csc510-fall22-p1-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/sreedhara-aneesh/csc510-fall22-p1-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/stargazers)
+[![GitHub license](https://img.shields.io/github/license/sreedhara-aneesh/csc510-fall22-p1-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/LICENSE.md)
+[![Docs](https://img.shields.io/badge/Read_Documentation-blue.svg)](https://sreedhara-aneesh.github.io/csc510-fall22-p1-g33/docs/src.html)
 
 ## Our Functionality
 - Users can register as free agents, or partial/complete groups

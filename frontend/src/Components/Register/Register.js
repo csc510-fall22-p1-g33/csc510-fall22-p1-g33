@@ -3,7 +3,8 @@ import { Component } from 'react';
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import './Register.css'
 
-const options_zip2 = [
+// user can register as a team or an individual user
+const register_role = [
     {
         label: "Individual",
         value: "individual",
@@ -85,10 +86,11 @@ class Register extends Component {
         this.setState({ bio: e.target.value });
     }
 
-    // INCOMPLETE
-    handleLangChange = () => {
+    // after clicking submit, this function sends server the username, password
+    // if all credentials are valid, then the user will be logged in
+    handleRegister = () => {
         console.log ("POST req to server")
-        this.props.onRouteChange("signedin");
+        this.props.onRouteChange("signedin", null);
 
         // fetch('http://localhost:5000/user', {
         //     method: 'POST',
@@ -139,17 +141,17 @@ class Register extends Component {
 
                         <p style={{ marginTop: 10, textAlign: 'left', marginLeft: 16 }}>Register as
                         <select value={this.state.role} onChange={this.handleChange_role} style={{ marginLeft: 13, borderRadius: 5 }}>
-                                {options_zip2.map((option) => (
+                                {register_role.map((option) => (
                                     <option value={option.value}>{option.label}</option>
                                 ))}
                             </select>
                         </p>
                         
 
-                        <Link to="/dashboard" className="btn btn-primary " onClick={this.handleLangChange}>Submit</Link>
+                        <Link to="/dashboard" className="btn btn-primary " onClick={this.handleRegister}>Submit</Link>
                         <br></br>
 
-                        {/* <input type="submit" id="submit" className="submit" onClick={this.handleLangChange}/>  */}
+                        {/* <input type="submit" id="submit" className="submit" onClick={this.handleRegister}/>  */}
                         <br></br>
                     </div>
                 </div>
