@@ -8,9 +8,14 @@ from ..models.all import User
 
 main = Blueprint('main', __name__)
 
-@main.route('/user/<name>')
-def create_user(name):
-    user = User(username=name, password="12345",email=name+"jnj@gmaj.vom")
-    db.session.add(user)
-    db.session.commit()
-    return 'Created User!'
+@main.route('/')
+def index():
+    return "Hello world!"
+
+
+# @main.route('/user/<name>')
+# def create_user(name):
+#     user = User(username=name, password="12345",email=name+"jnj@gmaj.vom")
+#     db.session.add(user)
+#     db.session.commit()
+#     return 'Created User!'
