@@ -1,7 +1,7 @@
 # CSC510 Project 1 (Group 33)
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7033329.svg)](https://doi.org/10.5281/zenodo.7033329)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7150459.svg)](https://doi.org/10.5281/zenodo.7150459)
 [![Backend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml)
 [![Frontend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml)
 [![GitHub issues](https://img.shields.io/github/issues/sreedhara-aneesh/csc510-fall22-p1-g33)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/issues)
