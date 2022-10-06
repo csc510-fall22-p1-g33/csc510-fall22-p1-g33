@@ -29,4 +29,4 @@
 |Evidence that the whole team is using the same tools (e.g. config files in the repo, updated by lots of different people)|0-3|(TODO)
 |Evidence that the whole team is using the same tools (e.g. tutor can ask anyone to share screen, they demonstrate the system running on their computer)|0-3|(TODO)
 |Evidence that the members of the team are working across multiple places in the code base|0-3|[pull requests show all commits](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/pulls)
-|Short release cycles |0-3|[pull requests](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/pulls)
+|Short release cycles |0-3|[pull requests](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/pulls) - look for pull requests into dev
