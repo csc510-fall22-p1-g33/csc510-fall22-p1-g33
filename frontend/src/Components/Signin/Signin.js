@@ -105,7 +105,7 @@ class first extends Component {
 
                         <Link to="/dashboard" className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
                         <br></br> 
-                        <p style={{marginTop:10}}>Don't have an account??   <Link to="/register">Register</Link></p>
+                        <p style={{marginTop:10}}>Don't have an account? <Link to="/register">Register</Link></p>
                                                                 
                     </div>
                 </div>                             
