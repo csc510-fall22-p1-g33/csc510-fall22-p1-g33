@@ -6,6 +6,11 @@ from flask import jsonify
 
 joinrequest = Blueprint('joinrequest', __name__)
 
+@joinrequest.route('/query', methods=['GET'])
+def get_joinrequest_query():
+    js = list(map(lambda j: str(j.id), Joinrequest.query.all()))
+    return jsonify({'join_requests': [] + js}), 200
+
 @joinrequest.route('/', methods=['POST'])
 def post_joinrequest():
     args = request.get_json()
