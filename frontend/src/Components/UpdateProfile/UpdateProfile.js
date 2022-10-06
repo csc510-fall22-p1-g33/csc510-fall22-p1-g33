@@ -8,15 +8,15 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            saved: false,
+            name: 'Tithi',
             password: '',
-            phone: '', 
-            bio: '',
-            email: '',
-            projectTitle: '',
-            projectDetails: '',
-            project: [{projectTitle: 'Team Formation Tool', 
-                        projectDetails: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra lectus nisi, sit amet dapibus velit lacinia ac. Vivamus vel lectus diam. Aliquam in posuere justo. Praesent blandit augue sed erat vestibulum, non fermentum neque pretium. Suspendisse commodo scelerisque magna, sed semper dui lacinia at. Aliquam sit amet facilisis lectus. Morbi volutpat venenatis faucibus.'}]
+            phone: '9848951194', 
+            bio: 'Noob developer ',
+            email: 'stithi@ncsu.edu',
+            teammates: ['ryan', 'aneesh', 'udith'],
+            projectTitle: 'Team Formation Tool',
+            projectDetails: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra lectus nisi, sit amet dapibus velit lacinia ac. Vivamus vel lectus diam. Aliquam in posuere justo. Praesent blandit augue sed erat vestibulum, non fermentum neque pretium. Suspendisse commodo scelerisque magna, sed semper dui lacinia at. Aliquam sit amet facilisis lectus. Morbi volutpat venenatis faucibus.',
         }
         this.setName = this.setName.bind(this);
         this.setEmail = this.setEmail.bind(this);
@@ -24,7 +24,8 @@ class Profile extends Component {
         this.setPhone = this.setPhone.bind(this);
         this.setProjectTitle = this.setProjectTitle.bind (this);
         this.setProjectDetails = this.setProjectDetails.bind (this);
-        this.addFields = this.addFields.bind (this)
+        this.toggleSaved = this.toggleSaved.bind (this);
+        // this.addFields = this.addFields.bind (this)
       }
 
     setName = (e) => {
@@ -67,14 +68,22 @@ class Profile extends Component {
         this.setState ({someProperty})
     }
 
+    toggleSaved = (e) => {
+        this.setState ({saved: e})
+        this.state.saved = e
+    }
 
 
     render() {
         return (
-        <div style={{marginLeft: '20%', marginTop: '5%'}}>
-            <TextField
+        <div style={{marginLeft: '10%', marginTop: '5%', marginRight: '10%'}}>
+
+            {!this.state.saved && 
+            <div>
+                <TextField
                 id="name"
                 // label="Multiline Placeholder"
+                fullWidth
                 placeholder="Placeholder"
                 variant="standard"
 
@@ -84,10 +93,11 @@ class Profile extends Component {
                 this.setName (e.target.value);
                 }}
             />
-            <br></br>
+            <br></br><br></br>
             
             <TextField
                 id="email"
+                fullWidth
                 // label="Multiline Placeholder"
                 placeholder="Placeholder"
                 variant="standard"
@@ -99,10 +109,11 @@ class Profile extends Component {
                 }}
             />
 
-            <br></br>
+            <br></br><br></br>
 
             <TextField
                 id="phone"
+                fullWidth
                 // label="Multiline Placeholder"
                 placeholder="Placeholder"
                 variant="standard"
@@ -114,10 +125,11 @@ class Profile extends Component {
                 }}
             />
 
-            <br></br>
+            <br></br><br></br>
 
             <TextField
                 id="bio"
+                fullWidth
                 // label="Multiline Placeholder"
                 placeholder="Placeholder"
                 variant="standard"
@@ -129,23 +141,105 @@ class Profile extends Component {
                 }}
             />
 
-            <br></br>
-            {this.state.project.length > 0 &&
-            <p>
-            Project Name: {this.state.projectTitle}
+            <br></br><br></br><br></br><br></br>
+            <TextField
+                id="projectTitle"
+                // label="Multiline Placeholder"
+                fullWidth
+                multiline
+                placeholder="Placeholder"
+                variant="standard"
+
+                value={this.state.projectTitle}
+                label="Project Title"
+                onChange={(e) => {
+                this.setBio (e.target.value);
+                }}
+            />
             <br></br><br></br>
-            Project Description: {this.state.projectDetails}
-            </p>
+      
+            <TextField
+                id="projectDesc"
+                // label="Multiline Placeholder"
+                fullWidth
+                multiline
+                placeholder="Placeholder"
+                variant="standard"
+
+                value={this.state.projectDetails}
+                label="Project Description"
+                onChange={(e) => {
+                this.setBio (e.target.value);
+                }}
+            />
+
+            <br></br><br></br><br></br><br></br>
+
+            Team members:<br></br><br></br>
+            {
+                this.state.teammates.length > 0 &&
+                    Object.keys(this.state.teammates).map((key, index) =>{
+                        return(
+                            <div style={{marginBottom: '1%'}}>
+                                {this.state.teammates[key]}<button style={{marginLeft: "2%"}}>Remove</button>
+                            </div>
+                        )})
+                
             }
             
             
-            <br></br><br></br>
-            <button onClick={() => this.addFields()}>Add New Project</button>
+            {/* <br></br><br></br> */}
+            {/* <button onClick={() => this.addFields()}>Add New Project</button> */}
             
 
-            <br></br><br></br>
+            {/* <br></br><br></br> */}
 
-            <Link className="btn btn-primary" style={{width: '15%', float: 'right', marginRight: '5%'}}> Save Changes </Link>
+            <Link className="btn btn-primary" 
+            style={{width: '15%', float: 'right', marginRight: '5%'}}
+            onClick = {() => this.toggleSaved (true)}
+            > Save Changes </Link>
+            </div>}
+
+            {this.state.saved &&
+
+                <div>
+                    <h5>Your Profile</h5>
+                    Name: {this.state.name}
+                    <br></br>
+                    Email: {this.state.email}
+                    <br></br>
+                    Phone: {this.state.phone}
+                    <br></br>
+                    Bio: {this.state.bio}
+                    <br></br><br></br>
+                    Project Title: {this.state.projectTitle}
+                    <br></br>
+                    Project Description: {this.state.projectDetails}
+                    <br></br><br></br>
+
+                    Team members:<br></br>
+                    {
+                        this.state.teammates.length > 0 &&
+                            Object.keys(this.state.teammates).map((key, index) =>{
+                                return(
+                                    <div>
+                                        {this.state.teammates[key]}
+                                    </div>
+                                )})
+                        
+                    }
+
+                    <Link className="btn btn-primary" 
+                    style={{width: '15%', float: 'right', marginRight: '5%'}}
+                    onClick = {() => this.toggleSaved (false)}
+                    > Update Profile </Link>
+                    
+
+                </div>
+
+            }
+
+            
 
         </div>
     )

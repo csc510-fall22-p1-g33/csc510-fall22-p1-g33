@@ -21,6 +21,8 @@ class Home extends Component {
                         <div></div>
                        
                         <div className="container-fluid">
+                            <h3>Team Formation Tool</h3>
+                            <h6>Explore | Be up-to-date about others' availability | Form your team</h6>
                             <img
                                 className="welcome-img mx-left"
                                 src={welcome}

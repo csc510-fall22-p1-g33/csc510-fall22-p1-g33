@@ -9,7 +9,8 @@ import Home from "./Components/Home/Home";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Project from "./Components/Dashboard/project";
 import Requests from "./Components/JoinRequests/Requests";
-import UpdateProfile from "./Components/UpdateProfile/UpdateProfile"
+import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
+import FAQ from "./Components/FAQ/FAQ.js";
 
 class App extends Component {
     constructor(props) {
@@ -68,6 +69,7 @@ class App extends Component {
               <Routes> 
                 {/* before logging in/being registered, any user view this homepage */}
                 <Route exact path="/" element={<Home/>} />
+                <Route exact path="/FAQ" element={<FAQ />} />
 
                 {/* login/register wizard */}
                 <Route exact path="/signin" element= {<Signin onRouteChange={this.onRouteChange} setUserID={this.setUserID}/> } />

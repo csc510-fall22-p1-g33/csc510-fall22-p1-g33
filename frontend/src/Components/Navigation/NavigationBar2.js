@@ -68,7 +68,7 @@ class NavigationBar extends React.Component {
                     </Link>
                     <Links>
 
-                        <NavLink to="/faq" >
+                        <NavLink to="/FAQ" >
                             <h3 style={{ fontSize: "1em" }}>
                                 FAQ
                             </h3>
@@ -95,7 +95,7 @@ class NavigationBar extends React.Component {
                     </Link>
                     <Links>
 
-                        <NavLink to="/faq">
+                        <NavLink to="/FAQ">
                             <h3 style={{ fontSize: "1em" }}>
                                 FAQ
                             </h3>
