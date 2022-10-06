@@ -13,7 +13,7 @@ def get_team_query():
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
-    return jsonify({'id': str(u.id) }), 200
+    return jsonify({'user': str(u.id) }), 200
 
 @user.route('/', methods=['POST'])
 def post_user():
