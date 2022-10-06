@@ -4,6 +4,7 @@ import { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import './Signin.css'
+
 class first extends Component {
     constructor(props) {
         super(props);
@@ -30,11 +31,13 @@ class first extends Component {
         this.state.error = false;
     }
     
+    // after clicking submit, this function sends server the username, password
+    // if all credentials are valid, then the user will be logged in
     handleSubmit = () => {
         // must delete this line later
         // auto sign up
         console.log ("GET req to server")
-        this.props.onRouteChange("signedin");
+        this.props.onRouteChange("signedin", null);
 
 
         // fetch('http://localhost:5000/user', {
@@ -71,25 +74,23 @@ class first extends Component {
         //   })
         //this.props.onRouteChange("signedin");             
     }
-
    
-
+    // update the email field in this state
     handleChange_email(e) {
         this.clearError();
         console.log(e.target.value);
         this.setState({ email: e.target.value });
     }
+    // update the password field in this state
     handleChange_pass(e) {
         this.clearError();
         console.log(e.target.value);
         this.setState({ pass: e.target.value });
     }
     
-    
     render() {
         return (
             <div id="first">
-                {/* <h1>{this.props.text}</h1> */}
                 <div className="card signin_card border-dark" >
                     <div className="card-body">
                         <h3 className="card-title">Log In</h3>
@@ -101,16 +102,16 @@ class first extends Component {
                             this.state.error &&
                             <h7 style={{color: 'red', marginTop: 2}}> Incorrect fields. try Again. </h7>
                         }
+
                         <Link to="/dashboard" className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
                         <br></br> 
-                        <p style={{marginTop:10}}>Don't have an account??   <Link to="/register">Register</Link></p>
-                        
-                    {/* <input type="submit" id="submit" className="submit" onClick={this.handleLangChange}/>  */}
-                                        
+                        <p style={{marginTop:10}}>Don't have an account? <Link to="/register">Register</Link></p>
+                                                                
                     </div>
                 </div>                             
             </div>
         ) 
     }
 }
+
 export default first;

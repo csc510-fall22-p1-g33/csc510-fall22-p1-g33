@@ -31,8 +31,8 @@ const Links = styled.div`
         // color: #8C8C8C;
         color: #FFFFFF;
         text-decoration: none;
-        font-size: .8em;
-        transform: scale(.95, 1.1);
+        font-size: 1em;
+        // transform: scale(.95, 1.1);
     }
 
     & a:hover {
@@ -62,24 +62,24 @@ class NavigationBar extends React.Component {
     render() {
         if(!this.props.isSignedIn) {
             return (
-                <Navigation>
+                <Navigation >
                     <Link to="/">
                         <img src={logo_image} alt="logo"/>
                     </Link>
                     <Links>
 
-                        <NavLink to="/faq">
-                            <h3>
+                        <NavLink to="/FAQ" >
+                            <h3 style={{ fontSize: "1em" }}>
                                 FAQ
                             </h3>
                         </NavLink>
                         <NavLink to="/register">
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 Register
                             </h3>
                         </NavLink>
                         <NavLink to="/signin">
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 Log In
                             </h3>
                         </NavLink>
@@ -95,28 +95,28 @@ class NavigationBar extends React.Component {
                     </Link>
                     <Links>
 
-                        <NavLink to="/faq">
-                            <h3>
+                        <NavLink to="/FAQ">
+                            <h3 style={{ fontSize: "1em" }}>
                                 FAQ
                             </h3>
                         </NavLink>
                         <NavLink to="/dashboard">
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 Dashboard
                             </h3>
                         </NavLink>
                         <NavLink to="/requests">
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 View Requests
                             </h3>
                         </NavLink>
                         <NavLink to="/updateProfile">
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 Update Profile
                             </h3>
                         </NavLink>
                         <NavLink to="/" onClick={this.onSubmitSignOut}>
-                            <h3>
+                            <h3 style={{ fontSize: "1em" }}>
                                 Log Out
                             </h3>
                         </NavLink>

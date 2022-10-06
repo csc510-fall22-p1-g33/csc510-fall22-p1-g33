@@ -52,10 +52,10 @@
 .nav-links:hover {color: gainsboro;}
 .nav-links2:hover {color: gainsboro;}
 
-.logo {
+/* .logo {
     color:white;
     font-size: 20px;
-}
+} */
 .divider-vertical-second-menu{
     height: 30px;
     width: 1px;
@@ -72,6 +72,6 @@
     background-color: #DDD;
     border-right:1px solid #FFF;
  }
- .logo_image{
-     width:5%;
- }
+ /* .logo_image{
+     width:50%;
+ } */
