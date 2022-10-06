@@ -6,6 +6,11 @@ from flask import jsonify
 
 team = Blueprint('team', __name__)
 
+@team.route('/query', methods=['GET'])
+def get_team_query():
+    ts = list(map(lambda t: str(t.id), Team.query.all()))
+    return jsonify({'teams': [] + ts}), 200
+
 @team.route('/', methods=['POST'])
 def post_team():
     args = request.get_json()
