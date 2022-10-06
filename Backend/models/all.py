@@ -136,7 +136,7 @@ class Joinrequest(db.Model):
     
     # TODO Need to make it an enum 
     # status = db.Column(ENUM('pending', 'denied', 'accepted', 'withdrawn'))
-    # status = db.Column(db.String(50),nullable=False)
+    status = db.Column(db.String(50),nullable=False)
 
     # team_id = db.Column(db.Integer, db.ForeignKey('team.id', ondelete='CASCADE'), nullable=False)
     # team = db.relationship('Team',  secondary=join_team, backref=db.backref('join_team', lazy='dynamic'), lazy='dynamic')
