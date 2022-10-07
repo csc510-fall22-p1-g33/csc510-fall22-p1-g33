@@ -15,6 +15,18 @@ const register_role = [
     }
 ];
 
+
+// {
+//     "username": "tithi",
+//     "password": "sdt",
+//     "about": {
+//       "name": "Sutapa Dey Tithi",
+//       "email": "tithisutapa52@gmail.com",
+//       "phone": "123",
+//       "bio": "nonee"
+//     }
+//   }
+
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -29,8 +41,11 @@ class Register extends Component {
         };
         this.handleChange_role = this.handleChange_role.bind(this);
         this.handleChange_username = this.handleChange_username.bind(this);
+        this.handleChange_fullname = this.handleChange_fullname.bind (this)
         this.handleChange_email = this.handleChange_email.bind(this);
         this.handleChange_pass = this.handleChange_pass.bind(this);
+        this.handleChange_phone = this.handleChange_phone.bind (this)
+        this.handleChange_bio = this.handleChange_bio.bind (this)
         
         this.setError =  this.setError.bind(this);
         this.clearError =  this.clearError.bind(this);
@@ -89,40 +104,46 @@ class Register extends Component {
     // after clicking submit, this function sends server the username, password
     // if all credentials are valid, then the user will be logged in
     handleRegister = () => {
-        console.log ("POST req to server")
-        this.props.onRouteChange("signedin", null);
+        const user = {
+            "username": this.state.username,
+            "password": this.state.pass,
+            "about": {
+                "name": this.state.fullname,
+                "email": this.state.email,
+                "phone": this.state.phone,
+                "bio": this.state.bio
+            }
+        }
 
-        // fetch('http://localhost:5000/user', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-                // "username": this.state.username,
-                // "password": this.state.pass,
-                // "about": {
-                //     "name": this.state.fullname,
-                //     "email": this.state.email,
-                //     "phone": this.state.phone,
-                //     "bio": this.state.bio
-                // }
-                // })
-        //   })    
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //       console.log('This is your data:\n', data);
-        //       if(data === "error")
-        //       {
-        //         console.log('Cannot register!\n');
-        //       }
-        //       else
-        //       {
-        //         this.props.setUserID(data.user_id);
-        //         this.props.onRouteChange("signedin"); 
-        //       }
+        console.log ("POST req to server:")
+        console.log (user)
 
-        //   });
+        fetch('http://127.0.0.1:8010/proxy/user/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.pass,
+                about: {
+                    name: this.state.fullname,
+                    email: this.state.email,
+                    phone: this.state.phone,
+                    bio: this.state.bio
+                }
+            })
+          })    
+          .then (response =>  (response.json())
+            )
+            .then(data => {
+                console.log ("1")
+                console.log (data)
+            })
+            .catch(err => {
+                console.log ("2")
+            })
     }
 
     render() {
@@ -135,20 +156,25 @@ class Register extends Component {
                         <h3 className="card-title">Register</h3>
                         
                         <input id="Name" name="Name" type="text" placeholder="User name" className="email" onChange={this.handleChange_username} />
+                        <input id="fullName" name="fullName" type="text" placeholder="Full Name" className="email" onChange={this.handleChange_fullname} />
                         <input id="Email" name="Email" type="text" placeholder="Email address" className="email"  onChange={this.handleChange_email} />
                         <input id="password" name="password" type="password" placeholder="Password" className="password"  onChange={this.handleChange_pass} />
 
+                        <input id="phone" name="phone" type="text" placeholder="Phone Number" className="email" onChange={this.handleChange_phone} />
+                        <input id="bio" name="bio" type="text" placeholder="Bio" className="email" onChange={this.handleChange_bio} />
+                        {/* <input id="password" name="password" type="password" placeholder="Password" className="password"  onChange={this.handleChange_pass} /> */}
 
-                        <p style={{ marginTop: 10, textAlign: 'left', marginLeft: 16 }}>Register as
+
+                        {/* <p style={{ marginTop: 10, textAlign: 'left', marginLeft: 16 }}>Register as
                         <select value={this.state.role} onChange={this.handleChange_role} style={{ marginLeft: 13, borderRadius: 5 }}>
                                 {register_role.map((option) => (
                                     <option value={option.value}>{option.label}</option>
                                 ))}
                             </select>
-                        </p>
+                        </p> */}
                         
 
-                        <Link to="/dashboard" className="btn btn-primary " onClick={this.handleRegister}>Submit</Link>
+                        <Link  className="btn btn-primary " onClick={this.handleRegister}>Submit</Link>
                         <br></br>
 
                         {/* <input type="submit" id="submit" className="submit" onClick={this.handleRegister}/>  */}

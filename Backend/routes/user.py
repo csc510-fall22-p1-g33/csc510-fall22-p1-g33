@@ -8,8 +8,8 @@ user = Blueprint('user', __name__)
 
 @user.route('/query', methods=['GET'])
 def get_team_query():
-    args = request.get_json()
-    username = args['username']
+    username = request.args.get('username')
+
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
@@ -17,7 +17,18 @@ def get_team_query():
 
 @user.route('/', methods=['POST'])
 def post_user():
-    args = request.get_json()
+    print ("BEFORE --")
+    print ('req:', request)
+    args = None
+
+    try:
+        args = request.get_json()
+    except:
+        print("An exception occurred")
+
+    print ("AFTER --")
+    print ('req:', request)
+    print ('args:', args)
 
     username = args['username']
     password = args['password']
@@ -39,6 +50,7 @@ def post_user():
 
 @user.route('/<id>', methods=['GET'])
 def get_user_id(id):
+    print ("ID:", id)
     u = User.query.filter_by(id=id).first()
     if u is None:
         return f'Not Found', 404
@@ -49,7 +61,7 @@ def get_user_id(id):
             "username": str(u.username),
             "password": str(u.password),
             "projects": list(map(lambda p: str(p.id), u.projects)),
-            "join_requests": list(map(lambda p: str(p.id), u.join_requests)),
+            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), // CHECK
             "teams": list(map(lambda p: str(p.id), u.teams)),
             "about": {
                 "name": str(ua.name),

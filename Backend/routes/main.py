@@ -6,10 +6,13 @@ from ..models.all import User
 # from ..models.team import Team
 # from ..models.project import Project
 
+
+
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
+    print ("here")
     return "Hello world!"
 
 

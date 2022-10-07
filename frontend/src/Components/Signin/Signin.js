@@ -9,11 +9,13 @@ class first extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: "",
             email:"",
             pass:"",
             error: false
           };
       
+        this.handleChange_username = this.handleChange_username.bind(this);
         this.handleChange_email = this.handleChange_email.bind(this);
         this.handleChange_pass = this.handleChange_pass.bind(this);
 
@@ -34,10 +36,29 @@ class first extends Component {
     // after clicking submit, this function sends server the username, password
     // if all credentials are valid, then the user will be logged in
     handleSubmit = () => {
-        // must delete this line later
-        // auto sign up
         console.log ("GET req to server")
-        this.props.onRouteChange("signedin", null);
+        // this.props.onRouteChange("signedin", null);
+        
+        const params = 'username=' + this.state.username
+
+        fetch('http://127.0.0.1:8010/proxy/user/query?'+params, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+        })
+        .then (response =>  (response.json())
+        )
+        .then(data => {
+            const user_id = data.user
+            console.log ("RESPONSE:", user_id)
+
+        })
+        .catch(err => {
+            console.log ("ERROR Response:", err)
+        })
+
 
 
         // fetch('http://localhost:5000/user', {
@@ -74,6 +95,13 @@ class first extends Component {
         //   })
         //this.props.onRouteChange("signedin");             
     }
+
+    // update the username field in this state
+    handleChange_username (e) {
+        this.clearError();
+        console.log(e.target.value);
+        this.setState({ username: e.target.value });
+    }
    
     // update the email field in this state
     handleChange_email(e) {
@@ -94,6 +122,7 @@ class first extends Component {
                 <div className="card signin_card border-dark" >
                     <div className="card-body">
                         <h3 className="card-title">Log In</h3>
+                        <input id="username" name="username" type="text" placeholder="Username" className="email" onChange={this.handleChange_username}/> 
                         <input id="Email" name="Email" type="text" placeholder="Email address" className="email" onChange={this.handleChange_email}/> 
                         <input id="password" name="password" type="password" placeholder="Password" className="password" onChange={this.handleChange_pass}/> 
                         <br></br>
@@ -103,7 +132,7 @@ class first extends Component {
                             <h7 style={{color: 'red', marginTop: 2}}> Incorrect fields. try Again. </h7>
                         }
 
-                        <Link to="/dashboard" className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
+                        <Link  className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
                         <br></br> 
                         <p style={{marginTop:10}}>Don't have an account? <Link to="/register">Register</Link></p>
                                                                 
