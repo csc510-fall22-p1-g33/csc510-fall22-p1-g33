@@ -95,7 +95,7 @@ class App extends Component {
                     height: '100vh',
                     fontSize: '1.5rem'
                   }}>
-                    Incorrect Password. Try again!
+                    Something went wrong. Please try again!
                   </div>
                   }/>
                 }

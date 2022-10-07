@@ -3,6 +3,7 @@ from flask import request
 from ..extensions import db
 from ..models.all import User, Userabout, Project
 from flask import jsonify
+import re
 
 user = Blueprint('user', __name__)
 
@@ -45,6 +46,37 @@ def get_user_query():
     if u is None:
         return 'Not Found', 200
     return jsonify({'user': str(u.id) }), 200
+
+
+@user.route('/reg', methods=['POST'])
+def reg_user():
+    args = request.get_json()
+    print ("ARGS:", args)
+
+    username = args['username']
+    password = args['password']
+    about = args['about']
+
+    if username == "":
+        return jsonify({ "id": -1, "error_type": "Username is required."}), 400
+    elif password == "":
+        return jsonify({ "id": -1, "error_type": "Password is required."}), 400
+    elif not re.match(r'[^@]+@[^@]+\.[^@]+', about['email']):
+        return jsonify({ "id": -1, "error_type": "Invalid email address!"}), 400
+
+    u = User.query.filter_by(username=username).first()
+    if u is not None:
+        return jsonify({ "id": -1, "error_type": "Conflict: User already exists."}), 400
+
+    u = User(username=username, password=password)
+    db.session.add(u)
+    db.session.commit()
+
+    ua = Userabout(user_id=u.id, name=about['name'], email=about['email'], phone=about['phone'], bio=about['bio'])
+    db.session.add(ua)
+    db.session.commit()
+
+    return jsonify({ "id": u.id, "error_type": "No Error!"}), 201
 
 
 @user.route('/query', methods=['GET'])

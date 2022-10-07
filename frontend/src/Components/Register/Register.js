@@ -103,7 +103,7 @@ class Register extends Component {
 
     // after clicking submit, this function sends server the username, password
     // if all credentials are valid, then the user will be logged in
-    handleRegister = () => {
+    handleRegister = async () => {
         const user = {
             "username": this.state.username,
             "password": this.state.pass,
@@ -116,34 +116,31 @@ class Register extends Component {
         }
 
         console.log ("POST req to server:")
-        console.log (user)
+        // console.log (user)
 
-        fetch('http://127.0.0.1:8010/proxy/user/', {
+          
+
+        const res = await fetch('http://127.0.0.1:8010/proxy/user/reg', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
+                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.pass,
-                about: {
-                    name: this.state.fullname,
-                    email: this.state.email,
-                    phone: this.state.phone,
-                    bio: this.state.bio
-                }
-            })
-          })    
-          .then (response =>  (response.json())
-            )
-            .then(data => {
-                console.log ("1")
-                console.log (data)
-            })
-            .catch(err => {
-                console.log ("2")
-            })
+            body: JSON.stringify(user)
+        })
+
+
+        const body = await res.json();
+        
+        if (body.id == -1) {
+            console.log (body.error_type)
+        }
+        else {
+            console.log ("Successfully registered!\nid:", body.id)
+            this.props.setUserID(body.id);
+            this.props.onRouteChange("signedin", null);
+        }
     }
 
     render() {
@@ -174,7 +171,7 @@ class Register extends Component {
                         </p> */}
                         
 
-                        <Link  className="btn btn-primary " onClick={this.handleRegister}>Submit</Link>
+                        <Link to='/dashboard' className="btn btn-primary " onClick={this.handleRegister}>Submit</Link>
                         <br></br>
 
                         {/* <input type="submit" id="submit" className="submit" onClick={this.handleRegister}/>  */}
