@@ -8,9 +8,34 @@ def client():
 
 
 def test_create_user(client):
-    result = client.get('/')
-    assert b"Hello world!" in result.data
-    response = client.post("/user", data={
+    response = client.post('/user', data={
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "john",
+            "email": "john@john.john",
+            "phone": "555-5555",
+            "bio": "my name is john",
+        }
+    })
+    assert response.data
+    assert response.status_code == 20
+    response = client.post('/user', data={
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "john",
+            "email": "john@john.john",
+            "phone": "555-5555",
+            "bio": "my name is john",
+        }
+    })
+    assert response.data == f'Conflict: User already exists.'
+    assert response.status_code == 409
+
+
+def test_get_user(client):
+    response = client.post('/user', data={
         "username": "john",
         "password": "1234",
         "about": {
@@ -21,7 +46,7 @@ def test_create_user(client):
         }
     })
     id = response.data
-    response = client.get(f'/user/${id}')
+    response = client.get(f'/user/{id}')
     assert response.data == {
         "username": "john",
         "password": "1234",
@@ -32,3 +57,106 @@ def test_create_user(client):
             "bio": "my name is john",
         }
     }
+    assert response.status_code == 200
+    response = client.post('/user', data={
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "johnny",
+            "email": "johnny@johnny.johnny",
+            "phone": "555-5556",
+            "bio": "my name is johnny!!!",
+        }
+    })
+    id = response.data
+    assert response.status_code == 200
+    response = client.get(f'/user/{id}')
+    assert response.data == {
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "johnny",
+            "email": "johnny@johnny.johnny",
+            "phone": "555-5556",
+            "bio": "my name is johnny!!!",
+        }
+    }
+    assert response.status_code == 200
+    id = '__________'
+    response = client.get(f'/user/{id}')
+    assert response.data == f'Not Found'
+    assert response.status_code == 404
+
+
+# def test_delete_user(client):
+#     response = client.post('/user', data={
+#         "username": "john",
+#         "password": "1234",
+#         "about": {
+#             "name": "john",
+#             "email": "john@john.john",
+#             "phone": "555-5555",
+#             "bio": "my name is john",
+#         }
+#     })
+#     id = response.data
+#     assert response.status_code == 200
+#     response = client.delete(f'/user/{id}')
+#     assert response.status_code == 200
+#     response = client.get(f'/user/{id}')
+#     assert response == 'Not Found'
+#     assert response.status_code == 200
+
+
+def test_edit_user_about(client):
+    response = client.post('/user', data={
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "john",
+            "email": "john@john.john",
+            "phone": "555-5555",
+            "bio": "my name is john",
+        }
+    })
+    id = response.data
+    assert response.status_code == 200
+    response = client.get(f'/user/{id}')
+    assert response.data == {
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "john",
+            "email": "john@john.john",
+            "phone": "555-5555",
+            "bio": "my name is john",
+        }
+    }
+    assert response.status_code == 200
+    response = client.patch(f'/user/{id}/about', data={
+        "name": "johnny",
+        "email": "johnny@johnny.johnny",
+        "phone": "555-5556",
+        "bio": "my name is johnny!!!",
+    })
+    response = client.get(f'/user/{id}')
+    assert response.data == {
+        "username": "john",
+        "password": "1234",
+        "about": {
+            "name": "johnny",
+            "email": "johnny@johnny.johnny",
+            "phone": "555-5556",
+            "bio": "my name is johnny!!!",
+        }
+    }
+    assert response.status_code == 200
+    id = '__________'
+    response = client.patch(f'/user/{id}/about', data={
+        "name": "johnny",
+        "email": "johnny@johnny.johnny",
+        "phone": "555-5556",
+        "bio": "my name is johnny!!!",
+    })
+    assert response.data == 'Not Found'
+    assert response.status_code == 404
