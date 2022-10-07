@@ -87,7 +87,17 @@ class App extends Component {
                   
                 :
                   // if the user cannot login, redirect them to try again
-                  <Route path="/" element ={<div>Unable to login. Try again!</div>}/>
+                  <Route path="/dashboard" element ={
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh',
+                    fontSize: '1.5rem'
+                  }}>
+                    Incorrect Password. Try again!
+                  </div>
+                  }/>
                 }
               
               </Routes>

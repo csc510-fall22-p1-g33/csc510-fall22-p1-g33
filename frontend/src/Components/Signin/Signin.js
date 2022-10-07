@@ -35,65 +35,28 @@ class first extends Component {
     
     // after clicking submit, this function sends server the username, password
     // if all credentials are valid, then the user will be logged in
-    handleSubmit = () => {
+    handleSubmit = async() => {
         console.log ("GET req to server")
         // this.props.onRouteChange("signedin", null);
         
-        const params = 'username=' + this.state.username
+        const params = 'username=' + this.state.username + "&password=" + this.state.pass
+        let user_id;
 
-        fetch('http://127.0.0.1:8010/proxy/user/query?'+params, {
+        const res = await fetch('http://127.0.0.1:8010/proxy/user/login?'+params, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
             'Access-Control-Allow-Origin': '*'
         }
         })
-        .then (response =>  (response.json())
-        )
-        .then(data => {
-            const user_id = data.user
-            console.log ("RESPONSE:", user_id)
-
-        })
-        .catch(err => {
-            console.log ("ERROR Response:", err)
-        })
-
-
-
-        // fetch('http://localhost:5000/user', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         //   id: this.state.id,
-        //         //   item: this.state.item,
-        //         //   itemType: this.state.itemType
-        //         email:this.state.email,
-        //         pass:this.state.pass,
-        //         roletype:this.state.role
-        //     })
-        //   })   
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //       console.log('This is your data:\n', data);
-        //       if(data === "error"){
-        //         console.log('Cannot login!\n');
-        //         this.setError();
-        //       }
-        //       else
-        //       {
-        //         this.props.setUserID(data.user_id);
-        //         this.props.onRouteChange("signedin");
-        //       }
-
-        //   })
-        //   .catch((error) => {
-        //       this.setError();
-        //   })
-        //this.props.onRouteChange("signedin");             
+        
+        const body = await res.json();
+        console.log (body.login)
+        
+        if (body.login == "SUCCESS") {
+            this.props.setUserID(body.user_id);
+            this.props.onRouteChange("signedin", null);
+        }       
     }
 
     // update the username field in this state
@@ -132,7 +95,8 @@ class first extends Component {
                             <h7 style={{color: 'red', marginTop: 2}}> Incorrect fields. try Again. </h7>
                         }
 
-                        <Link  className="btn btn-primary" onClick={this.handleSubmit}>Submit</Link>
+                        <Link to="/dashboard" className="btn btn-primary" onClick={this.handleSubmit} 
+                        style={{marginTop: '-.0001%'}}>Submit</Link>
                         <br></br> 
                         <p style={{marginTop:10}}>Don't have an account? <Link to="/register">Register</Link></p>
                                                                 
