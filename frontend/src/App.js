@@ -10,7 +10,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Project from "./Components/Dashboard/project";
 import Requests from "./Components/JoinRequests/Requests";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
-// import CreateProject from "./Components/UpdateProfile/CreateProject";
+import CreateProject from "./Components/UpdateProfile/CreateProject";
 import FAQ from "./Components/FAQ/FAQ.js";
 
 class App extends Component {
@@ -89,7 +89,7 @@ class App extends Component {
                     <Route exact path="/project" element={<Project user_id={this.state.user_id}/>} />
                     <Route exact path="/requests" element={<Requests user_id={this.state.user_id}/>} />
                     <Route exact path="/updateProfile" element={<UpdateProfile user_id={this.state.user_id}/>} />
-                    {/* <Route exact path="/createproject" element={<CreateProject user_id={this.state.user_id}/>} /> */}
+                    <Route exact path="/createproject" element={<CreateProject user_id={this.state.user_id}/>} />
                   </>
                   
                 :

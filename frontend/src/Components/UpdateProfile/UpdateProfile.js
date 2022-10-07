@@ -262,8 +262,9 @@ class Profile extends Component {
                     </p>}
 
                     {this.state.projects.length > 0 && 
-                    <p>Project1: 
+                    <p>Projects: 
                         <br></br>
+                        You have added {this.state.projects.length} projects!
                         {/* Project Name: {this.state.projects[0].about.name}
                         Project Description: {this.state.projects[0].about.description}
                         Teams: {this.state.projects[0].teams}
