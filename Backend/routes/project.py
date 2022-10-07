@@ -11,6 +11,29 @@ def get_project_query():
     ps = list(map(lambda p: str(p.id), Project.query.all()))
     return jsonify({'projects': [] + ps}), 200
 
+@project.route('/dashboard', methods=['GET'])
+def get_dashboard():
+    ps = list(map(lambda p: (p.id, p.about.name, p.users), Project.query.all()))
+    # print (ps[0][1][0].id)
+    entries = []
+    for p in ps:
+        print(p)
+        uname_list = []
+        for u in p[2]:
+            print (u.id)
+            user_ = User.query.filter_by(id=u.id).first()
+            uname_list.append ((user_.id, user_.username))
+        print (uname_list)
+        obj = {
+            'pid': p[0],
+            'pname': p[1],
+            'user_list': uname_list
+        }
+        entries.append (obj)
+
+
+   
+    return jsonify(entries), 200
 
 @project.route('/', methods=['POST'])
 def post_project():

@@ -26,6 +26,8 @@ class App extends Component {
           teamFormed: false,
           teamName: '',
 
+          view_projectID: '',
+
           about: {
             name: '',
             email: '',
@@ -59,6 +61,12 @@ class App extends Component {
         this.state.username = name;
         console.log("setting username:", this.state.username);
       }
+
+      setProjectID = (pid) => {
+        this.setState({view_projectID: pid});
+        this.state.view_projectID = pid;
+        console.log("setting view_projectID:", this.state.view_projectID);
+      }
     
       render() {
           return (
@@ -85,8 +93,8 @@ class App extends Component {
                 {this.state.isSignedIn ?
                   // if the user is logged in, show the homepage containing available team/user information list
                   <>
-                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange} user_id={this.state.user_id}/> } />
-                    <Route exact path="/project" element={<Project user_id={this.state.user_id}/>} />
+                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange} setProjectID={this.setProjectID} user_id={this.state.user_id}/> } />
+                    <Route exact path="/project" element={<Project projectID={this.state.view_projectID}/>} />
                     <Route exact path="/requests" element={<Requests user_id={this.state.user_id}/>} />
                     <Route exact path="/updateProfile" element={<UpdateProfile user_id={this.state.user_id}/>} />
                     <Route exact path="/createproject" element={<CreateProject user_id={this.state.user_id}/>} />

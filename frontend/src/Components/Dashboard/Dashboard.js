@@ -2,63 +2,56 @@ import React, { Component } from "react";
 import 'reactjs-popup/dist/index.css';
 import { Link } from "react-router-dom";
 
-// dummy available users data
-const tableData = [
-    {
-        fullName: "Ryan",
-        emailAddress: "r@gmail.com",
-        projectName: "Pokemon",
-        memberNeeded: 2,
-        project: {
-            id: 0,
-            projectName: "Pokemon",
-            members: {
-                '0': 'udith',
-                '1': 'aneesh',
-                '3': 'ryan'
-            }
-        }
-    },
-    {
-        fullName: "Aneesh",
-        emailAddress: "a@gmail.com",
-        projectName: "Team Formation Tool",
-        memberNeeded: 1,
-        project: {
-            id: 1,
-            projectName: "Pokemon",
-            members: {
-                '0': 'udith',
-                '1': 'aneesh',
-            }
-        }
-    },
-    {
-        fullName: "Udith",
-        emailAddress: "u@gmail.com",
-        projectName: "N/A",
-        memberNeeded: 3,
-        project: {
-            id: 2,
-            projectName: "N/A",
-            members: ""
-        }
-    }
-];
-
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             users: [],
-            currentProject: ''
+            currentProjects: null,
+            entries: [],
+            loaded: false
         }
         this.handleViewProject = this.handleViewProject.bind(this);
+        this.handleProjects = this.handleProjects.bind (this);
+        this.toggle_loaded = this.toggle_loaded.bind (this);
       }
+
+
+    async componentDidMount () {
+        console.log ("Loading project data")
+
+        const res = await fetch('http://127.0.0.1:8010/proxy/project/dashboard', {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+        })
+        
+        const body = await res.json();
+        console.log (body)
+
+        this.handleProjects (body)
+        
+        this.toggle_loaded (true)
+
+    }
+
+    toggle_loaded = (e) => {
+        this.setState ({loaded: e})
+        this.state.loaded = e
+    }
+
+    handleProjects = (e) => {
+        this.setState ({currentProjects: e})
+        this.state.currentProjects = e;
+        console.log ('Project IDs SET:', this.state.currentProjects)
+    }
 
     // if you click on view details for a project, 
     // this function passes the project id to its parent App.js
     handleViewProject = (e) => {
+    this.props.setProjectID (e)
     this.props.onRouteChange("project", e);
     }
 
@@ -67,26 +60,31 @@ class Dashboard extends Component {
         // this is a table showing all available users, their project name, already teamed up member count
         <table className="table" style={{marginTop: '5%'}}>
             <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Email Address</th>
-                    <th>Project</th>
-                    <th>Team Member Required</th>
-                    <th>Add Member</th>
+                <tr>  
+                    <th>Project Name</th>
+                    <th>Member Usernames</th>
+                    <th>#Existing Team Members</th>
+                    <th>Join Team</th>
                 </tr>
             </thead>
             <tbody>
-            {
-                tableData.map((data, index)=>{
+            { this.state.loaded && this.state.currentProjects != null &&
+                this.state.currentProjects.map((data, index)=>{
                     return(
                         <tr key={index}>
                             {/* <td>{index+1}</td> */}
-                            <td>{data.fullName}</td>
-                            <td>{data.emailAddress}</td>
-                            <td>{data.projectName} 
+                            <td>{data.pname}
                             <br></br>
-                            <Link  className="btn btn-primary" style={{height: '50%', width: '40%', marginTop: '2%'}} to="/project" onClick={() => this.handleViewProject(data.project.id)}> View Details </Link> </td>
-                            <td>{data.memberNeeded}</td>
+                            <Link  className="btn btn-primary" style={{height: '50%', width: '40%', marginTop: '2%'}} to="/project" onClick={() => this.handleViewProject(data.pid)}> View Details </Link> </td>
+
+                            <td>{data.user_list.map((data2, index2)=>{
+                                return (
+                                <div>{data2[1]}</div>
+                                )} )}
+                            </td>
+
+                            <td>{data.user_list.length} </td>
+                        
                             <td>
                             {/* <br></br> */}
                             <Link  className="btn btn-primary" style={{width: '60%'}}> Send Request </Link> </td>
