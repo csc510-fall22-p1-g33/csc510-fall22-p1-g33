@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-// import Popup from 'reactjs-popup';
-// import 'reactjs-popup/dist/index.css';
 import { Link } from "react-router-dom";
 import PopUp from '../Utils/PopUp'
 import { TextField } from '@mui/material';
@@ -84,7 +82,6 @@ class Requests extends Component {
         this.state.comments = e;
     }
 
-
     render() {
         return (
         <div>
@@ -159,9 +156,6 @@ class Requests extends Component {
                     </>}
                     handleClose={this.togglePopup}
                 />}
-
-                {/* click this to go back to the dashboard page */}
-                {/* <Link className="btn btn-primary" to="/dashboard"  style={{marginLeft: '25%'}}> Back to Dashboard </Link> */}
             </div>
         </div>
     )

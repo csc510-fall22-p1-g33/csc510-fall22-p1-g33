@@ -7,6 +7,7 @@ import re
 
 user = Blueprint('user', __name__)
 
+# TITHI
 @user.route('/login', methods=['GET'])
 def login ():
     username = request.args.get('username')
@@ -36,6 +37,7 @@ def login ():
     else:
         return jsonify(ret_failed), 400
 
+# TITHI
 @user.route('/querybyusername', methods=['GET'])
 def get_user_query():
     # print("+++")
@@ -47,7 +49,7 @@ def get_user_query():
         return 'Not Found', 200
     return jsonify({'user': str(u.id) }), 200
 
-
+# TITHI
 @user.route('/reg', methods=['POST'])
 def reg_user():
     args = request.get_json()
@@ -136,7 +138,7 @@ def get_user_id(id):
             "password": str(u.password),
             "projects": list(map(lambda p: str(p.id), u.projects)),
             # CHECK
-            "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
+            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
             "teams": list(map(lambda p: str(p.id), u.teams)),
             "about": {
                 "name": str(ua.name),

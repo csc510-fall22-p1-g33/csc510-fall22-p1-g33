@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import './Signin.css'
 
-class first extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,10 +35,7 @@ class first extends Component {
     
     // after clicking submit, this function sends server the username, password
     // if all credentials are valid, then the user will be logged in
-    handleSubmit = async() => {
-        console.log ("GET req to server")
-        // this.props.onRouteChange("signedin", null);
-        
+    handleSubmit = async() => {  
         const params = 'username=' + this.state.username + "&password=" + this.state.pass
         let user_id;
 
@@ -55,6 +52,7 @@ class first extends Component {
         
         if (body.login == "SUCCESS") {
             this.props.setUserID(body.user_id);
+            this.props.setUsername(this.state.username);
             this.props.onRouteChange("signedin", null);
         }       
     }
@@ -72,6 +70,7 @@ class first extends Component {
         console.log(e.target.value);
         this.setState({ email: e.target.value });
     }
+
     // update the password field in this state
     handleChange_pass(e) {
         this.clearError();
@@ -107,4 +106,4 @@ class first extends Component {
     }
 }
 
-export default first;
+export default Login;

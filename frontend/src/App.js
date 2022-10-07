@@ -10,6 +10,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Project from "./Components/Dashboard/project";
 import Requests from "./Components/JoinRequests/Requests";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
+// import CreateProject from "./Components/UpdateProfile/CreateProject";
 import FAQ from "./Components/FAQ/FAQ.js";
 
 class App extends Component {
@@ -34,7 +35,6 @@ class App extends Component {
         }
       }
 
-
       onRouteChange = (route, args) => {
         if (route === 'signout') {
           this.setState({isSignedIn: false})
@@ -52,6 +52,12 @@ class App extends Component {
         this.setState({user_id: id});
         this.state.user_id = id;
         console.log("setting user id:", this.state.user_id);
+      }
+    
+      setUsername = (name) => {
+        this.setState({username: name});
+        this.state.username = name;
+        console.log("setting username:", this.state.username);
       }
     
       render() {
@@ -72,31 +78,32 @@ class App extends Component {
                 <Route exact path="/FAQ" element={<FAQ />} />
 
                 {/* login/register wizard */}
-                <Route exact path="/signin" element= {<Signin onRouteChange={this.onRouteChange} setUserID={this.setUserID}/> } />
-                <Route exact path="/register" element = {<Register onRouteChange={this.onRouteChange}  setUserID={this.setUserID}/> }/>
+                <Route exact path="/signin" element= {<Signin onRouteChange={this.onRouteChange} setUserID={this.setUserID} setUsername={this.setUsername}/> } />
+                <Route exact path="/register" element = {<Register onRouteChange={this.onRouteChange}  setUserID={this.setUserID} setUsername={this.setUsername}/> }/>
 
 
                 {this.state.isSignedIn ?
                   // if the user is logged in, show the homepage containing available team/user information list
                   <>
-                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange}/> } />
-                    <Route exact path="/project" element={<Project />} />
-                    <Route exact path="/requests" element={<Requests />} />
-                    <Route exact path="/updateProfile" element={<UpdateProfile />} />
+                    <Route exact path="/dashboard" element={<Dashboard onRouteChange={this.onRouteChange} user_id={this.state.user_id}/> } />
+                    <Route exact path="/project" element={<Project user_id={this.state.user_id}/>} />
+                    <Route exact path="/requests" element={<Requests user_id={this.state.user_id}/>} />
+                    <Route exact path="/updateProfile" element={<UpdateProfile user_id={this.state.user_id}/>} />
+                    {/* <Route exact path="/createproject" element={<CreateProject user_id={this.state.user_id}/>} /> */}
                   </>
                   
                 :
                   // if the user cannot login, redirect them to try again
                   <Route path="/dashboard" element ={
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    fontSize: '1.5rem'
-                  }}>
-                    Something went wrong. Please try again!
-                  </div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100vh',
+                      fontSize: '1.5rem'
+                    }}>
+                      Something went wrong. Please try again!
+                    </div>
                   }/>
                 }
               

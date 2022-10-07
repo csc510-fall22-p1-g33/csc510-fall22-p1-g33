@@ -22,13 +22,14 @@ const Navigation = styled.div`
 `
 
 const Links = styled.div`
-    padding-right: 2em;
-    width: 40%;
+    padding-right: 1em;
+    width: 60%;
     display: flex;
     justify-content: space-between;
 
     & a {
         // color: #8C8C8C;
+        margin-right: 6%;
         color: #FFFFFF;
         text-decoration: none;
         font-size: 1em;
@@ -107,7 +108,12 @@ class NavigationBar extends React.Component {
                         </NavLink>
                         <NavLink to="/requests">
                             <h3 style={{ fontSize: "1em" }}>
-                                View Requests
+                                Requests
+                            </h3>
+                        </NavLink>
+                        <NavLink to="/createProject">
+                            <h3 style={{ fontSize: "1em" }}>
+                                Project
                             </h3>
                         </NavLink>
                         <NavLink to="/updateProfile">
