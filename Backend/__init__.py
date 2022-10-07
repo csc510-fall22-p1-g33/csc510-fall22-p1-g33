@@ -21,7 +21,7 @@ def create_app():
     migrate.init_app(app, db)
 
     app.register_blueprint(main, url_prefix='/')
-    app.register_blueprint(joinrequest, url_prefix='/join_request/')
+    app.register_blueprint(joinrequest, url_prefix='/joinrequest/')
     app.register_blueprint(project, url_prefix='/project/')
     app.register_blueprint(team, url_prefix='/team/')
     app.register_blueprint(user, url_prefix='/user/')

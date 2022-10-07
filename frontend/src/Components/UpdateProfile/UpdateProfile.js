@@ -8,25 +8,54 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saved: false,
-            name: 'Tithi',
-            password: '',
-            phone: '9848951194', 
-            bio: 'Noob developer ',
-            email: 'stithi@ncsu.edu',
-            teammates: ['ryan', 'aneesh', 'udith'],
-            projectTitle: 'Team Formation Tool',
-            projectDetails: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra lectus nisi, sit amet dapibus velit lacinia ac. Vivamus vel lectus diam. Aliquam in posuere justo. Praesent blandit augue sed erat vestibulum, non fermentum neque pretium. Suspendisse commodo scelerisque magna, sed semper dui lacinia at. Aliquam sit amet facilisis lectus. Morbi volutpat venenatis faucibus.',
+            bio: "",
+            email: "",
+            name: "",
+            phone: "",
+  
+            id: "",
+            password: "",
+            projects: [],
+            join_requests: [],
+            teams: [],
+            username: "",
+
+            saved: true
         }
         this.setName = this.setName.bind(this);
+        // this.setName = this.setName.bind(this);
         this.setEmail = this.setEmail.bind(this);
         this.setBio = this.setBio.bind(this);
         this.setPhone = this.setPhone.bind(this);
-        this.setProjectTitle = this.setProjectTitle.bind (this);
-        this.setProjectDetails = this.setProjectDetails.bind (this);
         this.toggleSaved = this.toggleSaved.bind (this);
-        // this.addFields = this.addFields.bind (this)
-      }
+        this.setProject = this.setProject.bind (this);
+
+        // this.setProjectTitle = this.setProjectTitle.bind (this);
+        // this.setProjectDetails = this.setProjectDetails.bind (this);
+    }
+
+    async componentDidMount () {
+        console.log ("Loading user data for user id:", this.props.user_id)
+
+        const res = await fetch('http://127.0.0.1:8010/proxy/user/'+this.props.user_id, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+        })
+        
+        const body = await res.json();
+        console.log (body)
+        console.log ('username:', body.user.username)
+        console.log ('projects:', body.user.projects)
+
+        this.setName (body.user.about.name)
+        this.setEmail (body.user.about.email)
+        this.setPhone (body.user.about.phone)
+        this.setBio (body.user.about.bio)
+        this.setProject (body.user.projects)
+    }
 
     setName = (e) => {
         console.log ("Name:", e)
@@ -52,21 +81,29 @@ class Profile extends Component {
         this.state.phone = e;
     }
 
-    setProjectTitle = (e, id) => {
-        console.log ("project title:", e)
-        var someProperty = {...this.state.project[id]}
-        someProperty.projectTitle = e
+    setProject = (e) => {
+        console.log ("Project:", e)
+        this.setState({projects: e});
+        this.state.projects = e;
 
-        this.setState ({someProperty})
+        // this.setState ({projects: [...this.state.projects, e]})
     }
 
-    setProjectDetails = (e, id) => {
-        console.log ("project description:", e)
-        var someProperty = {...this.state.project[id]}
-        someProperty.projectDetails = e
+    // setProjectTitle = (e, id) => {
+    //     console.log ("project title:", e)
+        // var someProperty = {...this.state.project[id]}
+        // someProperty.projectTitle = e
 
-        this.setState ({someProperty})
-    }
+        // this.setState ({someProperty})
+    // }
+
+    // setProjectDetails = (e, id) => {
+    //     console.log ("project description:", e)
+    //     var someProperty = {...this.state.project[id]}
+    //     someProperty.projectDetails = e
+
+    //     this.setState ({someProperty})
+    // }
 
     toggleSaved = (e) => {
         this.setState ({saved: e})
@@ -140,8 +177,10 @@ class Profile extends Component {
                 }}
             />
 
+            
+
             <br></br><br></br><br></br><br></br>
-            <TextField
+            {/* <TextField
                 id="projectTitle"
                 // label="Multiline Placeholder"
                 fullWidth
@@ -155,8 +194,10 @@ class Profile extends Component {
                 this.setBio (e.target.value);
                 }}
             />
-            <br></br><br></br>
-      
+            <br></br><br></br> */}
+            {/* {this.state.projects.length == 0 && <p>Add a new project:</p>}
+            <div>
+            
             <TextField
                 id="projectDesc"
                 // label="Multiline Placeholder"
@@ -168,13 +209,15 @@ class Profile extends Component {
                 value={this.state.projectDetails}
                 label="Project Description"
                 onChange={(e) => {
-                this.setBio (e.target.value);
+                this.setProject (e.target.value);
                 }}
             />
+            </div> */}
+            
 
-            <br></br><br></br><br></br><br></br>
+            {/* <br></br><br></br><br></br><br></br> */}
 
-            Team members:<br></br><br></br>
+            {/* Team members:<br></br><br></br>
             {
                 this.state.teammates.length > 0 &&
                     Object.keys(this.state.teammates).map((key, index) =>{
@@ -184,7 +227,7 @@ class Profile extends Component {
                             </div>
                         )})
                 
-            }
+            } */}
             
             
             {/* <br></br><br></br> */}
@@ -211,13 +254,26 @@ class Profile extends Component {
                     <br></br>
                     Bio: {this.state.bio}
                     <br></br><br></br>
-                    Project Title: {this.state.projectTitle}
-                    <br></br>
-                    Project Description: {this.state.projectDetails}
-                    <br></br><br></br>
+                    
+                    {this.state.projects.length == 0 && 
+                    <p>Project: You have not yet added any project.
+                        <br></br>
+                        Teams: You have no team yet.
+                    </p>}
 
-                    Team members:<br></br>
-                    {
+                    {this.state.projects.length > 0 && 
+                    <p>Projects: 
+                        <br></br>
+                        You have added {this.state.projects.length} projects!
+                        {/* Project Name: {this.state.projects[0].about.name}
+                        Project Description: {this.state.projects[0].about.description}
+                        Teams: {this.state.projects[0].teams}
+                        Users: {this.state.projects[0].users} */}
+                        {console.log ("!!!!", this.state.projects.length, this.state.projects[0])}
+                    </p>}
+
+                    {/* Team members:<br></br> */}
+                    {/* {
                         this.state.teammates.length > 0 &&
                             Object.keys(this.state.teammates).map((key, index) =>{
                                 return(
@@ -226,7 +282,7 @@ class Profile extends Component {
                                     </div>
                                 )})
                         
-                    }
+                    } */}
 
                     <Link className="btn btn-primary" 
                     style={{width: '15%', float: 'right', marginRight: '5%'}}

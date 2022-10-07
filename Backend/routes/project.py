@@ -14,8 +14,13 @@ def get_project_query():
 
 @project.route('/', methods=['POST'])
 def post_project():
+    print (request)
     args = request.get_json()
     creator = args['creator']
+    project_name = args['name']
+    project_desc = args['description']
+
+    print ("POST Project:", creator, project_name, project_desc)
 
     u = User.query.filter_by(id=creator).first()
     if u is None:
@@ -25,7 +30,7 @@ def post_project():
     db.session.add(p)
     db.session.commit()
     
-    pa = Projectabout(project_id=p.id, name=f'Unnamed Project', description="No description.")
+    pa = Projectabout(project_id=p.id, name=project_name, description=project_desc)
     db.session.add(pa)
     db.session.commit()
 
