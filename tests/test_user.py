@@ -109,7 +109,7 @@ def test_get_user(client):
 
 
 def test_edit_user_about(client):
-    response = client.post('/user/', data={
+    response = client.post('/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -133,7 +133,7 @@ def test_edit_user_about(client):
         }
     }
     assert response.status_code == 200
-    response = client.patch('/user/{id}/about/', data={
+    response = client.patch('/user/{id}/about/', json={
         "name": "johnny",
         "email": "johnny@johnny.johnny",
         "phone": "555-5556",
@@ -152,7 +152,7 @@ def test_edit_user_about(client):
     }
     assert response.status_code == 200
     id = '__________'
-    response = client.patch('/user/{id}/about/', data={
+    response = client.patch('/user/{id}/about/', json={
         "name": "johnny",
         "email": "johnny@johnny.johnny",
         "phone": "555-5556",
