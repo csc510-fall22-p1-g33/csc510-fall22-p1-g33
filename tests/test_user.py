@@ -8,7 +8,7 @@ def client():
 
 
 def test_create_user(client):
-    response = client.post('/user/', data={
+    response = client.post('/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -20,7 +20,7 @@ def test_create_user(client):
     })
     assert response.data
     assert response.status_code == 201
-    response = client.post('/user/', data={
+    response = client.post('/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -35,7 +35,7 @@ def test_create_user(client):
 
 
 def test_get_user(client):
-    response = client.post('/user/', data={
+    response = client.post('/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -58,7 +58,7 @@ def test_get_user(client):
         }
     }
     assert response.status_code == 200
-    response = client.post('/user/', data={
+    response = client.post('/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
