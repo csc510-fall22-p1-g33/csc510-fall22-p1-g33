@@ -12,7 +12,6 @@ user = Blueprint('user', __name__)
 def login ():
     username = request.args.get('username')
     password = request.args.get('password')
-    # print (username, password)
 
     u = User.query.filter_by(username=username).first()
     if u is None:
@@ -40,9 +39,7 @@ def login ():
 # TITHI
 @user.route('/querybyusername', methods=['GET'])
 def get_user_query():
-    # print("+++")
     username = request.args.get('username')
-    # print (request)
 
     u = User.query.filter_by(username=username).first()
     if u is None:
@@ -53,7 +50,6 @@ def get_user_query():
 @user.route('/reg', methods=['POST'])
 def reg_user():
     args = request.get_json()
-    print ("ARGS:", args)
 
     username = args['username']
     password = args['password']
@@ -92,18 +88,12 @@ def get_team_query():
 
 @user.route('/', methods=['POST'])
 def post_user():
-    print ("BEFORE --")
-    print ('req:', request)
     args = None
 
     try:
         args = request.get_json()
     except:
         print("An exception occurred")
-
-    print ("AFTER --")
-    print ('req:', request)
-    print ('args:', args)
 
     username = args['username']
     password = args['password']
@@ -125,8 +115,6 @@ def post_user():
 
 @user.route('/<id>', methods=['GET'])
 def get_user_id(id):
-    print ("ID:", id)
-    print("---")
     u = User.query.filter_by(id=id).first()
     if u is None:
         return f'Not Found', 404

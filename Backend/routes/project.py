@@ -14,16 +14,13 @@ def get_project_query():
 @project.route('/dashboard', methods=['GET'])
 def get_dashboard():
     ps = list(map(lambda p: (p.id, p.about.name, p.users), Project.query.all()))
-    # print (ps[0][1][0].id)
     entries = []
     for p in ps:
-        print(p)
         uname_list = []
         for u in p[2]:
             print (u.id)
             user_ = User.query.filter_by(id=u.id).first()
             uname_list.append ((user_.id, user_.username))
-        print (uname_list)
         obj = {
             'pid': p[0],
             'pname': p[1],
@@ -37,13 +34,11 @@ def get_dashboard():
 
 @project.route('/', methods=['POST'])
 def post_project():
-    print (request)
     args = request.get_json()
     creator = args['creator']
     project_name = args['name']
     project_desc = args['description']
 
-    print ("POST Project:", creator, project_name, project_desc)
 
     u = User.query.filter_by(id=creator).first()
     if u is None:
