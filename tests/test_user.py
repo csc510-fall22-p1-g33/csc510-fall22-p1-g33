@@ -46,7 +46,7 @@ def test_get_user(client):
         }
     })
     id = response.data
-    response = client.get('/user/{id}/')
+    response = client.get(f'/user/{id}/')
     assert response.data == {
         "username": "john",
         "password": "1234",
@@ -70,7 +70,7 @@ def test_get_user(client):
     })
     id = response.data
     assert response.status_code == 200
-    response = client.get('/user/{id}/')
+    response = client.get(f'/user/{id}/')
     assert response.data == {
         "username": "john",
         "password": "1234",
@@ -83,7 +83,7 @@ def test_get_user(client):
     }
     assert response.status_code == 200
     id = '__________'
-    response = client.get('/user/{id}/')
+    response = client.get(f'/user/{id}/')
     assert response.data == 'Not Found'
     assert response.status_code == 404
 
@@ -121,7 +121,7 @@ def test_edit_user_about(client):
     })
     id = response.data
     assert response.status_code == 200
-    response = client.get('/user/{id}/')
+    response = client.get(f'/user/{id}/')
     assert response.data == {
         "username": "john",
         "password": "1234",
@@ -133,13 +133,13 @@ def test_edit_user_about(client):
         }
     }
     assert response.status_code == 200
-    response = client.patch('/user/{id}/about/', json={
+    response = client.patch(f'/user/{id}/about/', json={
         "name": "johnny",
         "email": "johnny@johnny.johnny",
         "phone": "555-5556",
         "bio": "my name is johnny!!!",
     })
-    response = client.get('/user/{id}/')
+    response = client.get(f'/user/{id}/')
     assert response.data == {
         "username": "john",
         "password": "1234",
@@ -152,7 +152,7 @@ def test_edit_user_about(client):
     }
     assert response.status_code == 200
     id = '__________'
-    response = client.patch('/user/{id}/about/', json={
+    response = client.patch(f'/user/{id}/about/', json={
         "name": "johnny",
         "email": "johnny@johnny.johnny",
         "phone": "555-5556",
