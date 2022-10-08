@@ -2,24 +2,25 @@ from Backend import create_app
 import pytest
 import sys
 import os
+from Backend.extensions import db
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def app():
     app = create_app()
     app.config.update({
         "TESTING": True,
     })
 
-    # other setup can go here
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
 
     yield app
-
-    # clean up / reset resources here
-
+    
 
 @pytest.fixture()
 def client(app):
