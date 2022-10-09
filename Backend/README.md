@@ -1,4 +1,6 @@
 # Team formation tool backend
+
+
 ## Installation 
 
 1. Create virtual environment 
@@ -41,10 +43,10 @@
 
 
 
-## New 
-1. pip install Flask-Restless-NG 
 ----
 <!-- DEV scratch space -->
+<!-- ## New 
+1. pip install Flask-Restless-NG  -->
 <!-- 
 4. `pip install flask `
 4. `pip install -U Flask-SQLAlchemy`

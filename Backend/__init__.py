@@ -9,6 +9,7 @@ from .routes.joinrequest import joinrequest
 from .routes.project import project
 from .routes.team import team
 from .routes.user import user
+from flasgger import Swagger
 
 import os
 
@@ -33,6 +34,7 @@ def create_app():
     app.register_blueprint(team, url_prefix='/team/')
     app.register_blueprint(user, url_prefix='/user/')
 
+    swagger = Swagger(app)
     # app.register_blueprint(api)
     # app.register_blueprint(registerer) 
     # app.run()
