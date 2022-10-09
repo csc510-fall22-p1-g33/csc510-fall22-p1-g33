@@ -10,11 +10,18 @@ from .routes.project import project
 from .routes.team import team
 from .routes.user import user
 
+import os
+
 # import flask_restless
 
 def create_app():
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'db.sqlite3')
+
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+    app.url_map.strict_slashes = False
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{filename}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
