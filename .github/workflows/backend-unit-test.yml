@@ -44,7 +44,7 @@ jobs:
       run: |
         sudo docker cp con1:app/docs/specgen.json ./Backend/docs/specgen.json
         npx widdershins --search false --language_tabs 'javascript:JavaScript' --summary ./Backend/docs/specgen.json -o ./Backend/docs/apidocs.md
-        git add .
+        git config user.name "Github Actions"
         git commit -m "Generate documentation."
         git push
       env:
