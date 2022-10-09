@@ -51,6 +51,7 @@ pip install -r requirements.txt
 1. Remove old files if any  
         
         rm instance/db.sqlite3
+        rm -r migrations
         
 1. Create new db
     

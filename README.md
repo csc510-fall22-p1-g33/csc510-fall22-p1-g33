@@ -18,8 +18,8 @@
 
 Team formation tool is an easy-to-use web-app that assists you to form teams efficiently. 
 
-[DEMO VIDEO]
 
+[![DEMO](docs/demo.png)]()
 
 
 ## Our Functionality
