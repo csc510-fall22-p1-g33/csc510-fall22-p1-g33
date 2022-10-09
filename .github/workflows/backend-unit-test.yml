@@ -40,7 +40,7 @@ jobs:
         node-version: "16.x"
     - name: Generate backend documentation
       run: |
-        sudo docker cp backend:Backend/app/docs/specgen.json ./Backend/docs/specgen.json
+        sudo docker cp backend:app/Backend/docs/specgen.json ./Backend/docs/specgen.json
         npx widdershins --search false --language_tabs 'javascript:JavaScript' --summary ./Backend/docs/specgen.json -o ./Backend/docs/apidocs.md
     - name: Check for modified files
       id: git-check
