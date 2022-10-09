@@ -1,0 +1,24 @@
+summary: "Get OTP"
+description: "This is a simple API to send OTP."
+produces:
+- "application/json"
+parameters:
+- in: "query"
+  name: "phone"
+  type: "string"
+  required: "true"
+responses:
+  200:
+    description: "Success"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+        status:
+          type: "string"
+        message:
+          type: "string"
+ 
+  400:
+    description: "Same response is for 202, 400"
