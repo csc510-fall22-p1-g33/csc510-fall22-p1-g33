@@ -48,7 +48,10 @@ jobs:
       id: git-check
       run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
     - name: Push modifications if they exist
-      if: steps.git-check.outputs.modified == 'true'
+      if: | 
+        steps.git-check.outputs.modified == 'true' &&
+        github.event_name == 'push' &&
+        contains(github.ref, 'main')
       run:  |
         git config user.name "Github Actions"
         git add -A
