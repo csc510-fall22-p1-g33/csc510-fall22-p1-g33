@@ -45,8 +45,8 @@ jobs:
         sudo docker cp con1:app/docs/specgen.json ./Backend/docs/specgen.json
         npx widdershins --search false --language_tabs 'javascript:JavaScript' --summary ./Backend/docs/specgen.json -o ./Backend/docs/apidocs.md
     - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+      id: git-check
+      run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
     - name: Push modifications if they exist
       if: steps.git-check.outputs.modified == 'true'
       run:  |
