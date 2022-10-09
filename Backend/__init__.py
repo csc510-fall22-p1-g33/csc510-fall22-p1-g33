@@ -1,6 +1,7 @@
 from flask import Flask 
 from .extensions import db, migrate
-
+from flasgger import Swagger
+import json
 # from .models.all import User,Project
 # from .routes.register import registerer
 
@@ -13,6 +14,8 @@ from flasgger import Swagger
 
 import os
 
+import os
+
 # import flask_restless
 
 def create_app():
@@ -20,6 +23,30 @@ def create_app():
     filename = os.path.join(dirname, 'db.sqlite3')
 
     app = Flask(__name__)
+
+    app.config['SWAGGER'] = {
+        'openapi': '3.0.3'
+    }
+    s_template = {
+        "info": {
+            "title": "tft-backend",
+            "version": "0.0.1",
+            "description": "Team Formation Tool backend documentation.",
+            "contact": {
+                "url": "https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33"
+            },
+            "termsOfService": "https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/LICENSE.md"
+        },
+        "servers": [
+            {
+                "description": "Local development server.",
+                "url": "http://localhost:5000"
+            }
+        ],
+    }
+
+    swagger = Swagger(app, template=s_template)
+
     app.url_map.strict_slashes = False
     
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{filename}'
@@ -34,7 +61,12 @@ def create_app():
     app.register_blueprint(team, url_prefix='/team/')
     app.register_blueprint(user, url_prefix='/user/')
 
-    swagger = Swagger(app)
+    with app.app_context():
+        specgen = json.dumps(swagger.get_apispecs())
+        specgenfile = open(os.path.join(os.path.dirname(__file__), 'docs/specgen.json'), 'w')
+        specgenfile.write(specgen)
+        specgenfile.close()
+        
     # app.register_blueprint(api)
     # app.register_blueprint(registerer) 
     # app.run()

@@ -1,4 +1,5 @@
 flask
 Flask-SQLAlchemy
 Flask-Migrate
+setuptools
 flasgger
