@@ -1,9 +1,9 @@
 ---
 title: tft-backend v0.0.1
 language_tabs:
-  - javascipts: JavaScript
+  - javascript: JavaScript
 language_clients:
-  - javascipts: ""
+  - javascript: ""
 toc_footers: []
 includes: []
 search: false
@@ -34,6 +34,29 @@ Web: <a href="https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33">Support<
 <a id="opIdget-user-query"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "username": "jdoe"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/user/query',
+{
+  method: 'GET',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `GET /user/query`
 
@@ -88,6 +111,30 @@ This operation does not require authentication
 <a id="opIdpost-join_request"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "creator": "1",
+  "team": "1"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/joinrequest/',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `POST /joinrequest/`
 
@@ -146,6 +193,26 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/joinrequest/{id}',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `GET /joinrequest/{id}`
 
 Get join request by id.
@@ -203,6 +270,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/joinrequest/{id}',
+{
+  method: 'DELETE'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `DELETE /joinrequest/{id}`
 
 Delete join request by id.
@@ -224,6 +306,21 @@ This operation does not require authentication
 <a id="opIdpatch-join_request-id-accept"></a>
 
 > Code samples
+
+```javascript
+
+fetch('http://localhost:5000/joinrequest/{id}/accept',
+{
+  method: 'PATCH'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /joinrequest/{id}/accept`
 
@@ -247,6 +344,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/joinrequest/{id}/reject',
+{
+  method: 'PATCH'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `PATCH /joinrequest/{id}/reject`
 
 Reject join request.
@@ -269,6 +381,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/joinrequest/{id}/withdraw',
+{
+  method: 'PATCH'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `PATCH /joinrequest/{id}/withdraw`
 
 Withdraw join request.
@@ -290,6 +417,29 @@ This operation does not require authentication
 <a id="opIdpost-project"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "creator": "1"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/project/',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `POST /project/`
 
@@ -344,6 +494,26 @@ This operation does not require authentication
 <a id="opIdget-project-id"></a>
 
 > Code samples
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/project/{id}',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `GET /project/{id}`
 
@@ -402,6 +572,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/project/{id}',
+{
+  method: 'DELETE'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `DELETE /project/{id}`
 
 Delete project by id.
@@ -424,6 +609,28 @@ This operation does not require authentication
 <a id="opIdpatch-project-id-users-add"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "user_id": "1"
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/project/{id}/users/add',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /project/{id}/users/add`
 
@@ -461,6 +668,28 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+const inputBody = '{
+  "user_id": "1"
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/project/{id}/users/remove',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `PATCH /project/{id}/users/remove`
 
 Remove user from project.
@@ -496,6 +725,29 @@ This operation does not require authentication
 <a id="opIdpatch-project-id-about"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "name": "Project A",
+  "description": "This is project A."
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/project/{id}/about',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /project/{id}/about`
 
@@ -534,6 +786,30 @@ This operation does not require authentication
 <a id="opIdpost-team"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "creator": "1",
+  "project": "1"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/team/',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `POST /team/`
 
@@ -590,6 +866,26 @@ This operation does not require authentication
 <a id="opIdget-team-id"></a>
 
 > Code samples
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/team/{id}',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `GET /team/{id}`
 
@@ -652,6 +948,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/team/{id}',
+{
+  method: 'DELETE'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `DELETE /team/{id}`
 
 Delete team by id.
@@ -674,6 +985,28 @@ This operation does not require authentication
 <a id="opIdpatch-team-id-users-remove"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "user_id": "1"
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/team/{id}/users/remove',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /team/{id}/users/remove`
 
@@ -710,6 +1043,29 @@ This operation does not require authentication
 <a id="opIdpatch-team-id-about"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "name": "Team A",
+  "description": "This is Team A."
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/team/{id}/about',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /team/{id}/about`
 
@@ -749,6 +1105,28 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+const inputBody = '{
+  "filled": true
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/team/{id}/filled',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `PATCH /team/{id}/filled`
 
 Set whether team is filled.
@@ -785,6 +1163,36 @@ This operation does not require authentication
 <a id="opIdpost-user"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "username": "jdoe",
+  "password": "abc123",
+  "about": {
+    "name": "John Doe",
+    "email": "jdoe@ncsu.edu",
+    "phone": "9999999999",
+    "bio": "I am cool."
+  }
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/user/',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `POST /user/`
 
@@ -852,6 +1260,26 @@ This operation does not require authentication
 <a id="opIdget-user-id"></a>
 
 > Code samples
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('http://localhost:5000/user/{id}',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `GET /user/{id}`
 
@@ -922,6 +1350,21 @@ This operation does not require authentication
 
 > Code samples
 
+```javascript
+
+fetch('http://localhost:5000/user/{id}',
+{
+  method: 'DELETE'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
 `DELETE /user/{id}`
 
 Delete user by id.
@@ -942,6 +1385,31 @@ This operation does not require authentication
 <a id="opIdpatch-user-id-about"></a>
 
 > Code samples
+
+```javascript
+const inputBody = '{
+  "name": "John Doe",
+  "email": "jdoe@ncsu.edu",
+  "phone": "9999999999",
+  "bio": "I am cool."
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('http://localhost:5000/user/{id}/about',
+{
+  method: 'PATCH',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
 
 `PATCH /user/{id}/about`
 
