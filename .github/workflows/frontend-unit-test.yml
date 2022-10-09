@@ -28,7 +28,7 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           env:
-            CI: false
+            CI: ""
       - name: Run tests
         run: |
           npm test
