@@ -3,15 +3,126 @@ from flask import request
 from ..extensions import db
 from ..models.all import Joinrequest, User, Team
 from flask import jsonify
+from flasgger import swag_from
 
 joinrequest = Blueprint('joinrequest', __name__)
 
 @joinrequest.route('/query', methods=['GET'])
+@swag_from({
+    "summary": "Your GET endpoint",
+    "tags": [],
+    "responses": {
+        "200": {
+            "description": "OK",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "join_requests": {
+                                "type": "array",
+                                "description": "List of join request ids.",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": [
+                            "join_requests"
+                        ]
+                    },
+                    "examples": {
+                        "example-1": {
+                            "value": {
+                                "join_requests": [
+                                    "1"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "operationId": "get-join_request-query",
+    "description": "Query a list of all join request ids."
+})
 def get_joinrequest_query():
     js = list(map(lambda j: str(j.id), Joinrequest.query.all()))
     return jsonify({'join_requests': [] + js}), 200
 
 @joinrequest.route('/', methods=['POST'])
+@swag_from({
+    "summary": "create join request",
+    "operationId": "post-join_request",
+    "responses": {
+        "200": {
+            "description": "OK",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "ID of created join request."
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    },
+                    "examples": {
+                        "example-1": {
+                            "value": {
+                                "id": "1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "404": {
+            "description": "Not Found"
+        },
+        "409": {
+            "description": "Conflict"
+        }
+    },
+    "requestBody": {
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "creator": {
+                            "type": "string",
+                            "description": "Creator user id."
+                        },
+                        "team": {
+                            "type": "string",
+                            "description": "Team id."
+                        }
+                    },
+                    "required": [
+                        "creator",
+                        "team"
+                    ]
+                },
+                "examples": {
+                    "example-1": {
+                        "value": {
+                            "creator": "1",
+                            "team": "1"
+                        }
+                    }
+                }
+            }
+        },
+        "description": "Join request information."
+    },
+    "description": "Create join request."
+})
 def post_joinrequest():
     args = request.get_json()
 
@@ -41,6 +152,90 @@ def post_joinrequest():
     return jsonify({ "id": j.id }), 200
 
 @joinrequest.route('/<id>', methods=['GET'])
+@swag_from({
+    "summary": "get join request",
+    "tags": [],
+    "responses": {
+        "200": {
+            "description": "OK",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "join_request": {
+                                "title": "JoinRequest",
+                                "x-stoplight": {
+                                    "id": "9g1dzsnj5m2aa"
+                                },
+                                "type": "object",
+                                "examples": [
+                                    {
+                                        "id": "1",
+                                        "user": "1",
+                                        "team": "1",
+                                        "status": "pending"
+                                    }
+                                ],
+                                "description": "Join request information.",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Join request id."
+                                    },
+                                    "user": {
+                                        "type": "string",
+                                        "description": "ID of user who created join request."
+                                    },
+                                    "team": {
+                                        "type": "string",
+                                        "description": "ID of team that join request is for."
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "denied",
+                                            "accepted",
+                                            "withdrawn"
+                                        ],
+                                        "description": "Status of join request."
+                                    }
+                                },
+                                "required": [
+                                    "id",
+                                    "user",
+                                    "team",
+                                    "status"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "join_request"
+                        ]
+                    },
+                    "examples": {
+                        "example-1": {
+                            "value": {
+                                "join_request": {
+                                    "id": "1",
+                                    "user": "1",
+                                    "team": "1",
+                                    "status": "pending"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "404": {
+            "description": "Not Found"
+        }
+    },
+    "operationId": "get-join_request-id",
+    "description": "Get join request by id."
+})
 def get_joinrequest_id(id):
     j = Joinrequest.query.filter_by(id=id).first()
     if j is None:
@@ -56,11 +251,38 @@ def get_joinrequest_id(id):
     return jsonify(ret), 200
 
 @joinrequest.route('/<id>', methods=['DELETE'])
+@swag_from({
+    "summary": "delete join request",
+    "operationId": "delete-join_request-id",
+    "responses": {
+        "200": {
+            "description": "OK"
+        }
+    },
+    "description": "Delete join request by id.\n\nWARNING: Join requests are now automatically deleted when their associated team or user is deleted. There is no reason to use this method in normal operations.",
+    "deprecated": True
+})
 def delete_joinrequest_id(id):
     # TODO: implement
     return 'Not Implemented', 501
 
 @joinrequest.route('/<id>/accept', methods=['PATCH'])
+@swag_from({
+    "summary": "accept join request",
+    "operationId": "patch-join_request-id-accept",
+    "responses": {
+        "200": {
+            "description": "OK"
+        },
+        "404": {
+            "description": "Not Found"
+        },
+        "409": {
+            "description": "Conflict"
+        }
+    },
+    "description": "Accept join request"
+})
 def patch_joinrequest_id_accept(id):
     j = Joinrequest.query.filter_by(id=id).first()
     if j is None:
@@ -87,6 +309,22 @@ def patch_joinrequest_id_accept(id):
     return 'OK', 200
 
 @joinrequest.route('/<id>/reject', methods=['PATCH'])
+@swag_from({
+    "summary": "reject join request",
+    "operationId": "patch-join_request-id-reject",
+    "responses": {
+        "200": {
+            "description": "OK"
+        },
+        "404": {
+            "description": "Not Found"
+        },
+        "409": {
+            "description": "Conflict"
+        }
+    },
+    "description": "Reject join request."
+})
 def patch_joinrequest_id_reject(id):
     j = Joinrequest.query.filter_by(id=id).first()
     if j is None:
@@ -102,6 +340,22 @@ def patch_joinrequest_id_reject(id):
     return 'OK', 200
 
 @joinrequest.route('/<id>/withdraw', methods=['PATCH'])
+@swag_from({
+    "summary": "withdraw join request",
+    "operationId": "patch-join_request-id-withdraw",
+    "responses": {
+        "200": {
+            "description": "OK"
+        },
+        "404": {
+            "description": "Not Found"
+        },
+        "409": {
+            "description": "Conflict"
+        }
+    },
+    "description": "Withdraw join request."
+})
 def patch_joinrequest_id_withdraw(id):
     j = Joinrequest.query.filter_by(id=id).first()
     if j is None:
