@@ -64,11 +64,62 @@ class Requests extends Component {
 
         this.state = {
             isOpen: false,
-            comments: ''
+            comments: '',
+            requests_sent_ids:  null,
+            requests_sent: [],
+            requests_received: []
           };
       
         this.togglePopup = this.togglePopup.bind(this);
         this.setComments = this.setComments.bind(this);
+    }
+
+    async componentDidMount () {
+        console.log ("Loading sent requests")
+
+        const res = await fetch('http://127.0.0.1:8010/proxy/user/'+this.props.user_id, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+        })
+        
+        const body = await res.json();
+        console.log (body.user.join_requests)
+
+       
+        this.setState ({requests_sent_ids: body.user.join_requests})
+        this.state.requests_sent_ids = body.user.join_requests
+
+        let reqs_count = this.state.requests_sent_ids.length
+        let req_list = []
+        if (reqs_count > 0) {
+            let i = 0
+            for (i=0; i<reqs_count; i++) {
+                const res2 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/'+this.state.requests_sent_ids[i], {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                })
+                const body2 = await res2.json();
+                console.log (body2.join_request)
+                if (body2.join_request.user != this.props.user_id)
+                    req_list.push(body2.join_request)
+                else {
+                    console.log (this.props.user_id, body2.join_request.user)
+                }
+            }
+            if (req_list.length > 0) {
+                
+                this.setState({requests_sent: req_list})
+                this.state.requests_sent = req_list
+            }
+
+            console.log ( this.state.requests_sent)
+        }
     }
 
     togglePopup = (val) => {
@@ -89,6 +140,38 @@ class Requests extends Component {
             <div style={{marginLeft: '5%', marginTop: '5%'}}>
 
                 {/* show project member details in a table */}
+                Your sent requests: {this.state.requests_sent.length}
+                {
+                    this.state.requests_sent.length > 0 &&
+                    <div>
+                        <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Request No</th>
+                            <th>Team No</th>
+                            <th>Status</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.requests_sent.map((data, index)=> {
+                        return (  
+                            <tr key={index}>   
+                            <td>{index}</td> 
+                            <td>{data.team}</td>
+                            <td>{data.status}</td>
+                            </tr>  
+                            )
+                        })
+                    }             
+                    </tbody>
+                </table>
+                    </div>
+                }
+
+                <br></br> <br></br>
+                Your received requests: {this.state.requests_received.length}
+
                 <table className="table">
                     <thead>
                         <tr>

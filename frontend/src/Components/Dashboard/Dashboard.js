@@ -14,6 +14,7 @@ class Dashboard extends Component {
         this.handleViewProject = this.handleViewProject.bind(this);
         this.handleProjects = this.handleProjects.bind (this);
         this.toggle_loaded = this.toggle_loaded.bind (this);
+        this.send_request = this.send_request.bind (this)
       }
 
 
@@ -55,6 +56,43 @@ class Dashboard extends Component {
     this.props.onRouteChange("project", e);
     }
 
+    send_request = async (e) => {
+        const res0 = await fetch('http://127.0.0.1:8010/proxy/project/'+String(e), {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+        })
+        
+        const body0 = await res0.json();
+        console.log ('sending req for project id:', body0.project.id)
+
+        if (body0.project.teams.length > 0) {
+            console.log ('sending req for team id:', body0.project.teams[0])
+
+            const res5 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        creator: this.props.user_id,
+                        team: body0.project.teams[0]
+                    })
+                })
+        
+            const body5 = await res5.json();
+            console.log (body5)
+        }
+        else {
+            console.log ("There is no team formed for this project.")
+        }
+        
+    }
+
     render() {
         return (
         // this is a table showing all available users, their project name, already teamed up member count
@@ -87,7 +125,7 @@ class Dashboard extends Component {
                         
                             <td>
                             {/* <br></br> */}
-                            <Link  className="btn btn-primary" style={{width: '60%'}}> Send Request </Link> </td>
+                            <Link  onClick={() => {this.send_request (data.pid)}} className="btn btn-primary" style={{width: '60%'}}> Send Request </Link> </td>
                         </tr>
                     )
                 })

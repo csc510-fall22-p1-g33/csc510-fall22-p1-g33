@@ -18,7 +18,8 @@ class Project extends Component {
             first_project: null,
 
             saved: true,
-            project: ""
+            project: "",
+            team_id: null
         }
         this.toggleSaved = this.toggleSaved.bind (this);
         this.submitProject = this.submitProject.bind (this);
@@ -91,6 +92,25 @@ class Project extends Component {
 
             const body2 = await res2.json();
             console.log (body2)
+
+            // for this new project, a new team will be generated
+            const res3 = await fetch('http://127.0.0.1:8010/proxy/team/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({
+                    creator: this.props.user_id,
+                    project: this.state.p_id
+                })
+            })
+    
+            const body3 = await res3.json();
+            console.log ("newly created team id", body3)
+            this.setState ({team_id: body3.id})
+            this.state.team_id = body3.id 
         }
         else {
             const res = await fetch('http://127.0.0.1:8010/proxy/project/update', {
@@ -186,7 +206,7 @@ class Project extends Component {
 
                 {this.state.p_id != -1 &&
                 <div>
-                    <p>You have added a project!</p>
+                    <p>You have added a project. You have initiated a team for this project as well!</p>
 
                     <p>Your Project Details:</p>
                     Creator User ID: {this.state.creator} <br></br>

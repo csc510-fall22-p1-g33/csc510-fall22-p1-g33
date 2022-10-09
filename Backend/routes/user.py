@@ -162,7 +162,7 @@ def get_user_id(id):
             "password": str(u.password),
             "projects": list(map(lambda p: str(p.id), u.projects)),
             # CHECK
-            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
+            "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
             "teams": list(map(lambda p: str(p.id), u.teams)),
             "about": {
                 "name": str(ua.name),
