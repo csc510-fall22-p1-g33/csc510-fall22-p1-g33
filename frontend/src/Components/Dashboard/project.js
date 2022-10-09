@@ -3,19 +3,6 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { Link } from "react-router-dom";
 
-// dummy project details for a dummy project id
-const projectData = [{
-    projectId: 0,
-    projectName: "Pokemon",
-    members: {
-        '0': 'udith',
-        '1': 'aneesh',
-        '3': 'ryan'
-    },
-    about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sollicitudin nisi semper accumsan fermentum. Aenean tristique mauris sit amet nisi dictum, id dapibus nisl tempus. Ut ac tellus eros. Sed eu lacus non diam interdum facilisis. Mauris et dolor porta, facilisis orci sit amet, dapibus ipsum. Fusce vel nisl ac orci vestibulum scelerisque in ut nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed iaculis elit ut aliquam facilisis. Pellentesque sed sodales risus. Nunc nisi enim, fringilla ac libero in, volutpat iaculis ligula. Nulla vel lorem justo. Etiam interdum ante luctus tortor consequat cursus. Fusce nec nibh in augue scelerisque porttitor quis in nulla. Curabitur varius elit lacus, ut bibendum lorem hendrerit vitae. Curabitur hendrerit vestibulum ligula, eu cursus quam interdum quis. Integer turpis erat, aliquam eget venenatis et, gravida sit amet lectus.",
-}]
-    
-
 class Project extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +27,7 @@ class Project extends Component {
         })
         
         const body = await res.json();
-        console.log (body.project.about)
+        console.log ("++++++++",body.project.users)
 
         let res2, body2, uname;
         let uname_list = []
@@ -49,7 +36,7 @@ class Project extends Component {
 
         for (i=0; i<body.project.users.length; i++){
 
-            res2 = await fetch('http://127.0.0.1:8010/proxy/user/'+body.project.id, {
+            res2 = await fetch('http://127.0.0.1:8010/proxy/user/'+body.project.users[i], {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -84,6 +71,9 @@ class Project extends Component {
         this.state.teams = body.project.teams
         this.state.users = uname_list
 
+        
+        
+
     }
 
 
@@ -103,7 +93,7 @@ class Project extends Component {
                             <thead>
                                 <tr>
                                     <th>Member No</th>
-                                    <th>Name</th>
+                                    <th>Creator</th>
                                     <th>Details</th>
                                     
                                 </tr>

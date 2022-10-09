@@ -261,7 +261,7 @@ class Profile extends Component {
                         Teams: You have no team yet.
                     </p>}
 
-                    {this.state.projects.length > 0 && 
+                    {/* {this.state.projects.length > 0 && 
                     <p>Projects: 
                         <br></br>
                         You have added {this.state.projects.length} projects!
@@ -269,8 +269,8 @@ class Profile extends Component {
                         Project Description: {this.state.projects[0].about.description}
                         Teams: {this.state.projects[0].teams}
                         Users: {this.state.projects[0].users} */}
-                        {console.log ("!!!!", this.state.projects.length, this.state.projects[0])}
-                    </p>}
+                        {/* {console.log ("!!!!", this.state.projects.length, this.state.projects[0])}
+                    </p>}  */}
 
                     {/* Team members:<br></br> */}
                     {/* {

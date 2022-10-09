@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 from ..extensions import db
-from ..models.all import Project, Projectabout, User
+from ..models.all import Project, Projectabout, User, Team
 from flask import jsonify
 
 project = Blueprint('project', __name__)
@@ -13,14 +13,30 @@ def get_project_query():
 
 @project.route('/dashboard', methods=['GET'])
 def get_dashboard():
-    ps = list(map(lambda p: (p.id, p.about.name, p.users, p.about.description), Project.query.all()))
+    ps = list(map(lambda p: (p.id, p.about.name, p.users, p.about.description, p.teams), Project.query.all()))
     entries = []
     for p in ps:
+        print (p[0], p[1], p[3], p[4])
         uname_list = []
-        for u in p[2]:
-            print (u.id)
-            user_ = User.query.filter_by(id=u.id).first()
-            uname_list.append ((user_.id, user_.username))
+        # for u in p[2]:
+        #     print (u.id)
+        #     user_ = User.query.filter_by(id=u.id).first()
+        #     uname_list.append ((user_.id, user_.username))
+
+        # ------
+        tid = -1
+        if len(p[4]) > 0:
+            tid = p[4][0].id
+            t = Team.query.filter_by(id=tid).first()
+            if t is None:
+                return 'Not Found', 404
+            for ui in t.users:
+                
+                user_ = User.query.filter_by(id=ui.id).first()
+                print (user_.username)
+                uname_list.append ((user_.id, user_.username))
+        # -----------
+
         obj = {
             'pid': p[0],
             'pname': p[1],

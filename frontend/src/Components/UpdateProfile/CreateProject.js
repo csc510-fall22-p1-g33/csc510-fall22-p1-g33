@@ -19,13 +19,17 @@ class Project extends Component {
 
             saved: true,
             project: "",
-            team_id: null
+            team_id: null,
+
+            users: null
         }
         this.toggleSaved = this.toggleSaved.bind (this);
         this.submitProject = this.submitProject.bind (this);
 
         this.setProjectTitle = this.setProjectTitle.bind (this);
         this.setProjectDetails = this.setProjectDetails.bind (this);
+        this.deleteProject = this.deleteProject.bind (this)
+        // this.remove_from_team = this.remove_from_team.bind (this)
     }
 
     async componentDidMount () {
@@ -51,6 +55,45 @@ class Project extends Component {
             this.state.projectTitle = this.state.first_project.project.about.name
             this.state.projectDetails = this.state.first_project.project.about.description
             console.log (this.state.first_project)
+        }
+
+
+        if (body.first_project.project.teams.length > 0) {
+            console.log ("project team id:", body.first_project.project.teams[0])
+
+            const res0 = await fetch('http://127.0.0.1:8010/proxy/team/'+String(body.first_project.project.teams[0]), {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+            })
+            
+            const body0 = await res0.json();
+            console.log ('user ids in team', body.first_project.project.teams[0], "--", body0.team.users)
+
+            let uname_list = []
+            let ui = 0
+            for (ui = 0; ui < body0.team.users.length; ui++) {
+                const res01 = await fetch('http://127.0.0.1:8010/proxy/user/'+String(body0.team.users[ui]), {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+                const body01 = await res01.json();
+                console.log ('username', ui, '--', body01.user.username)
+
+                uname_list.push (body01.user.username)
+
+            }
+
+            this.setState ({users: uname_list})
+            this.state.users = uname_list
+
+
         }
     }
 
@@ -130,9 +173,6 @@ class Project extends Component {
             this.state.p_id = body.id
         }
 
-
-        
-
         this.toggleSaved (true)
     }
 
@@ -150,6 +190,42 @@ class Project extends Component {
         this.setState ({saved: e})
         this.state.saved = e
     }
+
+    deleteProject = async (e) => {
+        if (this.state.p_id != null) {
+            const res = await fetch('http://127.0.0.1:8010/proxy/project/'+this.state.p_id, {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+            const body = await res.text();
+            console.log (body)
+
+            // this.setState ({saved: false})
+            // this.state.saved = false
+
+            const res2 = await fetch('http://127.0.0.1:8010/proxy/team/'+this.state.team_id, {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+            const body2 = await res2.text();
+            console.log (body2)
+
+            this.componentDidMount ()
+        }
+            
+    }
+
+    // remove_from_team = () => {
+
+    // }
 
     render() {
         return (
@@ -213,6 +289,23 @@ class Project extends Component {
                     Project ID: {this.state.p_id} <br></br>
                     Title: {this.state.projectTitle} <br></br>
                     Description: {this.state.projectDetails} <br></br>
+
+                    <br></br>
+                    {
+                        this.state.users != null &&
+                        <div>
+                            Who are in this team/project: 
+                            {this.state.users.map((data, index)=>{
+                            return(
+                                <p>{data} 
+
+                                
+                                
+                                </p>
+                            )})}
+                        </div>
+                    }
+                    
     
                     <Link className="btn btn-primary" 
                     style={{width: '15%', float: 'right', marginRight: '5%'}}
@@ -221,6 +314,11 @@ class Project extends Component {
                         this.state.saved = false
                     }}
                     > Update Project </Link>
+
+                    <Link className="btn btn-primary" 
+                    style={{width: '15%', float: 'right', marginRight: '5%'}}
+                    onClick = {() => this.deleteProject ()}
+                    > Delete Project/team </Link>
                 </div>
                 }
 

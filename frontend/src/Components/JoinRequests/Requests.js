@@ -5,58 +5,15 @@ import { TextField } from '@mui/material';
 
 const options = [
     {
-        label: "Accept",
+        label: "accept",
         value: "accept",
     },
     {
-        label: "Reject",
+        label: "reject",
         value: "reject",
     }
 ];
 
-// dummy users details 
-const tableData = [
-    {
-        fullName: "Ryan",
-        emailAddress: "r@gmail.com",
-        projectName: "Pokemon",
-        memberNeeded: 2,
-        project: {
-            id: 0,
-            projectName: "Pokemon",
-            members: {
-                '0': 'udith',
-                '1': 'aneesh',
-                '3': 'ryan'
-            }
-        }
-    },
-    {
-        fullName: "Aneesh",
-        emailAddress: "a@gmail.com",
-        projectName: "Team Formation Tool",
-        memberNeeded: 1,
-        project: {
-            id: 1,
-            projectName: "Pokemon",
-            members: {
-                '0': 'udith',
-                '1': 'aneesh',
-            }
-        }
-    },
-    {
-        fullName: "Udith",
-        emailAddress: "u@gmail.com",
-        projectName: "N/A",
-        memberNeeded: 3,
-        project: {
-            id: 2,
-            projectName: "N/A",
-            members: ""
-        }
-    }
-];
 
 class Requests extends Component {
     constructor(props) {
@@ -67,11 +24,18 @@ class Requests extends Component {
             comments: '',
             requests_sent_ids:  null,
             requests_sent: [],
-            requests_received: []
+            requests_received_ids:  null,
+            requests_received: [],
+            team_id: null,
+            is_accepted: "accept",
+            // confirmed: false
           };
       
         this.togglePopup = this.togglePopup.bind(this);
         this.setComments = this.setComments.bind(this);
+        this.set_accepted = this.set_accepted.bind (this)
+        this.confirmed = this.confirmed.bind (this)
+        // this.leave_from_team = this.leave_from_team.bind (this)
     }
 
     async componentDidMount () {
@@ -86,7 +50,12 @@ class Requests extends Component {
         })
         
         const body = await res.json();
-        console.log (body.user.join_requests)
+        console.log ("user_id:", this.props.user_id, "reqs:", body.user.join_requests, "teams:", body.user.teams)
+
+        if (body.user.teams.length > 0){
+            this.setState ({team_id: body.user.teams[0]})
+            this.state.team_id = body.user.teams[0]
+        }
 
        
         this.setState ({requests_sent_ids: body.user.join_requests})
@@ -105,12 +74,8 @@ class Requests extends Component {
                     }
                 })
                 const body2 = await res2.json();
-                console.log (body2.join_request)
-                if (body2.join_request.user != this.props.user_id)
+                if (this.state.team_id != body2.join_request.team)
                     req_list.push(body2.join_request)
-                else {
-                    console.log (this.props.user_id, body2.join_request.user)
-                }
             }
             if (req_list.length > 0) {
                 
@@ -118,8 +83,37 @@ class Requests extends Component {
                 this.state.requests_sent = req_list
             }
 
-            console.log ( this.state.requests_sent)
+            console.log ("user_id:", this.props.user_id)
+            console.log ( "reqs sent:", this.state.requests_sent)
         }
+
+
+        // ----------------------------------------------------
+        console.log ("Loading received requests")
+
+        if (this.state.team_id != null) {
+            const res2 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/received?user='+this.props.user_id+'&team='+this.state.team_id, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+                const body2 = await res2.json();
+                console.log (body2)
+
+                this.setState ({requests_received: body2})
+                this.state.requests_received = body2
+
+                // his.setState ({requests_received_ids: body2.join_request})
+                // this.state.requests_received = body2.join_request
+        }
+        else {
+            console.log ("user id", this.props.user_id, "has not created any team yet.")
+        }
+        
+
     }
 
     togglePopup = (val) => {
@@ -133,6 +127,50 @@ class Requests extends Component {
         this.state.comments = e;
     }
 
+    set_accepted = (e) => {
+        console.log ("is_accepted:", e.target.value)
+        this.setState({is_accepted: e.target.value});
+        this.state.is_accepted = e.target.value;
+    }
+
+    confirmed = async (uid, jid, status) => {
+
+        console.log ("confirming -- who_sent -- req_id -- status")
+        console.log (uid, jid, status)
+
+        if (this.state.is_accepted == 'accept') {
+            const res3 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/'+jid+'/'+status, {
+                method: 'PATCH',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+                const body3 = await res3.text();
+                console.log (body3)
+        }
+        else if (this.state.is_accepted == "reject") {
+            const res3 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/'+jid+'/reject', {
+                method: 'PATCH',
+                headers: {
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                })
+                
+                const body3 = await res3.text();
+                console.log (body3)
+        }
+
+        // this.setState ({confirmed: true})
+        // this.state.confirmed = true
+        this.togglePopup (false)
+        this.componentDidMount()
+    }
+
+
+
     render() {
         return (
         <div>
@@ -140,7 +178,8 @@ class Requests extends Component {
             <div style={{marginLeft: '5%', marginTop: '5%'}}>
 
                 {/* show project member details in a table */}
-                Your sent requests: {this.state.requests_sent.length}
+                <b>Your sent requests: {this.state.requests_sent.length}</b>
+                <br></br><br></br>
                 {
                     this.state.requests_sent.length > 0 &&
                     <div>
@@ -169,76 +208,101 @@ class Requests extends Component {
                     </div>
                 }
 
-                <br></br> <br></br>
-                Your received requests: {this.state.requests_received.length}
 
-                <table className="table">
+
+                <br></br><br></br><br></br>
+                <b>Your team received requests: {this.state.requests_received.length}</b>
+                <br></br><br></br>
+
+                {this.state.requests_received.length > 0 && 
+                this.state.requests_received.map((data, index)=> {
+                    return (
+                        <div>
+                        {data.join_request.status == "accepted" && 
+                            <p>{data.join_request.who_sent_uname} is in your team now!</p>
+                        }
+
+                                {/* <input
+                                type="button"
+                                value="Leave this team"
+                                onClick={() => this.leave_from_team ()}
+                                style={{backgroundColor: 'red', color: 'white', marginLeft: '2%'}}
+                                /> */}
+                        </div>
+                    )
+                })}
+                <br></br>
+
+                {this.state.requests_received.length > 0 &&
+                    <div>
+                        <table className="table">
                     <thead>
                         <tr>
                             <th>User Name</th>
-                            <th>Project Name</th>
+                            <th>Status</th>
                             <th>Request</th>
                             
                         </tr>
                     </thead>
                     <tbody>
-                    {tableData.map((data, index)=> {
+
+                    
+                    {this.state.requests_received.map((data, index)=> {
+
+                        if (data.join_request.status != "accepted")
                         return (  
-                            <tr key={index}>    
-                            <td>{data.fullName}</td>
-                            <td>{data.projectName}</td>
                             
-                            <td><input
+                            <tr key={index}>    
+                            <td>{data.join_request.who_sent_uname}</td>
+                            <td>{data.join_request.status}</td>
+                            
+
+                            <td>
+                                
+                                {/* {data.join_request.status == 'pending' && <input
                                 type="button"
-                                value="Accept/Reject"
+                                value="accept/reject"
                                 onClick = {() => this.togglePopup (!this.state.isOpen)}
                                 style={{backgroundColor: '#0F3856', color: 'white'}}
-                                /></td>
+                                />} */}
+
+                                {data.join_request.status == 'rejected' && <input
+                                type="button"
+                                value={data.join_request.status}
+                                style={{backgroundColor: 'red', color: 'white'}}
+                                />}
+
+                                {data.join_request.status == 'accepted' && <input
+                                type="button"
+                                value={data.join_request.status}
+                                style={{backgroundColor: 'green', color: 'white'}}
+                                />}
+
+
+                                {data.join_request.status == "pending" && 
+                                    <div>
+                                        <button onClick={() =>this.confirmed (data.join_request.who_sent_id, data.join_request.req_id, "accept")} 
+                                        >Accept</button>
+
+                                        <button onClick={() =>this.confirmed (data.join_request.who_sent_id, data.join_request.req_id, "reject")} 
+                                        style={{marginLeft: '2%'}}
+                                        >Reject</button>
+                                    </div>
+                                }
+                                
+                                
+                                </td>
                             </tr>  
                             )
                         })
                     }             
                     </tbody>
                 </table>
+                    </div>
+                }
+     
 
-                {this.state.isOpen && <PopUp 
-                    content={<>
-                        <b style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            Confirm accept/reject request
-                        </b>
-
-                        <p>Add your comment/message below.</p>
-
-                        <TextField
-                            id="standard-textarea"
-                            // label="Multiline Placeholder"
-                            placeholder="Type here"
-                            multiline
-                            variant="standard"
-
-                            value={this.state.comments}
-                            label="Message"
-                            onChange={(e) => {
-                            this.setComments(e.target.value);
-                            }}
-                        />
-                        {/* <h3>Your Enter Value is: {this.state.comments} </h3> */}
-                        
-                        <p style={{ marginTop: 10, textAlign: 'left', marginLeft: 16, marginBottom: '5%' }}>
-                        <select  style={{ marginLeft: 13, borderRadius: 5, float: 'right'}}>{options.map((options) => (
-                                <option value={options.value}>{options.label}</option>
-                            ))}
-                        </select>
-                        </p>
-                        
-                        <button onClick={() =>this.togglePopup (false)} style={{float: 'right'}}>Confirm</button>
-                    </>}
-                    handleClose={this.togglePopup}
-                />}
+                {/* ------- */}
             </div>
         </div>
     )
