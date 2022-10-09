@@ -50,8 +50,7 @@ jobs:
     - name: Push modifications if they exist
       if: steps.git-check.outputs.modified == 'true'
       run:  |
-        git config --global user.name "$GITHUB_ACTOR"
-        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+        git config user.name "Github Actions"
         git add -A
         git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
         git push
