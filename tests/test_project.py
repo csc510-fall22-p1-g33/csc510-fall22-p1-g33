@@ -1,14 +1,8 @@
-import pytest
-from Backend import create_app
+import requests
+import json
 
-
-@pytest.fixture
-def client():
-    return create_app().test_client()
-
-
-def test_create_project(client):
-    response = client.post('/user/', json={
+def test_create_project():
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -18,22 +12,25 @@ def test_create_project(client):
             "bio": "my name is john",
         }
     })
-    id = response.data
-    response = client.post('/project/', json={
+    response_body = response.json()
+    id = str(response_body["id"])
+    
+    response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": id
     })
-    assert response.json
     assert response.status_code == 201
+    
     id = '__________'
-    response = client.post('/project/', json={
+    response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": id
     })
-    assert response.data == 'Not Found'
+    
+    assert response.content == b'Not Found'
     assert response.status_code == 404
 
 
-def test_get_project(client):
-    response = client.post('/user/', json={
+def test_get_project():
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -43,33 +40,42 @@ def test_get_project(client):
             "bio": "my name is john",
         }
     })
-    user_id = response.data
-    response = client.post('/project/', json={
+    response_body = response.json()
+    user_id = str(response_body["id"])
+
+    response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id
     })
-    project_id = response.data
-    assert response.status_code == 200
-    response = client.get(f'/project/{project_id}/')
-    assert response.data == {
-        "project": {
-            "id": id,
-            "teams": [],
-            "users": [user_id],
-            "about": {
-                "name": "",
-                "description": "",
-            }
-        }
+    response_body = response.json()
+    project_id = str(response_body["id"])
+    assert response.status_code == 201
+    
+    response = requests.get(f'http://0.0.0.0:5000/project/{project_id}/')
+    responsenew = response.content.decode("utf-8")
+    response_body = json.loads(responsenew)
+    assert response_body == {
+    "project": {
+        "about": {
+            "description": "No description.",
+            "name": "Unnamed Project"
+        },
+        "id": project_id,
+        "teams": [],
+        "users": [
+            user_id
+        ]
     }
+}
     assert response.status_code == 200
+
     project_id = '__________'
-    response = client.get(f'/project/{project_id}/')
-    assert response.data == f'Not Found'
+    response = requests.get(f'http://0.0.0.0:5000/project/{project_id}/')
+    assert response.content == b'Not Found'
     assert response.status_code == 404
 
 
-def test_project_add_users(client):
-    response = client.post('/user/', json={
+def test_project_add_users():
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -79,8 +85,9 @@ def test_project_add_users(client):
             "bio": "my name is john",
         }
     })
-    user_id_1 = response.data
-    response = client.post('/user/', json={
+    response_body = response.json()
+    user_id_1 = str(response_body["id"])
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "johnny",
         "password": "12345",
         "about": {
@@ -90,45 +97,58 @@ def test_project_add_users(client):
             "bio": "my name is johnny!!!",
         }
     })
-    user_id_2 = response.data
+    response_body = response.json()
+    user_id_2 = str(response_body["id"])
+    
     project_id = '__________'
-    response = client.patch(f'/project/{project_id}/users/add/', json={
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/add/', json={
         "user_id": user_id_2
     })
-    assert response.data == f'Not Found'
+
+    assert response.content == b'Not Found'
     assert response.status_code == 404
-    response = client.post('/project', json={
+
+
+    response = requests.post('http://0.0.0.0:5000/project', json={
         "creator": user_id_1
     })
-    project_id = response.data
-    assert response.status_code == 200
+
+    response_body = response.json()
+    project_id = str(response_body["id"])
+    assert response.status_code == 201
+
     user_id_3 = '__________'
-    response = client.patch(f'/project/{project_id}/users/add/', json={
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/add/', json={
         "user_id": user_id_3
     })
-    assert response.data == f'Not Found'
+    assert response.content == b'Not Found'
     assert response.status_code == 404
-    response = client.patch(f'/project/{project_id}/users/add/', json={
+    
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/add/', json={
         "user_id": user_id_2
     })
-    assert response.data
     assert response.status_code == 200
-    response = client.get(f'/project/{project_id}/')
-    assert response.data == {
-        "project": {
-            "id": id,
-            "teams": [],
-            "users": [user_id_1, user_id_2],
-            "about": {
-                "name": "",
-                "description": "",
-            }
-        }
+    
+    response = requests.get(f'http://0.0.0.0:5000/project/{project_id}/')
+    responsenew = response.content.decode("utf-8")
+    response_body = json.loads(responsenew)
+    assert response_body == {
+    "project": {
+        "about": {
+            "description": "No description.",
+            "name": "Unnamed Project"
+        },
+        "id": project_id,
+        "teams": [],
+        "users": [
+            user_id_1, user_id_2
+        ]
     }
+}
 
 
-def test_project_remove_users(client):
-    response = client.post('/user/', json={
+def test_project_remove_users():
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -138,8 +158,10 @@ def test_project_remove_users(client):
             "bio": "my name is john",
         }
     })
-    user_id_1 = response.data
-    response = client.post('/user/', json={
+    response_body = response.json()
+    user_id_1 = str(response_body["id"])
+
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "johnny",
         "password": "12345",
         "about": {
@@ -149,49 +171,58 @@ def test_project_remove_users(client):
             "bio": "my name is johnny!!!",
         }
     })
-    user_id_2 = response.data
-    response = client.post('/project/', json={
+    response_body = response.json()
+    user_id_2 = str(response_body["id"])
+    
+    response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id_1
     })
-    project_id = response.data
-    response = client.patch(f'/project/{project_id}/users/add/', json={
+    response_body = response.json()
+    project_id = str(response_body["id"])
+    
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/add/', json={
         "user_id": user_id_2
     })
-    assert response.data
     assert response.status_code == 200
-    response = client.patch(f'/project/{project_id}/users/remove/', json={
+    
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/remove/', json={
         "user_id": user_id_2
     })
-    assert response.data
     assert response.status_code == 200
-    response = client.get(f'/project/{project_id}/')
-    assert response.data == {
-        "project": {
-            "id": id,
-            "teams": [],
-            "users": [user_id_1],
-            "about": {
-                "name": "",
-                "description": "",
-            }
-        }
+
+    response = requests.get(f'http://0.0.0.0:5000/project/{project_id}/')
+    responsenew = response.content.decode("utf-8")
+    response_body = json.loads(responsenew)
+    assert response_body == {
+    "project": {
+        "about": {
+            "description": "No description.",
+            "name": "Unnamed Project"
+        },
+        "id": project_id,
+        "teams": [],
+        "users": [
+            user_id_1
+        ]
     }
+    }
+
     user_id_3 = '__________'
-    response = client.patch(f'/project/{project_id}/users/remove/', json={
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/remove/', json={
         "user_id": user_id_3
     })
-    assert response.data == f'Not Found'
+    assert response.content == b'Not Found'
     assert response.status_code == 404
     project_id = '__________'
-    response = client.patch(f'/project/{project_id}/users/remove/', json={
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/users/remove/', json={
         "user_id": user_id_2
     })
-    assert response.data == f'Not Found'
+    assert response.content == b'Not Found'
     assert response.status_code == 404
 
 
-def test_patch_project_about(client):
-    response = client.post('/user/', json={
+def test_patch_project_about():
+    response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
         "password": "1234",
         "about": {
@@ -201,27 +232,32 @@ def test_patch_project_about(client):
             "bio": "my name is john",
         }
     })
-    user_id = response.data
-    response = client.post('/project/', json={
+    response_body = response.json()
+    user_id = str(response_body["id"])
+    response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id
     })
-    project_id = response.data
-    assert response.status_code == 200
-    response.patch(f'/project/{project_id}/about/', json={
+    response_body = response.json()
+    project_id = str(response_body["id"])
+    assert response.status_code == 201
+    response = requests.patch(f'http://0.0.0.0:5000/project/{project_id}/about/', json={
         "name": "project",
         "description": "this is a cool project"
     })
-    assert response.data
     assert response.status_code == 200
-    response = client.get(f'/project/{id}/')
-    assert response.data == {
-        "project": {
-            "id": project_id,
-            "teams": [],
-            "users": [user_id],
-            "about": {
-                "name": "project",
-                "description": "this is a cool project",
-            }
-        }
+    response = requests.get(f'http://0.0.0.0:5000/project/{project_id}/')
+    responsenew = response.content.decode("utf-8")
+    response_body = json.loads(responsenew)
+    assert response_body == {
+    "project": {
+        "about": {
+            "description": "this is a cool project",
+            "name": "project"
+        },
+        "id": project_id,
+        "teams": [],
+        "users": [
+            user_id
+        ]
     }
+}

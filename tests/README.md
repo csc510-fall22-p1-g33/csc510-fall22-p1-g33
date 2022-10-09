@@ -4,7 +4,7 @@
 
 To run tests, use the following command from the project directory.
 ```
-python3 test/run_tests.py 
+pytest -rA tests/*.py 
 ```
 
 ## Writing Tests
