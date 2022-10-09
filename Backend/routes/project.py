@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 from ..extensions import db
-from ..models.all import Project, Projectabout, User
+from ..models.all import Project, Projectabout, User, Team
 from flask import jsonify
 
 project = Blueprint('project', __name__)
@@ -11,16 +11,51 @@ def get_project_query():
     ps = list(map(lambda p: str(p.id), Project.query.all()))
     return jsonify({'projects': [] + ps}), 200
 
+@project.route('/dashboard', methods=['GET'])
+def get_dashboard():
+    ps = list(map(lambda p: (p.id, p.about.name, p.users, p.about.description, p.teams), Project.query.all()))
+    entries = []
+    for p in ps:
+        print (p[0], p[1], p[3], p[4])
+        uname_list = []
+        # for u in p[2]:
+        #     print (u.id)
+        #     user_ = User.query.filter_by(id=u.id).first()
+        #     uname_list.append ((user_.id, user_.username))
+
+        # ------
+        tid = -1
+        if len(p[4]) > 0:
+            tid = p[4][0].id
+            t = Team.query.filter_by(id=tid).first()
+            if t is None:
+                return 'Not Found', 404
+            for ui in t.users:
+                
+                user_ = User.query.filter_by(id=ui.id).first()
+                print (user_.username)
+                uname_list.append ((user_.id, user_.username))
+        # -----------
+
+        obj = {
+            'pid': p[0],
+            'pname': p[1],
+            'user_list': uname_list,
+            'pdesc': p[3]
+        }
+        entries.append (obj)
+
+
+   
+    return jsonify(entries), 200
 
 @project.route('/', methods=['POST'])
 def post_project():
-    print (request)
     args = request.get_json()
     creator = args['creator']
     project_name = args['name']
     project_desc = args['description']
 
-    print ("POST Project:", creator, project_name, project_desc)
 
     u = User.query.filter_by(id=creator).first()
     if u is None:
@@ -40,6 +75,32 @@ def post_project():
     db.session.commit()
 
     return jsonify({ "id": p.id }), 201
+
+@project.route('/update', methods=['POST'])
+def update_project():
+    args = request.get_json()
+    pid = args['pid']
+    project_name = args['name']
+    project_desc = args['description']
+
+    print (args)
+
+    # p = Project.query.filter_by(id=pid).first()
+    # if p is None:
+    #     return f'Not Found', 404
+    
+    pa = Projectabout.query.filter_by(project_id=pid).first()
+    pa.name = project_name
+    pa.description = project_desc
+    db.session.add(pa)
+    db.session.commit()
+
+    # p = Project.query.filter_by(id=p.id).first()
+    # # p.users.append(u)
+    # db.session.add(p)
+    # db.session.commit()
+
+    return jsonify({ "id": pid}), 201
 
 @project.route('/<id>', methods=['GET'])
 def get_project_id(id):

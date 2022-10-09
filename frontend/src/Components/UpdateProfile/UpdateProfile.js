@@ -29,9 +29,6 @@ class Profile extends Component {
         this.setPhone = this.setPhone.bind(this);
         this.toggleSaved = this.toggleSaved.bind (this);
         this.setProject = this.setProject.bind (this);
-
-        // this.setProjectTitle = this.setProjectTitle.bind (this);
-        // this.setProjectDetails = this.setProjectDetails.bind (this);
     }
 
     async componentDidMount () {
@@ -261,7 +258,7 @@ class Profile extends Component {
                         Teams: You have no team yet.
                     </p>}
 
-                    {this.state.projects.length > 0 && 
+                    {/* {this.state.projects.length > 0 && 
                     <p>Projects: 
                         <br></br>
                         You have added {this.state.projects.length} projects!
@@ -269,8 +266,8 @@ class Profile extends Component {
                         Project Description: {this.state.projects[0].about.description}
                         Teams: {this.state.projects[0].teams}
                         Users: {this.state.projects[0].users} */}
-                        {console.log ("!!!!", this.state.projects.length, this.state.projects[0])}
-                    </p>}
+                        {/* {console.log ("!!!!", this.state.projects.length, this.state.projects[0])}
+                    </p>}  */}
 
                     {/* Team members:<br></br> */}
                     {/* {
@@ -288,18 +285,11 @@ class Profile extends Component {
                     style={{width: '15%', float: 'right', marginRight: '5%'}}
                     onClick = {() => this.toggleSaved (false)}
                     > Update Profile </Link>
-                    
-
                 </div>
-
             }
-
-            
-
         </div>
     )
 }
 }
 
 export default Profile;
-// https://www.freecodecamp.org/news/build-dynamic-forms-in-react/

@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 from ..extensions import db
-from ..models.all import User, Userabout, Project
+from ..models.all import User, Userabout, Project, Projectabout
 from flask import jsonify
 import re
 
@@ -12,7 +12,6 @@ user = Blueprint('user', __name__)
 def login ():
     username = request.args.get('username')
     password = request.args.get('password')
-    # print (username, password)
 
     u = User.query.filter_by(username=username).first()
     if u is None:
@@ -40,20 +39,53 @@ def login ():
 # TITHI
 @user.route('/querybyusername', methods=['GET'])
 def get_user_query():
-    # print("+++")
     username = request.args.get('username')
-    # print (request)
 
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
+    print (u.projects[0].id)
     return jsonify({'user': str(u.id) }), 200
+
+
+# TITHI
+@user.route('/firstproject', methods=['GET'])
+def get_user_first_projectid():
+    user_id = request.args.get('user_id')
+
+    u = User.query.filter_by(id=user_id).first()
+    if u is None:
+        return 'Not Found', 200
+    # print (u.projects[0].id)
+    if (len(u.projects) == 0):
+        pid = -1
+        ret = {
+            "project": {
+                "id": -1
+            }
+        }
+    else:
+        pid = str(u.projects[0].id)
+
+        pa = Projectabout.query.filter_by(project_id=pid).first()
+        ret = {
+            "project": {
+                "id": str(pid),
+                "users": list(map(lambda u: str(u.id), u.projects[0].users)),
+                "teams": list(map(lambda t: str(t.id), u.projects[0].teams)),
+                "about": {
+                    "name": str(pa.name),
+                    "description": str(pa.description)
+                }
+            }
+        }
+
+    return jsonify({'first_pid': pid, "first_project": ret }), 200
 
 # TITHI
 @user.route('/reg', methods=['POST'])
 def reg_user():
     args = request.get_json()
-    print ("ARGS:", args)
 
     username = args['username']
     password = args['password']
@@ -92,18 +124,12 @@ def get_team_query():
 
 @user.route('/', methods=['POST'])
 def post_user():
-    print ("BEFORE --")
-    print ('req:', request)
     args = None
 
     try:
         args = request.get_json()
     except:
         print("An exception occurred")
-
-    print ("AFTER --")
-    print ('req:', request)
-    print ('args:', args)
 
     username = args['username']
     password = args['password']
@@ -125,8 +151,6 @@ def post_user():
 
 @user.route('/<id>', methods=['GET'])
 def get_user_id(id):
-    print ("ID:", id)
-    print("---")
     u = User.query.filter_by(id=id).first()
     if u is None:
         return f'Not Found', 404
