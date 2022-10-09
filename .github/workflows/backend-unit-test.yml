@@ -2,7 +2,7 @@ name: Backend unit test
 
 on:
   push:
-    branches: [ main, development ]
+    branches: [ main, development, autorun-backend-tests ]
   pull_request:
     branches: [ main, development ]
 
@@ -27,15 +27,11 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
-    # - name: Install dependencies and set environment
-    #   run: |
-    #     python -m pip install --upgrade pip
-    #     pip install -r Backend/requirements.txt
-    - name: Build and run backend
-      working-directory: Backend
+    - name: Build, run, and test
       run: |
-        sudo docker build -t csc510-p1-backend .
-        sudo docker run --name con1 -d -p 5000:5000 -t csc510-p1-backend
+        sudo docker build -t backend -f backend.Dockerfile .
+        sudo docker run --name backend --rm -d -p 5000:5000 -t backend
+        sudo docker exec backend pytest
     - name: Set up Node 16.x
       uses: actions/setup-node@v2
       with:
@@ -59,6 +55,3 @@ jobs:
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Run tests
-    #   run: |
-    #     python test/run_tests.py
