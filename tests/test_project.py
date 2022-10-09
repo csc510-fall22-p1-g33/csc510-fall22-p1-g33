@@ -16,13 +16,17 @@ def test_create_project():
     id = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": id
+        "creator": id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     assert response.status_code == 201
     
     id = '__________'
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": id
+        "creator": id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     
     assert response.content == b'Not Found'
@@ -44,7 +48,9 @@ def test_get_project():
     user_id = str(response_body["id"])
 
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id
+        "creator": user_id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -56,8 +62,8 @@ def test_get_project():
     assert response_body == {
     "project": {
         "about": {
-            "description": "No description.",
-            "name": "Unnamed Project"
+            "description":"Lorem",
+            "name":"Project Tic Tac"
         },
         "id": project_id,
         "teams": [],
@@ -110,7 +116,9 @@ def test_project_add_users():
 
 
     response = requests.post('http://0.0.0.0:5000/project', json={
-        "creator": user_id_1
+        "creator": user_id_1,
+        "description":"Lorem",
+        "name":"Project Tic Tac"
     })
 
     response_body = response.json()
@@ -135,8 +143,8 @@ def test_project_add_users():
     assert response_body == {
     "project": {
         "about": {
-            "description": "No description.",
-            "name": "Unnamed Project"
+            "description":"Lorem",
+            "name":"Project Tic Tac"
         },
         "id": project_id,
         "teams": [],
@@ -175,7 +183,9 @@ def test_project_remove_users():
     user_id_2 = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id_1
+        "creator": user_id_1,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -196,8 +206,8 @@ def test_project_remove_users():
     assert response_body == {
     "project": {
         "about": {
-            "description": "No description.",
-            "name": "Unnamed Project"
+            "description":"Lorem",
+            "name":"Project Tic Tac"
         },
         "id": project_id,
         "teams": [],
@@ -235,7 +245,9 @@ def test_patch_project_about():
     response_body = response.json()
     user_id = str(response_body["id"])
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id
+        "creator": user_id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])

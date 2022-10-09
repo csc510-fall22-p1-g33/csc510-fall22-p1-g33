@@ -12,8 +12,7 @@ def test_create_user():
             "bio": "my name is john",
         }
     })
-    response_body = response.json()
-    assert response_body
+    # response_body = response.json()
     assert response.status_code == 201
     response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john1",
@@ -55,7 +54,6 @@ def test_get_user():
                 "bio": "my name is john",
             },
             "id": "1",
-            "join_requests": [],
             "password": "1234",
             "projects": [],
             "teams": [],
@@ -104,7 +102,6 @@ def test_edit_user_about():
                 "bio": "I'm not cool."
             },
             "id": str(id),
-            "join_requests": [],
             "password": "1234",
             "projects": [],
             "teams": [],

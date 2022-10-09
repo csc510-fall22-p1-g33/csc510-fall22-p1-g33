@@ -131,14 +131,14 @@ def get_user_id(id):
     if u is None:
         return f'Not Found', 404
     ua = Userabout.query.filter_by(user_id=u.id).first()
+            # CHECK
+            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
     ret = {
         "user": {
             "id": str(u.id),
             "username": str(u.username),
             "password": str(u.password),
             "projects": list(map(lambda p: str(p.id), u.projects)),
-            # CHECK
-            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
             "teams": list(map(lambda p: str(p.id), u.teams)),
             "about": {
                 "name": str(ua.name),

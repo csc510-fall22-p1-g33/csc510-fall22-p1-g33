@@ -16,7 +16,9 @@ def test_create_team():
     user_id = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id
+        "creator": user_id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -58,7 +60,9 @@ def test_get_team():
     user_id = str(response_body["id"])
 
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id
+        "creator": user_id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -76,8 +80,8 @@ def test_get_team():
     assert response_body == {
     "team": {
         "about": {
-            "description": "No description.",
-            "name": "Unnamed Team"
+            "description":"Lorem",
+            "name":"Project Tic Tac"
         },
         "id": team_id,
         "join_requests": [
@@ -124,7 +128,9 @@ def test_team_add_users():
     user_id_2 = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id_1
+        "creator": user_id_1,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     
     response_body = response.json()
@@ -147,8 +153,8 @@ def test_team_add_users():
     assert response_body == {
     "team": {
         "about": {
-            "description": "No description.",
-            "name": "Unnamed Team"
+            "description":"Lorem",
+            "name":"Project Tic Tac"
         },
         "id": team_id,
         "join_requests": [
@@ -191,7 +197,9 @@ def test_team_remove_users():
     user_id_2 = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id_1
+        "creator": user_id_1,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     
     response_body = response.json()
@@ -225,7 +233,9 @@ def test_team_patch_about():
     user_id = str(response_body["id"])
     
     response = requests.post('http://0.0.0.0:5000/project/', json={
-        "creator": user_id
+        "creator": user_id,
+        "name":"Project Tic Tac",
+        "description":"Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
