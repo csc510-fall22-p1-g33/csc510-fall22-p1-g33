@@ -40,13 +40,20 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: "16.x"
-    - name: Update backend documentation
+    - name: Generate backend documentation
       run: |
         sudo docker cp con1:app/docs/specgen.json ./Backend/docs/specgen.json
         npx widdershins --search false --language_tabs 'javascript:JavaScript' --summary ./Backend/docs/specgen.json -o ./Backend/docs/apidocs.md
-        git config user.name "Github Actions"
-        git add .
-        git commit -m "Generate documentation."
+    - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+    - name: Push modifications if they exist
+      if: steps.git-check.outputs.modified == 'true'
+      run:  |
+        git config --global user.name "$GITHUB_ACTOR"
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+        git add -A
+        git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
