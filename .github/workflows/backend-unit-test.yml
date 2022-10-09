@@ -41,12 +41,12 @@ jobs:
       with:
         node-version: 16.x
     - name: Update backend documentation
-      with:
-        token: ${{secrets.GITHUB_TOKEN}}
       run: |
         sudo docker cp con1:app/docs/specgen.json ./Backend/docs/specgen.json
         npx widdershins --search false --language_tabs 'javascript:JavaScript' --summary ./Backend/docs/specgen.json -o ./Backend/docs/apidocs.md
         git push
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
     # - name: Run tests
     #   run: |
     #     python test/run_tests.py
