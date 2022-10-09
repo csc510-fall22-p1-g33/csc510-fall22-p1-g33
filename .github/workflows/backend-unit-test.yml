@@ -2,7 +2,7 @@ name: Backend unit test
 
 on:
   push:
-    branches: [ main, development, autorun-backend-tests ]
+    branches: [ main, development ]
   pull_request:
     branches: [ main, development ]
 
