@@ -8,14 +8,16 @@ class Project extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            p_id: "",
+            p_id: null,
             id: "",
             creator: "",
 
             projectTitle: "",
             projectDetails: "",
 
-            saved: false,
+            first_project: null,
+
+            saved: true,
             project: ""
         }
         this.toggleSaved = this.toggleSaved.bind (this);
@@ -25,13 +27,36 @@ class Project extends Component {
         this.setProjectDetails = this.setProjectDetails.bind (this);
     }
 
-    componentDidMount () {
+    async componentDidMount () {
         this.setState ({creator: this.props.user_id})
+
+        const res = await fetch ('http://127.0.0.1:8010/proxy/user/firstproject?user_id='+this.props.user_id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+            })
+
+        const body = await res.json();
+        console.log (body.first_pid)
+
+        this.setState ({p_id: body.first_pid})
+        this.state.p_id = body.first_pid
+
+        if (body.first_pid != -1){
+            this.setState ({project: body.first_project})
+            this.state.first_project = body.first_project
+            this.state.projectTitle = this.state.first_project.project.about.name
+            this.state.projectDetails = this.state.first_project.project.about.description
+            console.log (this.state.first_project)
+        }
     }
 
     
     submitProject = async () => {
         let project = {
+            pid: this.state.p_id,
             creator: this.state.creator,
             name: this.state.projectTitle,
             description: this.state.projectDetails
@@ -39,33 +64,54 @@ class Project extends Component {
 
         console.log ('Sending POST project:', project)
 
-        const res = await fetch('http://127.0.0.1:8010/proxy/project/', {
-            method: 'POST',
+        if (this.state.p_id == -1) {
+            const res = await fetch('http://127.0.0.1:8010/proxy/project/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify(project)
+            })
+    
+            const body = await res.json();
+            console.log (body)
+            
+            this.setState ({p_id: body.id})
+            this.state.p_id = body.id
+
+            const res2 = await fetch('http://127.0.0.1:8010/proxy/project/'+body.id, {
+            method: 'GET',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(project)
-        })
+            }
+            })
 
-        const body = await res.json();
-        console.log (body)
-        
-        this.setState ({p_id: body.id})
-        this.state.p_id = body.id
-
-
-        const res2 = await fetch('http://127.0.0.1:8010/proxy/project/'+body.id, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            const body2 = await res2.json();
+            console.log (body2)
         }
-        })
+        else {
+            const res = await fetch('http://127.0.0.1:8010/proxy/project/update', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify(project)
+            })
+    
+            const body = await res.json();
+            console.log (body)
+            
+            this.setState ({p_id: body.id})
+            this.state.p_id = body.id
+        }
 
-        const body2 = await res2.json();
-        console.log (body2)
+
+        
 
         this.toggleSaved (true)
     }
@@ -129,7 +175,7 @@ class Project extends Component {
                 <Link className="btn btn-primary" 
                 style={{width: '15%', float: 'right', marginRight: '5%'}}
                 onClick = {() => this.submitProject ()}
-                > Submit Project </Link>
+                > Save Project </Link>
             </div>
         }
 
@@ -137,14 +183,41 @@ class Project extends Component {
         {
             this.state.saved &&
             <div>
-                <p>You have added a project!</p>
 
-                <p>Your Project Details:</p>
-                Creator User ID: {this.state.creator} <br></br>
-                Project ID: {this.state.p_id} <br></br>
-                Title: {this.state.projectTitle} <br></br>
-                Description: {this.state.projectDetails} <br></br>
+                {this.state.p_id != -1 &&
+                <div>
+                    <p>You have added a project!</p>
 
+                    <p>Your Project Details:</p>
+                    Creator User ID: {this.state.creator} <br></br>
+                    Project ID: {this.state.p_id} <br></br>
+                    Title: {this.state.projectTitle} <br></br>
+                    Description: {this.state.projectDetails} <br></br>
+    
+                    <Link className="btn btn-primary" 
+                    style={{width: '15%', float: 'right', marginRight: '5%'}}
+                    onClick = {() => {
+                        this.setState ({saved: false})
+                        this.state.saved = false
+                    }}
+                    > Update Project </Link>
+                </div>
+                }
+
+            {this.state.p_id == -1 &&
+            <div>
+                <p>You have no project yet!</p>
+                <Link className="btn btn-primary" 
+                    style={{width: '15%', float: 'right', marginRight: '5%'}}
+                    onClick = {() => {
+                        this.setState ({saved: false})
+                        this.state.saved = false
+                    }}
+                > Create your first project </Link>
+            </div>
+            }
+
+                
             </div>
         }
             

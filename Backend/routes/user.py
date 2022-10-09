@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 from ..extensions import db
-from ..models.all import User, Userabout, Project
+from ..models.all import User, Userabout, Project, Projectabout
 from flask import jsonify
 import re
 
@@ -44,7 +44,43 @@ def get_user_query():
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
+    print (u.projects[0].id)
     return jsonify({'user': str(u.id) }), 200
+
+
+# TITHI
+@user.route('/firstproject', methods=['GET'])
+def get_user_first_projectid():
+    user_id = request.args.get('user_id')
+
+    u = User.query.filter_by(id=user_id).first()
+    if u is None:
+        return 'Not Found', 200
+    # print (u.projects[0].id)
+    if (len(u.projects) == 0):
+        pid = -1
+        ret = {
+            "project": {
+                "id": -1
+            }
+        }
+    else:
+        pid = str(u.projects[0].id)
+
+        pa = Projectabout.query.filter_by(project_id=pid).first()
+        ret = {
+            "project": {
+                "id": str(pid),
+                "users": list(map(lambda u: str(u.id), u.projects[0].users)),
+                "teams": list(map(lambda t: str(t.id), u.projects[0].teams)),
+                "about": {
+                    "name": str(pa.name),
+                    "description": str(pa.description)
+                }
+            }
+        }
+
+    return jsonify({'first_pid': pid, "first_project": ret }), 200
 
 # TITHI
 @user.route('/reg', methods=['POST'])

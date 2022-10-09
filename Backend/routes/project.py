@@ -13,7 +13,7 @@ def get_project_query():
 
 @project.route('/dashboard', methods=['GET'])
 def get_dashboard():
-    ps = list(map(lambda p: (p.id, p.about.name, p.users), Project.query.all()))
+    ps = list(map(lambda p: (p.id, p.about.name, p.users, p.about.description), Project.query.all()))
     entries = []
     for p in ps:
         uname_list = []
@@ -24,7 +24,8 @@ def get_dashboard():
         obj = {
             'pid': p[0],
             'pname': p[1],
-            'user_list': uname_list
+            'user_list': uname_list,
+            'pdesc': p[3]
         }
         entries.append (obj)
 
@@ -58,6 +59,32 @@ def post_project():
     db.session.commit()
 
     return jsonify({ "id": p.id }), 201
+
+@project.route('/update', methods=['POST'])
+def update_project():
+    args = request.get_json()
+    pid = args['pid']
+    project_name = args['name']
+    project_desc = args['description']
+
+    print (args)
+
+    # p = Project.query.filter_by(id=pid).first()
+    # if p is None:
+    #     return f'Not Found', 404
+    
+    pa = Projectabout.query.filter_by(project_id=pid).first()
+    pa.name = project_name
+    pa.description = project_desc
+    db.session.add(pa)
+    db.session.commit()
+
+    # p = Project.query.filter_by(id=p.id).first()
+    # # p.users.append(u)
+    # db.session.add(p)
+    # db.session.commit()
+
+    return jsonify({ "id": pid}), 201
 
 @project.route('/<id>', methods=['GET'])
 def get_project_id(id):
