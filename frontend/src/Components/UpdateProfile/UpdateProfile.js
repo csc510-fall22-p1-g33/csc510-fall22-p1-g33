@@ -29,9 +29,6 @@ class Profile extends Component {
         this.setPhone = this.setPhone.bind(this);
         this.toggleSaved = this.toggleSaved.bind (this);
         this.setProject = this.setProject.bind (this);
-
-        // this.setProjectTitle = this.setProjectTitle.bind (this);
-        // this.setProjectDetails = this.setProjectDetails.bind (this);
     }
 
     async componentDidMount () {
@@ -288,18 +285,11 @@ class Profile extends Component {
                     style={{width: '15%', float: 'right', marginRight: '5%'}}
                     onClick = {() => this.toggleSaved (false)}
                     > Update Profile </Link>
-                    
-
                 </div>
-
             }
-
-            
-
         </div>
     )
 }
 }
 
 export default Profile;
-// https://www.freecodecamp.org/news/build-dynamic-forms-in-react/

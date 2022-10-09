@@ -32,6 +32,9 @@ class Project extends Component {
         // this.remove_from_team = this.remove_from_team.bind (this)
     }
 
+
+    // if this is the first project for this logged in user, then create a new project and a corresponding team
+    // if the user has a project already, then load that, they can update that lateras well
     async componentDidMount () {
         this.setState ({creator: this.props.user_id})
 
@@ -92,8 +95,6 @@ class Project extends Component {
 
             this.setState ({users: uname_list})
             this.state.users = uname_list
-
-
         }
     }
 
@@ -106,7 +107,7 @@ class Project extends Component {
             description: this.state.projectDetails
         }
 
-        console.log ('Sending POST project:', project)
+        // console.log ('Sending POST project:', project)
 
         if (this.state.p_id == -1) {
             const res = await fetch('http://127.0.0.1:8010/proxy/project/', {
@@ -120,7 +121,7 @@ class Project extends Component {
             })
     
             const body = await res.json();
-            console.log (body)
+            // console.log (body)
             
             this.setState ({p_id: body.id})
             this.state.p_id = body.id
@@ -134,7 +135,7 @@ class Project extends Component {
             })
 
             const body2 = await res2.json();
-            console.log (body2)
+            // console.log (body2)
 
             // for this new project, a new team will be generated
             const res3 = await fetch('http://127.0.0.1:8010/proxy/team/', {
@@ -151,7 +152,7 @@ class Project extends Component {
             })
     
             const body3 = await res3.json();
-            console.log ("newly created team id", body3)
+            // console.log ("newly created team id", body3)
             this.setState ({team_id: body3.id})
             this.state.team_id = body3.id 
         }
@@ -167,7 +168,7 @@ class Project extends Component {
             })
     
             const body = await res.json();
-            console.log (body)
+            // console.log (body)
             
             this.setState ({p_id: body.id})
             this.state.p_id = body.id
@@ -176,13 +177,15 @@ class Project extends Component {
         this.toggleSaved (true)
     }
 
+    // update project title
     setProjectTitle = (e) => {
-        console.log ("project title:", e)
+        // console.log ("project title:", e)
         this.setState ({projectTitle: e})
     }
 
+    // update project description
     setProjectDetails = (e) => {
-        console.log ("project description:", e)
+        // console.log ("project description:", e)
         this.setState ({projectDetails: e})
     }
 
@@ -191,6 +194,8 @@ class Project extends Component {
         this.state.saved = e
     }
 
+    // delete an entire project
+    // the logged in user is the owner of this project/team
     deleteProject = async (e) => {
         if (this.state.p_id != null) {
             const res = await fetch('http://127.0.0.1:8010/proxy/project/'+this.state.p_id, {
@@ -223,9 +228,6 @@ class Project extends Component {
             
     }
 
-    // remove_from_team = () => {
-
-    // }
 
     render() {
         return (
@@ -297,15 +299,10 @@ class Project extends Component {
                             Who are in this team/project: 
                             {this.state.users.map((data, index)=>{
                             return(
-                                <p>{data} 
-
-                                
-                                
-                                </p>
+                                <p>{data}</p>
                             )})}
                         </div>
-                    }
-                    
+                    }                    
     
                     <Link className="btn btn-primary" 
                     style={{width: '15%', float: 'right', marginRight: '5%'}}
@@ -333,12 +330,9 @@ class Project extends Component {
                     }}
                 > Create your first project </Link>
             </div>
-            }
-
-                
+            }   
             </div>
-        }
-            
+        }       
         </div>
     )
 }

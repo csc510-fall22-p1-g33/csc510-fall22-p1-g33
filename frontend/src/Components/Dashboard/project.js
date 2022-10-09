@@ -15,6 +15,8 @@ class Project extends Component {
         }
       }
 
+    // using a project id, this function loaded the full project
+    // all the existing users in the project/team can also be found
       async componentDidMount () {
         console.log ("Loading a project")
 
@@ -27,7 +29,7 @@ class Project extends Component {
         })
         
         const body = await res.json();
-        console.log ("++++++++",body.project.users)
+        // console.log ("++++++++",body.project.users)
 
         let res2, body2, uname;
         let uname_list = []
@@ -52,10 +54,10 @@ class Project extends Component {
             console.log (e)
         }
         uname = body2.user.username
-        console.log (uname)
+        // console.log (uname)
         uname_list.push (uname)
         }
-        console.log ("uname list:", uname_list)
+        // console.log ("uname list:", uname_list)
 
         this.setState({
             name: body.project.about.name,
@@ -69,18 +71,13 @@ class Project extends Component {
         this.state.description = body.project.about.description
         this.state.id = body.project.id
         this.state.teams = body.project.teams
-        this.state.users = uname_list
-
-        
-        
-
+        this.state.users = uname_list         
     }
 
 
     render() {
         return (
-        <div>
-           
+            <div>
                     <div style={{marginLeft: '5%', marginTop: '5%'}}>
                         {/* project name and description */}
                         Project Name: {this.state.name}
@@ -117,9 +114,7 @@ class Project extends Component {
 
                         {/* click this to go back to the dashboard page */}
                         <Link className="btn btn-primary" to="/dashboard"  style={{width: '15%', float: 'right', marginRight: '5%'}}> Back to Dashboard </Link>
-                    </div>
-              
-           
+                    </div>             
         </div>
     )
 }

@@ -27,19 +27,19 @@ class Requests extends Component {
             requests_received_ids:  null,
             requests_received: [],
             team_id: null,
-            is_accepted: "accept",
-            // confirmed: false
+            is_accepted: "accept"
           };
       
         this.togglePopup = this.togglePopup.bind(this);
         this.setComments = this.setComments.bind(this);
         this.set_accepted = this.set_accepted.bind (this)
         this.confirmed = this.confirmed.bind (this)
-        // this.leave_from_team = this.leave_from_team.bind (this)
     }
 
+    // load all the join requests sent by this user
+    // then, all the incoming join requests to this logged in user
     async componentDidMount () {
-        console.log ("Loading sent requests")
+        // console.log ("Loading sent requests")
 
         const res = await fetch('http://127.0.0.1:8010/proxy/user/'+this.props.user_id, {
         method: 'GET',
@@ -50,7 +50,7 @@ class Requests extends Component {
         })
         
         const body = await res.json();
-        console.log ("user_id:", this.props.user_id, "reqs:", body.user.join_requests, "teams:", body.user.teams)
+        // console.log ("user_id:", this.props.user_id, "reqs:", body.user.join_requests, "teams:", body.user.teams)
 
         if (body.user.teams.length > 0){
             this.setState ({team_id: body.user.teams[0]})
@@ -83,13 +83,13 @@ class Requests extends Component {
                 this.state.requests_sent = req_list
             }
 
-            console.log ("user_id:", this.props.user_id)
-            console.log ( "reqs sent:", this.state.requests_sent)
+            // console.log ("user_id:", this.props.user_id)
+            // console.log ( "reqs sent:", this.state.requests_sent)
         }
 
 
         // ----------------------------------------------------
-        console.log ("Loading received requests")
+        // console.log ("Loading received requests")
 
         if (this.state.team_id != null) {
             const res2 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/received?user='+this.props.user_id+'&team='+this.state.team_id, {
@@ -133,10 +133,11 @@ class Requests extends Component {
         this.state.is_accepted = e.target.value;
     }
 
-    confirmed = async (uid, jid, status) => {
 
-        console.log ("confirming -- who_sent -- req_id -- status")
-        console.log (uid, jid, status)
+// after submitting confirm, call the accept or reject joinrequest patch to change the status of the request
+    confirmed = async (uid, jid, status) => {
+        // console.log ("confirming -- who_sent -- req_id -- status")
+        // console.log (uid, jid, status)
 
         if (this.state.is_accepted == 'accept') {
             const res3 = await fetch('http://127.0.0.1:8010/proxy/joinrequest/'+jid+'/'+status, {
@@ -162,9 +163,6 @@ class Requests extends Component {
                 const body3 = await res3.text();
                 console.log (body3)
         }
-
-        // this.setState ({confirmed: true})
-        // this.state.confirmed = true
         this.togglePopup (false)
         this.componentDidMount()
     }
@@ -207,8 +205,6 @@ class Requests extends Component {
                 </table>
                     </div>
                 }
-
-
 
                 <br></br><br></br><br></br>
                 <b>Your team received requests: {this.state.requests_received.length}</b>
@@ -300,9 +296,6 @@ class Requests extends Component {
                 </table>
                     </div>
                 }
-     
-
-                {/* ------- */}
             </div>
         </div>
     )

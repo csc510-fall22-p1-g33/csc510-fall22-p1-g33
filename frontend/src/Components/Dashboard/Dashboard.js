@@ -24,6 +24,7 @@ class Dashboard extends Component {
       }
 
 
+    // at the beginning, all the projects will be loaded here
     async componentDidMount () {
         console.log ("Loading project data")
 
@@ -36,19 +37,19 @@ class Dashboard extends Component {
         })
         
         const body = await res.json();
-        console.log (body)
+        // console.log (body)
 
         this.handleProjects (body)
-        
         this.toggle_loaded (true)
-
     }
 
+    // set the loaded attribute to true if all the data have been loaded
     toggle_loaded = (e) => {
         this.setState ({loaded: e})
         this.state.loaded = e
     }
 
+    // set current projects in the state after loading
     handleProjects = (e) => {
         this.setState ({currentProjects: e})
         this.state.currentProjects = e;
@@ -67,7 +68,8 @@ class Dashboard extends Component {
         this.state.popup = val;
     }
 
-
+    // if the currently logged in user doesn't have a team, it's possible to send a new request to another team
+    // using a project id and team id, a user can submit a join request 
     send_request = async (e) => {
 
         // check if the user is in already in a team
@@ -181,8 +183,6 @@ class Dashboard extends Component {
 
 
                             {this.state.sent &&
-
-
                             <PopUp 
                                 content={<>
                                     <b style={{

@@ -37,6 +37,7 @@ class App extends Component {
         }
       }
 
+      // utlities for signout/siginin functionality
       onRouteChange = (route, args) => {
         if (route === 'signout') {
           this.setState({isSignedIn: false})
