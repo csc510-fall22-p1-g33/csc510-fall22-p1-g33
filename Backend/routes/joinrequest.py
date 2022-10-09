@@ -1,3 +1,4 @@
+from re import T
 from flask import Blueprint
 from flask import request
 from ..extensions import db
@@ -50,6 +51,49 @@ joinrequest = Blueprint('joinrequest', __name__)
 def get_joinrequest_query():
     js = list(map(lambda j: str(j.id), Joinrequest.query.all()))
     return jsonify({'join_requests': [] + js}), 200
+
+# TITHI
+@joinrequest.route('/received', methods=['GET'])
+def get_received_joinrequests():
+    uid = request.args.get('user')
+    tid = request.args.get('team')
+    print ("user:", uid)
+    print ("team:", tid)
+
+    ret_list = []
+
+    js = Joinrequest.query.all()
+    for item in js:
+        # print (item.id)
+        # print (item.user)
+        # print (item.team.id)
+        # print (item.status)
+
+        print ("user", uid, item.user.id)
+        print ("team", tid, item.team.id)
+
+        t = Team.query.filter_by(id=tid).first()
+        if t is None:
+            return f'Not Found', 404
+
+        if str(tid) == str(item.team.id) and str(uid) != str(item.user.id):
+            print ("user id", uid, "got join req for team id", tid, "from user id", item.user.id)
+            u = User.query.filter_by(id=item.user.id).first()
+            # for i in u.join_requests:
+            #     print (i)
+            ret = {
+                    "join_request": {
+                        "who_sent_id":  item.user.id,
+                        "who_sent_uname": u.username,
+                        "who_received": uid,
+                        "req_id": item.id,
+                        "team_id": item.team.id,
+                        "status": item.status
+                    }
+            }
+            ret_list.append (ret)
+            
+    return jsonify(ret_list), 200
 
 @joinrequest.route('/', methods=['POST'])
 @swag_from({

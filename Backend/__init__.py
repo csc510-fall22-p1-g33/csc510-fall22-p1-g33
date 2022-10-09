@@ -10,12 +10,18 @@ from .routes.joinrequest import joinrequest
 from .routes.project import project
 from .routes.team import team
 from .routes.user import user
+from flasgger import Swagger
+
+import os
 
 import os
 
 # import flask_restless
 
 def create_app():
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'db.sqlite3')
+
     app = Flask(__name__)
 
     app.config['SWAGGER'] = {
@@ -41,7 +47,9 @@ def create_app():
 
     swagger = Swagger(app, template=s_template)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+    app.url_map.strict_slashes = False
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{filename}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
@@ -59,7 +67,6 @@ def create_app():
         specgenfile.write(specgen)
         specgenfile.close()
         
-
     # app.register_blueprint(api)
     # app.register_blueprint(registerer) 
     # app.run()

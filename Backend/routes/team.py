@@ -136,7 +136,7 @@ def post_team():
     db.session.add(t)
     db.session.commit()
 
-    ta = Teamabout(team_id=t.id, name='Unnamed Team', description='No description.')
+    ta = Teamabout(team_id=t.id, name='Project Tic Tac', description='Lorem')
     db.session.add(ta)
     db.session.commit()
 
