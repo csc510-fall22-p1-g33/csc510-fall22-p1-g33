@@ -19,7 +19,7 @@
 Team formation tool is an easy-to-use web-app that assists you to form teams efficiently. 
 
 
-[![DEMO](docs/demo.png)]()
+[![DEMO](docs/demo.png)](https://user-images.githubusercontent.com/7265270/194771098-65e7c2fa-4ab0-4bc4-8525-76e2565aa2cb.mp4)
 
 
 ## Our Functionality
@@ -49,7 +49,7 @@ Please check [INSTALL.md](INSTALL.md) for instructions on how to install this pa
 - Please check [README.md](tests/README.md) in the test folder for instructions on how to run the test cases manually
 ## Test case output 
 
-[PICTURE OF TESTS passing]
+[![TEST CASES](https://asciinema.org/a/O2kBZiiGGwfob9ZAenMRto55E.svg)](https://asciinema.org/a/O2kBZiiGGwfob9ZAenMRto55E)
 
 ## Code Coverage
 
