@@ -1,4 +1,8 @@
 flask
 Flask-SQLAlchemy
 Flask-Migrate
+setuptools
 flasgger
+pytest
+requests
+coverage
