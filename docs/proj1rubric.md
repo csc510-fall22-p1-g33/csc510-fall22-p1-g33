@@ -22,9 +22,9 @@
 |Docs: why: docs tell a story, motivate the whole thing, deliver a punchline that makes you want to rush out and use the thing|3|[README](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33#readme)
 |Docs: short video, animated, hosted on your repo. That convinces people why they want to work on your code.|3|[README](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33#readme)
 |Use of version control tools|3|[README](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33#readme)
-|Use of style checkers |3|-------
-|Use of code formatters. |3|--------
-|Use of syntax checkers. |3|--------
+|Use of style checkers |3| The project has a .vscode folder with environment settings for automatic style-checking on save
+|Use of code formatters. |3| The project has a .vscode folder with environment settings for automatic code-formatting on save
+|Use of syntax checkers. |3| The project has a .vscode folder with environment settings for syntax settings
 |Use of code coverage |3|[README](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33#readme)
 |Other automated analysis tools|3|[README](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33#readme)
 |Test cases exist|3|[tests](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/tree/main/test)
