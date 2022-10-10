@@ -35,6 +35,7 @@ jobs:
       run: |
         sudo docker exec backend coverage run --source Backend/routes -m pytest
     - name: Show coverage
+      run: |
         sudo docker exec backend coverage report
     - name: Set up Node 16.x
       uses: actions/setup-node@v2
