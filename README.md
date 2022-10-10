@@ -75,6 +75,14 @@ Please check [INSTALL.md](INSTALL.md) for instructions on how to install this pa
 
 Coverage reported in Github Actions log 
 
+## Support
+
+If users need any support with the product, email rpmertz@ncsu.edu
+
+## Funding
+
+This project is not funded
+
 ## Roadmap
 
 Can be found [here](https://github.com/users/mkudith/projects/1/views/1)
