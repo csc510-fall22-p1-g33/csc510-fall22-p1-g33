@@ -6,7 +6,8 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem} from 'reactstrap';
+    NavItem
+} from 'reactstrap';
 import "./NavigationBar.css";
 import logo_image from "../../Resources/Images/image 6.png";
 import avatar from "../../Resources/Images/image 33.png";
@@ -31,22 +32,22 @@ class NavigationBar extends Component {
     }
 
     render() {
-        if(!this.props.isSignedIn) {
+        if (!this.props.isSignedIn) {
             return (
                 <>
                     <Navbar className="navbar-expand-lg fixed-top" light>
                         <NavbarBrand href="/">
                             <div className="logo">
-                            <img src={logo_image} className="logo_image"/>                                
+                                <img src={logo_image} className="logo_image" />
                             </div>
-                            
+
                         </NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
 
                         <Collapse isOpen={this.state.isOpen} navbar>
-                            <Nav className="ml-auto" navbar>                            
+                            <Nav className="ml-auto" navbar>
                                 <NavItem className="nav-item">
-                                    <NavLink className="nav-links" to="/signin" style={{color:"white"}}>
+                                    <NavLink className="nav-links" to="/signin" style={{ color: "white" }}>
                                         Log In
                                     </NavLink>
                                 </NavItem>
@@ -54,21 +55,21 @@ class NavigationBar extends Component {
                                 {/* <li class="divider-vertical-second-menu2"></li> */}
 
                                 <NavItem className="nav-item">
-                                    
-                                    <NavLink className="nav-links" to="/register" style={{color:"white"}}>
+
+                                    <NavLink className="nav-links" to="/register" style={{ color: "white" }}>
                                         Register
                                     </NavLink>
-                                    
+
                                 </NavItem>
-                                
+
                             </Nav>
                         </Collapse>
-                        
+
                     </Navbar>
                 </>
             );
         }
-    else {
+        else {
             return (
                 <>
                     <Navbar className="navbar-expand-lg fixed-top " light>
@@ -101,16 +102,16 @@ class NavigationBar extends Component {
                                 <li className="divider-vertical-second-menu"></li>
                                 <NavItem>
                                     <NavLink className="nav-links" to="/authHome">
-                                    Update Profile
+                                        Update Profile
                                     </NavLink>
                                 </NavItem>
-                                
+
                                 <Link to="/profile">
-                                <img src={avatar} />
+                                    <img src={avatar} />
                                 </Link>
                                 <NavItem style={{ paddingLeft: 10 }}>
                                     <NavLink className="nav-links" to="/" onClick={this.onSubmitSignOut}>
-                                    Log Out
+                                        Log Out
                                     </NavLink>
                                 </NavItem>
                             </Nav>
@@ -120,7 +121,7 @@ class NavigationBar extends Component {
                 </>
             );
         }
-        
+
     }
 }
 

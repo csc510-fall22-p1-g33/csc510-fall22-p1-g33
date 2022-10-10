@@ -8,6 +8,7 @@ from flasgger import swag_from
 
 joinrequest = Blueprint('joinrequest', __name__)
 
+
 @joinrequest.route('/query', methods=['GET'])
 @swag_from({
     "summary": "Your GET endpoint",
@@ -53,12 +54,14 @@ def get_joinrequest_query():
     return jsonify({'join_requests': [] + js}), 200
 
 # TITHI
+
+
 @joinrequest.route('/received', methods=['GET'])
 def get_received_joinrequests():
     uid = request.args.get('user')
     tid = request.args.get('team')
-    print ("user:", uid)
-    print ("team:", tid)
+    print("user:", uid)
+    print("team:", tid)
 
     ret_list = []
 
@@ -69,31 +72,33 @@ def get_received_joinrequests():
         # print (item.team.id)
         # print (item.status)
 
-        print ("user", uid, item.user.id)
-        print ("team", tid, item.team.id)
+        print("user", uid, item.user.id)
+        print("team", tid, item.team.id)
 
         t = Team.query.filter_by(id=tid).first()
         if t is None:
             return f'Not Found', 404
 
         if str(tid) == str(item.team.id) and str(uid) != str(item.user.id):
-            print ("user id", uid, "got join req for team id", tid, "from user id", item.user.id)
+            print("user id", uid, "got join req for team id",
+                  tid, "from user id", item.user.id)
             u = User.query.filter_by(id=item.user.id).first()
             # for i in u.join_requests:
             #     print (i)
             ret = {
-                    "join_request": {
-                        "who_sent_id":  item.user.id,
-                        "who_sent_uname": u.username,
-                        "who_received": uid,
-                        "req_id": item.id,
-                        "team_id": item.team.id,
-                        "status": item.status
-                    }
+                "join_request": {
+                    "who_sent_id":  item.user.id,
+                    "who_sent_uname": u.username,
+                    "who_received": uid,
+                    "req_id": item.id,
+                    "team_id": item.team.id,
+                    "status": item.status
+                }
             }
-            ret_list.append (ret)
-            
+            ret_list.append(ret)
+
     return jsonify(ret_list), 200
+
 
 @joinrequest.route('/', methods=['POST'])
 @swag_from({
@@ -180,20 +185,21 @@ def post_joinrequest():
 
     # TODO: check if user is in the project that the team is in
     # TODO: check if user is already in a team in the project
-    
+
     j = Joinrequest.query.filter_by(user_id=u.id, team_id=t.id).first()
     if j is None:
         j = Joinrequest(user_id=u.id, team_id=t.id, status='pending')
-    
+
     if j.status != 'pending' and j.status != 'withdrawn':
         return 'Conflict', 409
-    
+
     j.status = 'pending'
 
     db.session.add(j)
     db.session.commit()
 
-    return jsonify({ "id": j.id }), 200
+    return jsonify({"id": j.id}), 200
+
 
 @joinrequest.route('/<id>', methods=['GET'])
 @swag_from({
@@ -294,6 +300,7 @@ def get_joinrequest_id(id):
     }
     return jsonify(ret), 200
 
+
 @joinrequest.route('/<id>', methods=['DELETE'])
 @swag_from({
     "summary": "delete join request",
@@ -309,6 +316,7 @@ def get_joinrequest_id(id):
 def delete_joinrequest_id(id):
     # TODO: implement
     return 'Not Implemented', 501
+
 
 @joinrequest.route('/<id>/accept', methods=['PATCH'])
 @swag_from({
@@ -336,7 +344,7 @@ def patch_joinrequest_id_accept(id):
 
     u = j.user
     t = j.team
-    
+
     t.users.append(u)
     j.status = 'accepted'
 
@@ -349,8 +357,9 @@ def patch_joinrequest_id_accept(id):
     db.session.add(j)
 
     db.session.commit()
-    
+
     return 'OK', 200
+
 
 @joinrequest.route('/<id>/reject', methods=['PATCH'])
 @swag_from({
@@ -375,13 +384,14 @@ def patch_joinrequest_id_reject(id):
         return 'Not Found', 404
     if j.status != 'pending':
         return 'Conflict', 409
-    
+
     j.status = 'rejected'
 
     db.session.add(j)
     db.session.commit()
-    
+
     return 'OK', 200
+
 
 @joinrequest.route('/<id>/withdraw', methods=['PATCH'])
 @swag_from({
@@ -408,10 +418,10 @@ def patch_joinrequest_id_withdraw(id):
         # TODO: redecide this functionality
         # No way to un-reject, so users can withdraw and reapply as a temp fix
         return 'Conflict', 409
-    
+
     j.status = 'withdrawn'
 
     db.session.add(j)
     db.session.commit()
-    
+
     return 'OK', 200

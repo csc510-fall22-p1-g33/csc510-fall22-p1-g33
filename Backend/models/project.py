@@ -11,4 +11,4 @@
 #     team = db.relationship('Team',foreign_keys=['team_id'], backref=db.backref('team_project'))
 
 #     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-#     user = db.relationship('User',foreign_keys=['user_id'], backref=db.backref('user_project')) 
+#     user = db.relationship('User',foreign_keys=['user_id'], backref=db.backref('user_project'))

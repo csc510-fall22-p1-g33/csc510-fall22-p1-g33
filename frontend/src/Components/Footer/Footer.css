@@ -23,11 +23,13 @@
     font-size: 1rem;
     align-items: right;
 }
+
 .nav-item2 {
     padding-right: 10px;
     font-size: 1rem;
     align-items: right;
 }
+
 .nav-item3 {
     padding-left: 10px;
     font-size: 1rem;
@@ -42,27 +44,32 @@
     align-items: right;
 }
 
-.nav-links:hover {color: gainsboro;}
+.nav-links:hover {
+    color: gainsboro;
+}
 
 .logo {
-    color:white;
+    color: white;
 }
-.divider-vertical-second-menu{
+
+.divider-vertical-second-menu {
     height: 30px;
     width: 1px;
-    
-    
+
+
     background-color: #DDD;
-    border-right:1px solid #FFF;
- }
- .divider-vertical-second-menu2{
+    border-right: 1px solid #FFF;
+}
+
+.divider-vertical-second-menu2 {
     height: 30px;
     width: 1px;
-    
-    
+
+
     background-color: #DDD;
-    border-right:1px solid #FFF;
- }
- .logo_image{
-     width:17%;
- }
+    border-right: 1px solid #FFF;
+}
+
+.logo_image {
+    width: 17%;
+}

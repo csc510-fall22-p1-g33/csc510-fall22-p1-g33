@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def test_create_team():
     response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
@@ -14,11 +15,11 @@ def test_create_team():
     })
     response_body = response.json()
     user_id = str(response_body["id"])
-    
+
     response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -27,7 +28,7 @@ def test_create_team():
         "project": project_id,
     })
     assert response.status_code == 201
-    
+
     fake_user_id = '__________'
     response = requests.post('http://0.0.0.0:5000/team/', json={
         "creator": fake_user_id,
@@ -61,12 +62,12 @@ def test_get_team():
 
     response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
-    
+
     response = requests.post('http://0.0.0.0:5000/team/', json={
         "creator": user_id,
         "project": project_id,
@@ -78,20 +79,20 @@ def test_get_team():
     responsenew = response.content.decode("utf-8")
     response_body = json.loads(responsenew)
     assert response_body == {
-    "team": {
-        "about": {
-            "description":"Lorem",
-            "name":"Project Tic Tac"
-        },
-        "id": team_id,
-        "join_requests": [
-            user_id
-        ],
-        "project": project_id,
-        "users": [
-            user_id
-        ]
-    }
+        "team": {
+            "about": {
+                "description": "Lorem",
+                "name": "Project Tic Tac"
+            },
+            "id": team_id,
+            "join_requests": [
+                user_id
+            ],
+            "project": project_id,
+            "users": [
+                user_id
+            ]
+        }
     }
     assert response.status_code == 200
     team_id = '__________'
@@ -126,13 +127,13 @@ def test_team_add_users():
     })
     response_body = response.json()
     user_id_2 = str(response_body["id"])
-    
+
     response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id_1,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
-    
+
     response_body = response.json()
     project_id = str(response_body["id"])
 
@@ -142,32 +143,32 @@ def test_team_add_users():
     })
     response_body = response.json()
     team_id = str(response_body["id"])
-    
+
     response = requests.patch(f'http://0.0.0.0:5000/team/{team_id}/users/add/', json={
         "user_id": user_id_2
     })
     response = requests.get(f'http://0.0.0.0:5000/team/{team_id}/')
     responsenew = response.content.decode("utf-8")
     response_body = json.loads(responsenew)
-    # TODO fix this endpoint - needs to have list of all users 
+    # TODO fix this endpoint - needs to have list of all users
     assert response_body == {
-    "team": {
-        "about": {
-            "description":"Lorem",
-            "name":"Project Tic Tac"
-        },
-        "id": team_id,
-        "join_requests": [
-            user_id_1
-        ],
-        "project": project_id,
-        "users": [
-            user_id_1
-        ]
-    }
+        "team": {
+            "about": {
+                "description": "Lorem",
+                "name": "Project Tic Tac"
+            },
+            "id": team_id,
+            "join_requests": [
+                user_id_1
+            ],
+            "project": project_id,
+            "users": [
+                user_id_1
+            ]
+        }
     }
     assert response.status_code == 200
-    
+
 
 def test_team_remove_users():
     response = requests.post('http://0.0.0.0:5000/user/', json={
@@ -195,13 +196,13 @@ def test_team_remove_users():
     })
     response_body = response.json()
     user_id_2 = str(response_body["id"])
-    
+
     response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id_1,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
-    
+
     response_body = response.json()
     project_id = str(response_body["id"])
 
@@ -211,12 +212,13 @@ def test_team_remove_users():
     })
     response_body = response.json()
     team_id = str(response_body["id"])
-    
+
     response = requests.patch(f'http://0.0.0.0:5000/team/{team_id}/users/remove/', json={
         "user_id": user_id_1
     })
     assert response.content == b'OK'
     assert response.status_code == 200
+
 
 def test_team_patch_about():
     response = requests.post('http://0.0.0.0:5000/user/', json={
@@ -231,11 +233,11 @@ def test_team_patch_about():
     })
     response_body = response.json()
     user_id = str(response_body["id"])
-    
+
     response = requests.post('http://0.0.0.0:5000/project/', json={
         "creator": user_id,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])
@@ -243,7 +245,7 @@ def test_team_patch_about():
         "creator": user_id,
         "project": project_id,
     })
-    
+
     response_body = response.json()
     team_id = str(response_body["id"])
     response = requests.patch(f'http://0.0.0.0:5000/team/{team_id}/about', json={
@@ -254,19 +256,19 @@ def test_team_patch_about():
     responsenew = response.content.decode("utf-8")
     response_body = json.loads(responsenew)
     assert response_body == {
-    "team": {
-        "about": {
-            "description": "this is such a cool team",
-            "name": "team"
-        },
-        "id": team_id,
-        "join_requests": [
-            user_id
-        ],
-        "project": project_id,
-        "users": [
-            user_id
-        ]
-    }
+        "team": {
+            "about": {
+                "description": "this is such a cool team",
+                "name": "team"
+            },
+            "id": team_id,
+            "join_requests": [
+                user_id
+            ],
+            "project": project_id,
+            "users": [
+                user_id
+            ]
+        }
     }
     assert response.status_code == 200

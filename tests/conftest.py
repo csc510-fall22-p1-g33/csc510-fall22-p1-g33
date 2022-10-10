@@ -20,7 +20,7 @@ def app():
         db.create_all()
 
     yield app
-    
+
 
 @pytest.fixture()
 def client(app):

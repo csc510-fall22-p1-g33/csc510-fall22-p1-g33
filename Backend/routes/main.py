@@ -7,14 +7,15 @@ from ..models.all import User
 # from ..models.project import Project
 
 from flasgger.utils import swag_from
- 
+
 
 main = Blueprint('main', __name__)
+
 
 @swag_from("./docs/main_api_doc.yml")
 @main.route('/')
 def index():
-    print ("here")
+    print("here")
     return "Hello world!"
 
 

@@ -11,7 +11,8 @@ import {
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem } from 'reactstrap';
+    DropdownItem
+} from 'reactstrap';
 import i18n from "i18next";
 import "./Footer.css";
 
@@ -27,32 +28,32 @@ class Footer extends Component {
     };
 
     render() {
-        return(
+        return (
             <>
                 <Navbar className="navbar-expand-lg" light>
                     <NavbarToggler onClick={this.toggle} />
-                    
+
                     <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="mr-auto" navbar>
+                        <Nav className="mr-auto" navbar>
                             <NavItem>
                                 <NavLink className="nav-links" to="/about">
-                                    { i18n.t("About") }
+                                    {i18n.t("About")}
                                 </NavLink>
                             </NavItem>
 
                             <NavItem>
                                 <NavLink className="nav-links" to="/policy">
-                                    { i18n.t("Policy") }
+                                    {i18n.t("Policy")}
                                 </NavLink>
-                            </NavItem>   
-                    </Nav>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <NavLink className="nav-links" to="/contact">
-                                { i18n.t("Contact") }
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
+                            </NavItem>
+                        </Nav>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink className="nav-links" to="/contact">
+                                    {i18n.t("Contact")}
+                                </NavLink>
+                            </NavItem>
+                        </Nav>
                     </Collapse>
                 </Navbar>
             </>

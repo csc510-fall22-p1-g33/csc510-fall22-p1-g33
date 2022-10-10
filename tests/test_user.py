@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def test_create_user():
     response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john1",
@@ -41,7 +42,7 @@ def test_get_user():
     })
     response_body = response.json()
     id = response_body["id"]
-    
+
     response = requests.get(f'http://0.0.0.0:5000/user/{id}/')
     responsenew = response.content.decode("utf-8")
     response_body = json.loads(responsenew)
@@ -66,6 +67,7 @@ def test_get_user():
     assert response.content == b'Not Found'
     assert response.status_code == 404
 
+
 def test_edit_user_about():
     response = requests.post('http://0.0.0.0:5000/user/', json={
         "username": "john",
@@ -82,19 +84,19 @@ def test_edit_user_about():
     assert response.status_code == 201
 
     response = requests.patch(f'http://0.0.0.0:5000/user/{id}/about/', json={
-    "about": {
-        "name": "John",
-        "email": "jdoe@ncsu.edu",
-        "phone": "9999999999",
-        "bio": "I'm not cool."
-    }
+        "about": {
+            "name": "John",
+            "email": "jdoe@ncsu.edu",
+            "phone": "9999999999",
+            "bio": "I'm not cool."
+        }
     })
 
     response = requests.get(f'http://0.0.0.0:5000/user/{id}/')
     responsenew = response.content.decode("utf-8")
     response_body = json.loads(responsenew)
     assert response_body == {
-    "user": {
+        "user": {
             "about": {
                 "name": "John",
                 "email": "jdoe@ncsu.edu",
