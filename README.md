@@ -63,6 +63,10 @@ Coverage reported in Github Actions log
 
 If users need any support with the product, email rpmertz@ncsu.edu
 
+## Funding
+
+This project is not funded
+
 ## Roadmap
 
 Can be found [here](https://github.com/users/mkudith/projects/1/views/1)
