@@ -7,6 +7,7 @@ from flasgger import swag_from
 
 team = Blueprint('team', __name__)
 
+
 @team.route('/query', methods=['GET'])
 @swag_from({
     "summary": "Your GET endpoint",
@@ -50,6 +51,7 @@ team = Blueprint('team', __name__)
 def get_team_query():
     ts = list(map(lambda t: str(t.id), Team.query.all()))
     return jsonify({'teams': [] + ts}), 200
+
 
 @team.route('/', methods=['POST'])
 @swag_from({
@@ -131,7 +133,7 @@ def post_team():
     p = Project.query.filter_by(id=project).first()
     if p is None:
         return 'Not Found', 404
-    
+
     t = Team(project_id=p.id, filled=False)
     db.session.add(t)
     db.session.commit()
@@ -147,7 +149,8 @@ def post_team():
     db.session.add(j)
     db.session.commit()
 
-    return jsonify({ "id": t.id }), 201
+    return jsonify({"id": t.id}), 201
+
 
 @team.route('/<id>', methods=['GET'])
 @swag_from({
@@ -306,6 +309,7 @@ def get_team_id(id):
     }
     return jsonify(ret), 200
 
+
 @team.route('/<id>', methods=['DELETE'])
 @swag_from({
     "summary": "delete team",
@@ -346,6 +350,7 @@ def delete_team_id(id):
 #     db.session.add(p)
 #     db.session.commit()
 #     return 'OK', 200
+
 
 @team.route('/<id>/users/remove', methods=['PATCH'])
 @swag_from({
@@ -409,6 +414,7 @@ def patch_team_id_users_remove(id):
         delete_team_id(id)
     return 'OK', 200
 
+
 @team.route('/<id>/about', methods=['PATCH'])
 @swag_from({
     "summary": "edit team about",
@@ -469,6 +475,7 @@ def patch_team_id_about(id):
     db.session.add(ta)
     db.session.commit()
     return 'OK', 200
+
 
 @team.route('/<id>/filled', methods=['PATCH'])
 @swag_from({

@@ -7,7 +7,7 @@ import welcome from "../../Resources/Images/homepage1.jpg";
 class Home extends Component {
     constructor(props) {
         super(props);
-    } 
+    }
 
     render() {
         return (
@@ -15,7 +15,7 @@ class Home extends Component {
                 <main>
                     <section id="home">
                         <div></div>
-                       
+
                         <div className="container-fluid">
                             <h3>Team Formation Tool</h3>
                             <h6>Explore | Be up-to-date about others' availability | Form your team</h6>
@@ -23,7 +23,7 @@ class Home extends Component {
                                 className="welcome-img mx-left"
                                 src={welcome}
                             />
-                            </div>
+                        </div>
                     </section>
                 </main>
             </>

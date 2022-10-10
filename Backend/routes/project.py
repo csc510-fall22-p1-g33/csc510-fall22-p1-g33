@@ -7,6 +7,7 @@ from flasgger import swag_from
 
 project = Blueprint('project', __name__)
 
+
 @project.route('/query', methods=['GET'])
 @swag_from({
     "summary": "Your GET endpoint",
@@ -51,12 +52,14 @@ def get_project_query():
     ps = list(map(lambda p: str(p.id), Project.query.all()))
     return jsonify({'projects': [] + ps}), 200
 
+
 @project.route('/dashboard', methods=['GET'])
 def get_dashboard():
-    ps = list(map(lambda p: (p.id, p.about.name, p.users, p.about.description, p.teams), Project.query.all()))
+    ps = list(map(lambda p: (p.id, p.about.name, p.users,
+              p.about.description, p.teams), Project.query.all()))
     entries = []
     for p in ps:
-        print (p[0], p[1], p[3], p[4])
+        print(p[0], p[1], p[3], p[4])
         uname_list = []
         # for u in p[2]:
         #     print (u.id)
@@ -71,10 +74,10 @@ def get_dashboard():
             if t is None:
                 return 'Not Found', 404
             for ui in t.users:
-                
+
                 user_ = User.query.filter_by(id=ui.id).first()
-                print (user_.username)
-                uname_list.append ((user_.id, user_.username))
+                print(user_.username)
+                uname_list.append((user_.id, user_.username))
         # -----------
 
         obj = {
@@ -83,11 +86,10 @@ def get_dashboard():
             'user_list': uname_list,
             'pdesc': p[3]
         }
-        entries.append (obj)
+        entries.append(obj)
 
-
-   
     return jsonify(entries), 200
+
 
 @project.route('/', methods=['POST'])
 @swag_from({
@@ -158,7 +160,6 @@ def post_project():
     project_name = args['name']
     project_desc = args['description']
 
-
     u = User.query.filter_by(id=creator).first()
     if u is None:
         return 'Not Found', 404
@@ -166,8 +167,9 @@ def post_project():
     p = Project()
     db.session.add(p)
     db.session.commit()
-    
-    pa = Projectabout(project_id=p.id, name=project_name, description=project_desc)
+
+    pa = Projectabout(project_id=p.id, name=project_name,
+                      description=project_desc)
     db.session.add(pa)
     db.session.commit()
 
@@ -176,7 +178,8 @@ def post_project():
     db.session.add(p)
     db.session.commit()
 
-    return jsonify({ "id": p.id }), 201
+    return jsonify({"id": p.id}), 201
+
 
 @project.route('/update', methods=['POST'])
 def update_project():
@@ -185,12 +188,12 @@ def update_project():
     project_name = args['name']
     project_desc = args['description']
 
-    print (args)
+    print(args)
 
     # p = Project.query.filter_by(id=pid).first()
     # if p is None:
     #     return f'Not Found', 404
-    
+
     pa = Projectabout.query.filter_by(project_id=pid).first()
     pa.name = project_name
     pa.description = project_desc
@@ -202,7 +205,8 @@ def update_project():
     # db.session.add(p)
     # db.session.commit()
 
-    return jsonify({ "id": pid}), 201
+    return jsonify({"id": pid}), 201
+
 
 @project.route('/<id>', methods=['GET'])
 @swag_from({
@@ -345,6 +349,7 @@ def get_project_id(id):
     }
     return jsonify(ret), 200
 
+
 @project.route('/<id>', methods=['DELETE'])
 @swag_from({
     "summary": "delete project",
@@ -370,6 +375,7 @@ def delete_project_id(id):
     db.session.delete(p)
     db.session.commit()
     return 'OK', 200
+
 
 @project.route('/<id>/users/add', methods=['PATCH'])
 @swag_from({
@@ -424,6 +430,7 @@ def patch_project_id_users_add(id):
     db.session.add(p)
     db.session.commit()
     return 'OK', 200
+
 
 @project.route('/<id>/users/remove', methods=['PATCH'])
 @swag_from({
@@ -482,6 +489,7 @@ def patch_project_id_users_remove(id):
     if len(p.users) == 0:
         delete_project_id(id)
     return 'OK', 200
+
 
 @project.route('/<id>/about', methods=['PATCH'])
 @swag_from({

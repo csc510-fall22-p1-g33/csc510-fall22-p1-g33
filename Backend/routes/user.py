@@ -9,8 +9,10 @@ from flasgger import swag_from
 user = Blueprint('user', __name__)
 
 # TITHI
+
+
 @user.route('/login', methods=['GET'])
-def login ():
+def login():
     username = request.args.get('username')
     password = request.args.get('password')
 
@@ -22,7 +24,7 @@ def login ():
     if u is None:
         return f'Not Found', 404
     ua = Userabout.query.filter_by(user_id=u.id).first()
-    
+
     ret_success = {
         "user_id": searched_id,
         "login": "SUCCESS"
@@ -38,6 +40,8 @@ def login ():
         return jsonify(ret_failed), 400
 
 # TITHI
+
+
 @user.route('/querybyusername', methods=['GET'])
 def get_user_query():
     username = request.args.get('username')
@@ -45,8 +49,8 @@ def get_user_query():
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
-    print (u.projects[0].id)
-    return jsonify({'user': str(u.id) }), 200
+    print(u.projects[0].id)
+    return jsonify({'user': str(u.id)}), 200
 
 
 # TITHI
@@ -81,9 +85,11 @@ def get_user_first_projectid():
             }
         }
 
-    return jsonify({'first_pid': pid, "first_project": ret }), 200
+    return jsonify({'first_pid': pid, "first_project": ret}), 200
 
 # TITHI
+
+
 @user.route('/reg', methods=['POST'])
 def reg_user():
     args = request.get_json()
@@ -93,25 +99,26 @@ def reg_user():
     about = args['about']
 
     if username == "":
-        return jsonify({ "id": -1, "error_type": "Username is required."}), 400
+        return jsonify({"id": -1, "error_type": "Username is required."}), 400
     elif password == "":
-        return jsonify({ "id": -1, "error_type": "Password is required."}), 400
+        return jsonify({"id": -1, "error_type": "Password is required."}), 400
     elif not re.match(r'[^@]+@[^@]+\.[^@]+', about['email']):
-        return jsonify({ "id": -1, "error_type": "Invalid email address!"}), 400
+        return jsonify({"id": -1, "error_type": "Invalid email address!"}), 400
 
     u = User.query.filter_by(username=username).first()
     if u is not None:
-        return jsonify({ "id": -1, "error_type": "Conflict: User already exists."}), 400
+        return jsonify({"id": -1, "error_type": "Conflict: User already exists."}), 400
 
     u = User(username=username, password=password)
     db.session.add(u)
     db.session.commit()
 
-    ua = Userabout(user_id=u.id, name=about['name'], email=about['email'], phone=about['phone'], bio=about['bio'])
+    ua = Userabout(
+        user_id=u.id, name=about['name'], email=about['email'], phone=about['phone'], bio=about['bio'])
     db.session.add(ua)
     db.session.commit()
 
-    return jsonify({ "id": u.id, "error_type": "No Error!"}), 201
+    return jsonify({"id": u.id, "error_type": "No Error!"}), 201
 
 
 @user.route('/query', methods=['GET'])
@@ -184,7 +191,7 @@ def get_team_query():
     u = User.query.filter_by(username=username).first()
     if u is None:
         return 'Not Found', 200
-    return jsonify({'user': str(u.id) }), 200
+    return jsonify({'user': str(u.id)}), 200
 
 
 @user.route('/', methods=['POST'])
@@ -323,11 +330,13 @@ def post_user():
     db.session.add(u)
     db.session.commit()
 
-    ua = Userabout(user_id=u.id, name=about['name'], email=about['email'], phone=about['phone'], bio=about['bio'])
+    ua = Userabout(
+        user_id=u.id, name=about['name'], email=about['email'], phone=about['phone'], bio=about['bio'])
     db.session.add(ua)
     db.session.commit()
 
-    return jsonify({ "id": u.id }), 201
+    return jsonify({"id": u.id}), 201
+
 
 @user.route('/<id>', methods=['GET'])
 @swag_from({
@@ -501,8 +510,8 @@ def get_user_id(id):
     if u is None:
         return f'Not Found', 404
     ua = Userabout.query.filter_by(user_id=u.id).first()
-            # CHECK
-            # "join_requests": list(map(lambda p: str(p.id), u.join_requests)), 
+    # CHECK
+    # "join_requests": list(map(lambda p: str(p.id), u.join_requests)),
     ret = {
         "user": {
             "id": str(u.id),
@@ -520,6 +529,7 @@ def get_user_id(id):
     }
     return jsonify(ret), 200
 
+
 @user.route('/<id>', methods=['DELETE'])
 @swag_from({
     "summary": "delete user",
@@ -534,6 +544,7 @@ def get_user_id(id):
 def delete_user_id():
     # TODO: Implement
     return '501 Not Implemented', 501
+
 
 @user.route('/<id>/about', methods=['PATCH'])
 @swag_from({
@@ -621,5 +632,5 @@ def patch_user_id_about(id):
 
     db.session.add(ua)
     db.session.commit()
-    
+
     return 'OK', 200

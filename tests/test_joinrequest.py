@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def test_create_join_request():
     response = requests.post('http://127.0.0.1:5000/user/', json={
         "username": "john",
@@ -28,8 +29,8 @@ def test_create_join_request():
     user_id_2 = str(response_body["id"])
     response = requests.post('http://127.0.0.1:5000/project/', json={
         "creator": user_id_1,
-        "name":"Project Tic Tac",
-        "description":"Lorem"
+        "name": "Project Tic Tac",
+        "description": "Lorem"
     })
     response_body = response.json()
     project_id = str(response_body["id"])

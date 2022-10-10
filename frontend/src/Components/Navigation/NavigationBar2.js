@@ -61,11 +61,11 @@ class NavigationBar extends React.Component {
     }
 
     render() {
-        if(!this.props.isSignedIn) {
+        if (!this.props.isSignedIn) {
             return (
                 <Navigation >
                     <Link to="/">
-                        <img src={logo_image} alt="logo"/>
+                        <img src={logo_image} alt="logo" />
                     </Link>
                     <Links>
 
@@ -92,7 +92,7 @@ class NavigationBar extends React.Component {
             return (
                 <Navigation>
                     <Link to="/">
-                        <img src={logo_image} alt="logo"/>
+                        <img src={logo_image} alt="logo" />
                     </Link>
                     <Links>
 

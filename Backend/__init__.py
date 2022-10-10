@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask
 from .extensions import db, migrate
 from flasgger import Swagger
 import json
@@ -17,6 +17,7 @@ import os
 import os
 
 # import flask_restless
+
 
 def create_app():
     dirname = os.path.dirname(__file__)
@@ -48,7 +49,7 @@ def create_app():
     swagger = Swagger(app, template=s_template)
 
     app.url_map.strict_slashes = False
-    
+
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{filename}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -63,15 +64,14 @@ def create_app():
 
     with app.app_context():
         specgen = json.dumps(swagger.get_apispecs())
-        specgenfile = open(os.path.join(os.path.dirname(__file__), 'docs/specgen.json'), 'w')
+        specgenfile = open(os.path.join(
+            os.path.dirname(__file__), 'docs/specgen.json'), 'w')
         specgenfile.write(specgen)
         specgenfile.close()
-        
+
     # app.register_blueprint(api)
-    # app.register_blueprint(registerer) 
+    # app.register_blueprint(registerer)
     # app.run()
-
-
 
     # Create the Flask-Restless API manager.
     # manager = flask_restless.APIManager(app, session=db.session)
