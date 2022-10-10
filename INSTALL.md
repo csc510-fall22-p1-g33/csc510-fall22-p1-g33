@@ -67,9 +67,8 @@ pip install -r requirements.txt
 
 1. You can run our backend in a docker container by running the following commands
         
-        cd Backend
-        sudo docker build --no-cache -t csc510-p1-backend .
-        sudo docker run -p 5000:5000 -t csc510-p1-backend
+        sudo docker build -t backend -f backend.Dockerfile .
+        sudo docker run --name backend --rm -d -p 5000:5000 -t backend
 # Frontend
 
 ## Development environment prerequisites
