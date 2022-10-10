@@ -63,6 +63,13 @@ pip install -r requirements.txt
         
         flask run
 
+## Or Run in Docker 
+
+1. You can run our backend in a docker container by running the following commands
+        
+        cd Backend
+        sudo docker build --no-cache -t csc510-p1-backend .
+        sudo docker run -p 5000:5000 -t csc510-p1-backend
 # Frontend
 
 ## Development environment prerequisites
