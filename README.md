@@ -22,7 +22,7 @@
 
 
 ## Team formation tool - find your project team easily
----
+
 Are you looking for a project team for your course this semester? 
 
 Are you tired of using frustrating shared documents which are seldom up-to-date to form teams? 
@@ -82,7 +82,3 @@ If users need any support with the product, email rpmertz@ncsu.edu
 ## Funding
 
 This project is not funded
-
-## Roadmap
-
-Can be found [here](https://github.com/users/mkudith/projects/1/views/1)
