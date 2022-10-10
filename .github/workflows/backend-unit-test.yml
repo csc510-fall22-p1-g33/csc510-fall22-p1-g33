@@ -2,7 +2,7 @@ name: Backend unit test
 
 on:
   push:
-    branches: [ main, development, main-test ]
+    branches: [ main, development, test-main ]
   pull_request:
     branches: [ main, development ]
 
