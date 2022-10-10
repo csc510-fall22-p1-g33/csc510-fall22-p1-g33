@@ -5,3 +5,4 @@ setuptools
 flasgger
 pytest
 requests
+coverage

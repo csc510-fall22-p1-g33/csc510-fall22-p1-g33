@@ -33,7 +33,9 @@ jobs:
         sudo docker run --name backend --rm -d -p 5000:5000 -t backend
     - name: Run tests
       run: |
-        sudo docker exec backend pytest
+        sudo docker exec backend coverage run --source Backend/routes -m pytest
+    - name: Show coverage
+        sudo docker exec backend coverage report
     - name: Set up Node 16.x
       uses: actions/setup-node@v2
       with:
@@ -53,7 +55,7 @@ jobs:
       run:  |
         git config user.name "Github Actions"
         git add -A
-        git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
+        git commit -m 'Generate documentation.'
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
