@@ -15,7 +15,7 @@
 
 [![Backend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/backend-unit-test.yml)
 [![Frontend unit test](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml/badge.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/actions/workflows/frontend-unit-test.yml)
-[![codecov](https://codecov.io/gh/sreedhara-aneesh/csc510-fall22-p1-g33/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/sreedhara-aneesh/csc510-fall22-p1-g33)
+[![codecov](https://codecov.io/gh/mkudith/csc510-fall22-p1-g33/branch/main/graph/badge.svg?token=)](https://app.codecov.io/gh/mkudith/csc510-fall22-p1-g33)
 
 
 [![Docs](https://img.shields.io/badge/Read_Documentation-blue.svg)](https://github.com/sreedhara-aneesh/csc510-fall22-p1-g33/blob/main/Backend/docs/apidocs.md)
